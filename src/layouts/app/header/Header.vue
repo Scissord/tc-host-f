@@ -11,11 +11,11 @@ const css = {
     sticky top-0 w-full z-30
     h-[6vh] flex items-center
     justify-center bg-zinc-900
-    text-white bg-opacity-75
+    text-white bg-opacity-90
   `,
   container: `
     h-full container mx-auto
-    px-40 flex items-center
+    flex items-center
     justify-between
   `,
   logo: `
@@ -38,10 +38,21 @@ const css = {
   <header :class="css.header">
     <div :class="css.container">
       <nav :class="css.nav">
-        <img
-          src="/pics/logo.png"
-          :class="css.logo"
-        />
+        <router-link
+          to="/"
+          :class="css.link"
+        >
+          <img
+            src="/pics/logo.png"
+            :class="css.logo"
+          />
+        </router-link>
+        <router-link
+          to="/orders"
+          :class="css.link"
+        >
+          Управление заказами
+        </router-link>
         <router-link
           to="/script/1284255/202690"
           :class="css.link"

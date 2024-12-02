@@ -11,11 +11,11 @@ const user = useUserStore();
 
 const router = useRouter();
 
-// onMounted(() => {
-//   if (!user.isAuthenticated) {
-//     router.push('/auth');
-//   }
-// });
+onMounted(() => {
+  if (!user.isAuthenticated) {
+    router.push('/auth');
+  }
+});
 </script>
 
 <template>
