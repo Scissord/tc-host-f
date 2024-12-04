@@ -1,6 +1,6 @@
 import baseUrl from "./baseUrl";
-import dateFormat from "./dateFormat";
+import DateFormat from './DateFormat';
 
 export {
-  baseUrl, dateFormat
+  baseUrl, DateFormat
 };

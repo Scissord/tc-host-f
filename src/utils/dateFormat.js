@@ -1,4 +1,4 @@
-export default function dateFormat(date, format) {
+export default function DateFormat(date, format) {
 
   if (date === null || date === undefined || date === '') return ''
 

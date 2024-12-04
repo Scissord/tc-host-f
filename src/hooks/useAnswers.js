@@ -21,16 +21,6 @@ const useAnswers = () => {
     return;
   }
 
-  // const handleCreateChapter = async (name) => {
-  //   const chapter = await createChapter(name);
-  //   return chapter;
-  // };
-
-  // const handleDeleteChapter = async (id) => {
-  //   await deleteChapter(id)
-  //   return;
-  // };
-
   return {
     handleCreateAnswer, handleUpdateAnswer,
     handleDeleteAnswer

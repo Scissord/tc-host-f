@@ -56,8 +56,8 @@ const onInput = (event) => {
   padding: 0.6rem 1rem;
   font-size: 1rem;
   border-radius: 0.375rem;
-  border: 2px solid #ccc;
-  background-color: #fff;
+  border: 1px solid #e2e8f0;
+  background-color: #e5e7eb;
   color: #333;
   transition: border-color 0.3s, box-shadow 0.3s;
   box-sizing: border-box;
@@ -65,8 +65,8 @@ const onInput = (event) => {
 
 /* Стиль для фокуса */
 .input:focus {
-  border-color: #4f83cc;
-  box-shadow: 0 0 0 3px rgba(79, 131, 204, 0.3);
+  border-color: #d946ef;
+  box-shadow: 0 0 0 3px rgba(146, 41, 195, 0.3);
   outline: none;
 }
 
@@ -103,5 +103,4 @@ const onInput = (event) => {
     font-size: 0.9rem;
   }
 }
-
 </style>
