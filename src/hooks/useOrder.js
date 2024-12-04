@@ -5,8 +5,19 @@ const useOrder = () => {
     getOrders, getOrder, saveOrder
   } = useOrderApi();
 
-  const handleGetOrders = async () => {
-    const orders = await getOrders();
+  const handleGetOrders = async (filters) => {
+    let queries = "";
+
+    if(filters.length > 0) {
+      const filteredFilters = filters.filter(filter => filter.value !== null && filter.value !== "" && filter.value !== undefined);
+      const queryParams = filteredFilters
+        .map(item => `${encodeURIComponent(item.column_name)}=${encodeURIComponent(item.value)}`)
+        .join('&');
+
+      queries = `?${queryParams}`;
+    };
+
+    const orders = await getOrders(queries);
     return orders;
   };
 

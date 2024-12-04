@@ -1,11 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   status: [Number, null],
   statuses: Array,
-  columns: Array,
-  filters: Object
+  filters: Array,
+  handleApplyFilters: Function
 });
 
 const isFiltersMenuOpen = ref(false);
@@ -21,7 +21,7 @@ const css = {
   input: 'text-sm p-1'
 };
 
-console.log(props.columns)
+// watch(() => props.filters, (newVal) => console.log(newVal), { deep: true })
 </script>
 
 <template>
@@ -51,178 +51,27 @@ console.log(props.columns)
     />
     <div
       v-if="isFiltersMenuOpen"
-      class="grid grid-cols-10 gap-3 bg-white border p-2 rounded-lg animate-fadeIn transition-opacity duration-500 ease-in-out"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10 gap-3 bg-white border p-2 rounded-lg animate-fadeIn transition-opacity duration-500 ease-in-out"
     >
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">ID</p>
+      <div
+        v-for="filter in filters"
+        :key="filter.id"
+        class="flex flex-col gap-1"
+      >
+        <p :class="css.label">{{ filter.display_name.length > 20 ? filter.display_name.slice(0, 20) : filter.display_name }}</p>
         <Input
-          id="order_id"
+          :id="filter.id"
           type="text"
-          v-model="filters.order_id"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Оператор</p>
-        <Input
-          id="operator"
-          type="text"
-          v-model="filters.operator"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Товар</p>
-        <Input
-          id="product"
-          type="text"
-          v-model="filters.product"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Вебмастер</p>
-        <Input
-          id="webmaster"
-          type="text"
-          v-model="filters.webmaster"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">ФИО</p>
-        <Input
-          id="fio"
-          type="text"
-          v-model="filters.fio"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Регион</p>
-        <Input
-          id="region"
-          type="text"
-          v-model="filters.region"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Город</p>
-        <Input
-          id="order_id"
-          type="text"
-          v-model="filters.order_id"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Адрес</p>
-        <Input
-          id="operator"
-          type="text"
-          v-model="filters.operator"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Коммент</p>
-        <Input
-          id="product"
-          type="text"
-          v-model="filters.product"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Почта</p>
-        <Input
-          id="webmaster"
-          type="text"
-          v-model="filters.webmaster"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Additional1</p>
-        <Input
-          id="fio"
-          type="text"
-          v-model="filters.fio"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Additional2</p>
-        <Input
-          id="region"
-          type="text"
-          v-model="filters.region"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Additional3</p>
-        <Input
-          id="order_id"
-          type="text"
-          v-model="filters.order_id"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Additional4</p>
-        <Input
-          id="operator"
-          type="text"
-          v-model="filters.operator"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Additional7</p>
-        <Input
-          id="product"
-          type="text"
-          v-model="filters.product"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Additional8</p>
-        <Input
-          id="webmaster"
-          type="text"
-          v-model="filters.webmaster"
-          placeholder="..."
-          :class="css.input"
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <p :class="css.label">Additional12</p>
-        <Input
-          id="fio"
-          type="text"
-          v-model="filters.fio"
+          v-model="filter.value"
           placeholder="..."
           :class="css.input"
         />
       </div>
     </div>
+    <Button
+      v-if="isFiltersMenuOpen"
+      text="Применить"
+      @click="handleApplyFilters(filters)"
+    />
   </div>
 </template>

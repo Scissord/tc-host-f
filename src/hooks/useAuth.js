@@ -8,8 +8,6 @@ const useAuth = () => {
   const handleSignIn = async (username, password) => {
     const data = await signin({ username, password });
 
-    console.log(data);
-
     // set To Locale Storage and Pinia
     const user = {
       ...data.user,

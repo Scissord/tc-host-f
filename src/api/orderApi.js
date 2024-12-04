@@ -6,11 +6,11 @@ const useOrderApi = () => {
   const userStore = useUserStore();
   const notification = useNotificationStore();
 
-  const getOrders = async () => {
+  const getOrders = async (queries) => {
     try {
       const response = await axios({
         method: 'GET',
-        url: `${baseUrl}/get_orders/`,
+        url: `${baseUrl}/get_orders${queries}`,
         headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
         withCredentials: true,
       })
