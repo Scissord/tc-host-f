@@ -11,7 +11,7 @@ const useTexts = () => {
   const handleGetTexts = async (good_id) => {
     const texts = getTexts(good_id);
     return texts;
-  }
+  };
 
   const handleCreateTextName = async (data) => {
     const text = await createTextName(data);
@@ -26,7 +26,7 @@ const useTexts = () => {
   const handleDeleteText = async (id) => {
     await deleteText(id);
     return;
-  }
+  };
 
   // const handleCreateChapter = async (name) => {
   //   const chapter = await createChapter(name);

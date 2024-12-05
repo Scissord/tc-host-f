@@ -21,12 +21,28 @@ const useColumnsApi = () => {
     }
   };
 
+  const updateColumn = async (column_id, data) => {
+    try {
+      const response = await axios({
+        method: 'PATCH',
+        url: `${baseUrl}/update_column/${column_id}`,
+        headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
+        withCredentials: true,
+        data
+      })
+
+      return response.data;
+    } catch (err) {
+      handleError(err.message);
+    }
+  };
+
   const handleError = (error) => {
     notification.show(error || 'Что-то пошло не так!', 'error');
   };
 
   return {
-    getColumns
+    getColumns, updateColumn
   };
 };
 

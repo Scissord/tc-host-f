@@ -2,7 +2,7 @@ import { useColumnsApi } from '@api';
 
 const useColumns = () => {
   const {
-    getColumns
+    getColumns, updateColumn
   } = useColumnsApi();
 
   const handleGetColumns = async () => {
@@ -10,8 +10,13 @@ const useColumns = () => {
     return columns;
   };
 
+  const handleUpdateColumn = async (id, data) => {
+    const column = await updateColumn(id, data);
+    return column
+  };
+
   return {
-    handleGetColumns
+    handleGetColumns, handleUpdateColumn
   }
 };
 

@@ -54,10 +54,22 @@ const css = {
           Управление заказами
         </router-link>
         <router-link
+          :to='`/webmaster/${user.data.role_id}`'
+          :class="css.link"
+        >
+          Вебмастер
+        </router-link>
+        <router-link
           to="/script/1284255/202690"
           :class="css.link"
         >
           Скрипт
+        </router-link>
+        <router-link
+          to="/edit_script"
+          :class="css.link"
+        >
+          Редактор скрипта
         </router-link>
         <router-link
           to="/admin"
