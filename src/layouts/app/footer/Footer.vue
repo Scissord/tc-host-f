@@ -1,6 +1,9 @@
 
 
 <script setup>
+import { useUserStore } from "@store";
+const user = useUserStore();
+
 const css = {
   logo: `
     w-10 cursor-pointer
@@ -29,7 +32,7 @@ const css = {
 </script>
 
 <template>
-  <footer class="flex items-center justify-center bg-zinc-900 text-white bg-opacity-90 py-12">
+  <footer v-if="user.isAuthenticated" class="flex items-center justify-center bg-zinc-900 text-white bg-opacity-90 py-12">
     <div class="container grid grid-cols-6 gap-6">
       <div class="col-span-2 flex flex-col gap-6">
         <div class="flex items-center gap-2">

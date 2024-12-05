@@ -1,17 +1,23 @@
 <script setup>
+// import { inject, computed } from 'vue';
 import { useUserStore, useThemeStore } from "@store";
 import { useRouter } from "vue-router";
+
+// const websocket = inject("$websocket");
+// console.log(websocket);
+
+// const isConnected = computed(() => websocket.state.isConnected);
 
 const user = useUserStore();
 const theme = useThemeStore();
 const router = useRouter();
-
 const css = {
   header: `
     sticky top-0 w-full z-30
     h-[6vh] flex items-center
     justify-center bg-zinc-900
     text-white bg-opacity-90
+    relative
   `,
   container: `
     h-full container mx-auto
@@ -35,7 +41,7 @@ const css = {
 </script>
 
 <template>
-  <header :class="css.header">
+  <header v-if='user.isAuthenticated' :class="css.header">
     <div :class="css.container">
       <nav :class="css.nav">
         <router-link
@@ -93,6 +99,9 @@ const css = {
           @click='router.push("/auth")'
         />
       </nav>
+    </div>
+    <div class="absolute top-2 right-2 bg-red-100 text-black p-1">
+      Статус websocket:
     </div>
   </header>
 </template>

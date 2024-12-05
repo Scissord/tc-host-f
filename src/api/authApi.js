@@ -11,15 +11,9 @@ const useAuthApi = () => {
       const response = await axios.post(`${baseUrl}/sign-in`, data);
       notification.show("Успешно!", "success");
 
-      // {
-      //   'user': payload_dict,
-      //   'access_token': access_token,
-      //   'permissions': permissions
-      // }
-
       return response.data;
     } catch (err) {
-      handleError(err.message);
+      handleError(err.response.data.detail);
     }
   };
 
@@ -30,7 +24,7 @@ const useAuthApi = () => {
       notification.show("Успешно!", "success");
       return response.data;
     } catch (err) {
-      handleError(err.response?.data?.error);
+      handleError(err.response.data.detail);
     }
   };
 

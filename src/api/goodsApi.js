@@ -12,7 +12,7 @@ const useGoodsApi = () => {
       const response = await axios.get(`${baseUrl}/get_goods`);
       return response.data;
     } catch (err) {
-      handleError(err.message);
+      handleError(err.response.data.detail);
     }
   };
 
@@ -27,7 +27,7 @@ const useGoodsApi = () => {
 
       return response.data;
     } catch (err) {
-      handleError(err.message);
+      handleError(err.response.data.detail);
     }
   };
 

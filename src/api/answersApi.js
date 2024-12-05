@@ -19,7 +19,7 @@ const useAnswersApi = () => {
 
       return response.data;
     } catch (err) {
-      handleError(err.message);
+      handleError(err.response.data.detail);
     }
   };
 
@@ -36,7 +36,7 @@ const useAnswersApi = () => {
 
       return response.data;
     } catch (err) {
-      handleError(err.message);
+      handleError(err.response.data.detail);
     }
   };
 
@@ -52,7 +52,7 @@ const useAnswersApi = () => {
 
       return response.data;
     } catch (err) {
-      handleError(err.message);
+      handleError(err.response.data.detail);
     }
   };
 
