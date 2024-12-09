@@ -1,4 +1,5 @@
 <script setup>
+import { watch } from 'vue';
 import { DateFormat } from "@utils";
 
 const props = defineProps({
@@ -29,21 +30,6 @@ const css = {
         >
           <td :class='css.td'>{{ order.id ?? "-" }}</td>
           <td :class='css.td'>{{ order.fio ?? "-" }}</td>
-          <!-- <td
-            :class='css.td'
-          >
-            <div class="flex flex-col gap-1">
-              <div
-                v-for="good in order.goods"
-                :key="good.good_id"
-                class="p-1 bg-blue-900 w-fit text-white rounded-lg text-xs"
-              >
-                <p>
-                  {{ good.good_name ?? '-' }}, {{ good.quantity ?? '-' }} шт. за {{ good.price * good.quantity ?? '-' }}
-                </p>
-              </div>
-            </div>
-          </td> -->
           <td :class='css.td'>{{ order.region ?? '-' }}</td>
           <td :class='css.td'>{{ order.city ?? '-' }}</td>
           <td :class='css.td'>{{ order.address ?? '-' }}</td>
@@ -60,12 +46,35 @@ const css = {
           <td :class='css.td'>{{ order.additional4 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional3 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional2 ?? '-' }}</td>
-          <td :class='css.td'>{{ order.webmaster.name ?? '-' }}</td>
+          <td :class='css.td'>
+            <p v-if="order.webmaster">{{ order.webmaster.name ?? '-' }}</p>
+          </td>
           <td :class='css.td'>{{ order.operator_id ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional11 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional12 ?? '-' }}</td>
           <td :class='css.td'>{{ DateFormat(order.updated_at, 'H:i d:m:Y') ?? '-' }}</td>
           <td :class='css.td'>{{ DateFormat(order.created_at, 'H:i d:m:Y') ?? '-' }}</td>
+          <td :class='css.td'>{{ order.phone ?? '-' }}</td>
+          <td :class='css.td'>
+            <p v-if="order.sub_status">
+              {{ order.sub_status.name ?? '-' }}
+            </p>
+          </td>
+          <td
+            :class='css.td'
+          >
+            <div class="flex flex-col gap-1">
+              <div
+                v-for="good in order.goods"
+                :key="good.good_id"
+                class="p-1 bg-blue-900 w-fit text-white rounded-lg text-xs"
+              >
+                <p>
+                  {{ good.good_name ?? '-' }}, {{ good.quantity ?? '-' }} шт. за {{ good.price * good.quantity ?? '-' }}
+                </p>
+              </div>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>

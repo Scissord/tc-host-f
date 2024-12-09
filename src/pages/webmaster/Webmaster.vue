@@ -4,7 +4,7 @@ import { useOrder, useStatus, useColumns } from '@hooks';
 import OrdersFilters from './blocks/OrdersFilters.vue';
 import OrdersTable from './blocks/OrdersTable.vue';
 
-const { handleGetOrders } = useOrder();
+const { handleGetOrdersForWebmaster } = useOrder();
 const { handleGetColumns } = useColumns();
 const { handleGetStatuses } = useStatus()
 
@@ -33,7 +33,7 @@ const handleApplyFilters = async (array) => {
 const handleGetData = async () => {
   isDataLoaded.value = false;
   const [ordersData, statusesData, columnsData] = await Promise.all([
-    handleGetOrders([]),
+    handleGetOrdersForWebmaster([]),
     handleGetStatuses(),
     handleGetColumns(),
   ]);

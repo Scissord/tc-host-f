@@ -1,68 +1,72 @@
 import { reactive } from "vue";
 
-export default {
-  install(app, { url }) {
-    const state = reactive({
-      socket: null,
-      isConnected: false,
-      listeners: {},
-    });
+const state = reactive({
+  socket: null,
+  isConnected: false,
+  listeners: {},
+});
 
-    const connect = () => {
-      state.socket = new WebSocket(url);
+export function initWebSocket(url) {
+  if (state.socket) {
+    console.warn("WebSocket уже инициализирован");
+    return;
+  }
 
-      state.socket.onopen = () => {
-        console.log("WebSocket подключен");
-        state.isConnected = true;
-      };
+  const connect = () => {
+    state.socket = new WebSocket(url);
 
-      state.socket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        console.log("Получено сообщение:", data);
-
-        if (data.event && state.listeners[data.event]) {
-          state.listeners[data.event].forEach((callback) => callback(data.payload));
-        }
-      };
-
-      state.socket.onclose = () => {
-        console.log("WebSocket отключен");
-        state.isConnected = false;
-      };
-
-      state.socket.onerror = (error) => {
-        console.error("Ошибка WebSocket:", error);
-      };
+    state.socket.onopen = () => {
+      console.log("WebSocket подключен");
+      state.isConnected = true;
     };
 
-    const send = (event, payload) => {
-      if (state.socket && state.socket.readyState === WebSocket.OPEN) {
-        state.socket.send(JSON.stringify({ event, payload }));
-      } else {
-        console.error("WebSocket не подключен");
+    state.socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("Получено сообщение:", data);
+
+      if (data.event && state.listeners[data.event]) {
+        state.listeners[data.event].forEach((callback) => callback(data.payload));
       }
     };
 
-    const on = (event, callback) => {
-      if (!state.listeners[event]) {
-        state.listeners[event] = [];
-      }
-      state.listeners[event].push(callback);
+    state.socket.onclose = () => {
+      console.log("WebSocket отключен");
+      state.isConnected = false;
     };
 
-    const disconnect = () => {
-      if (state.socket) {
-        state.socket.close();
-      }
+    state.socket.onerror = (error) => {
+      console.error("Ошибка WebSocket:", error);
     };
+  };
 
-    connect();
+  const send = (event, payload) => {
+    if (state.socket && state.socket.readyState === WebSocket.OPEN) {
+      state.socket.send(JSON.stringify({ event, payload }));
+    } else {
+      console.error("WebSocket не подключен");
+    }
+  };
 
-    app.config.globalProperties.$websocket = {
-      state,
-      send,
-      on,
-      disconnect,
-    };
-  },
-};
+  const on = (event, callback) => {
+    if (!state.listeners[event]) {
+      state.listeners[event] = [];
+    }
+    state.listeners[event].push(callback);
+  };
+
+  const disconnect = () => {
+    if (state.socket) {
+      state.socket.close();
+    }
+    state.socket = null;
+  };
+
+  connect();
+
+  return {
+    state,
+    send,
+    on,
+    disconnect,
+  };
+}

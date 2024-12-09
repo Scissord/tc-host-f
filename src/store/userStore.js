@@ -10,19 +10,19 @@ const useUserStore = defineStore('user', () => {
   function setUser(userData) {
     data.value = userData;
     localStorage.setItem('user', JSON.stringify(userData));
-  }
+  };
 
   function setAccessToken(tokenValue) {
     accessToken.value = tokenValue;
     localStorage.setItem('access_token', tokenValue);
-  }
+  };
 
   function clearUser() {
     data.value = null;
     accessToken.value = null;
     localStorage.removeItem('user');
     localStorage.removeItem('access_token');
-  }
+  };
 
   const isAuthenticated = computed(() => !!accessToken.value);
 

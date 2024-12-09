@@ -52,6 +52,8 @@ const handleGetData = async () => {
 onMounted(async () => {
   await handleGetData();
 });
+
+// watch(() => orders, (newVal) => {console.log(newVal)}, { deep: true });
 </script>
 
 <template>

@@ -9,9 +9,10 @@ import './style.css';
 const app = createApp(App);
 const pinia = createPinia();
 
+app.use(pinia);
+app.use(router);
+
 registerComponents(app);
 registerPlugins(app);
 
-app.use(pinia);
-app.use(router);
 app.mount('#app');
