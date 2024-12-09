@@ -6,10 +6,12 @@ import useAnswers from './useAnswers';
 import useOrder from './useOrder';
 import useStatus from './useStatus';
 import useColumns from "./useColumns";
+import useStatistic from './useStatistic';
 
 export {
   useAuth, useGoods,
   useChapters, useTexts,
   useAnswers, useOrder,
-  useStatus, useColumns
+  useStatus, useColumns,
+  useStatistic
 };

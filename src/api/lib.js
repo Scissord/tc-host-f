@@ -6,10 +6,12 @@ import useAnswersApi from './answersApi';
 import useOrderApi from './orderApi';
 import useStatusApi from './statusApi';
 import useColumnsApi from './columnsApi';
+import useStatisticApi from './statisticApi';
 
 export {
   useAuthApi, useGoodsApi,
   useChaptersApi, useTextsApi,
   useAnswersApi, useOrderApi,
-  useStatusApi, useColumnsApi
+  useStatusApi, useColumnsApi,
+  useStatisticApi
 };
