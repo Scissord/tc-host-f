@@ -34,7 +34,7 @@ onMounted(() => {
 });
 
 const isDataLoaded = ref(false);
-const statistic = reactive([]);
+const statistic = reactive({});
 
 const formatRange = (date) => {
   const start = date.value[0];
@@ -100,14 +100,14 @@ const handleGetWebmasterData = async () => {
       },
       {
         name: 'by_day',
-        value: true
+        value: false
       }
     ]),
   ]);
 
   // console.log(webMasterStatistic);
 
-  // Object.assign(orders, ordersData.orders);
+  Object.assign(statistic, webMasterStatistic);
   isDataLoaded.value = true;
 };
 
@@ -128,14 +128,14 @@ const handleGetOperatorData = async () => {
       },
       {
         name: 'by_day',
-        value: true
+        value: false
       }
     ]),
   ]);
 
   // console.log(operatorStatistic);
 
-  // Object.assign(orders, ordersData.orders);
+  Object.assign(statistic, operatorStatistic);
   isDataLoaded.value = true;
 };
 
@@ -147,21 +147,19 @@ const tab = ref(0);
 
 const handleChangeTab = async (val) => {
   tab.value = val;
-  isDataLoaded.value = false; 
   switch (val) {
     case 0: 
-      const allData = await handleGetData();
+      await handleGetData();
       break;
     case 1:
-      const webMasterData = await handleGetWebmasterData();
+      await handleGetWebmasterData();
       break;
     case 2:
-      const operatorData = await handleGetOperatorData();
+      await handleGetOperatorData();
       break;
     default:
-      const data = await handleGetData();
+      await handleGetData();
       break;
-    isDataLoaded.value = true;  
   }
 };
 
@@ -169,7 +167,7 @@ const css = {
   defaultTab: 'h-8 cursor-pointer select-none p-2 whitespace-nowrap',
   activeTab: 'border-t border-l border-r rounded-t-md',
   disabledTab: 'border-b'
-}
+};
 </script>
 
 <template>
@@ -217,7 +215,7 @@ const css = {
       </div>
     </div>
 
-    <div v-if="isDataLoaded" class="min-h-screen bg-gray-100">
+    <div v-if="isDataLoaded" class="min-h-screen">
       <StatisticTable 
         v-if="tab === 0"
         :statistic="statistic"
