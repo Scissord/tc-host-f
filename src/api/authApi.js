@@ -2,13 +2,20 @@ import axios from 'axios';
 import { baseUrl } from '@utils';
 import { useNotificationStore } from '@store';
 
+const baseRoute = '/auth';
+
 const useAuthApi = () => {
   const notification = useNotificationStore();
 
-  // SignIn / Войти
+  // LogIn / Войти
   const signin = async (data) => {
     try {
-      const response = await axios.post(`${baseUrl}/sign-in`, data);
+      const response = await axios({
+        method: 'POST',
+        url: `${baseUrl}${baseRoute}/login`,
+        withCredentials: true,
+        data
+      })
       notification.show("Успешно!", "success");
 
       return response.data;

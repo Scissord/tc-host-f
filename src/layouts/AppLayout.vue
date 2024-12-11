@@ -18,7 +18,7 @@ onMounted(() => {
   if (!user.isAuthenticated) {
     router.push('/auth');
   } else {
-    connectWebSocket();
+    // connectWebSocket();
   }
 });
 

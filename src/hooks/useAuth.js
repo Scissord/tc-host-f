@@ -5,17 +5,12 @@ const useAuth = () => {
   const userStore = useUserStore();
   const { signin, logout } = useAuthApi();
 
-  const handleSignIn = async (username, password) => {
-    const data = await signin({ username, password });
+  const handleSignIn = async (login, password) => {
+    const data = await signin({ login, password });
 
     // set To Locale Storage and Pinia
-    const user = {
-      ...data.user,
-      permissions: data.permissions
-    };
-
-    userStore.setUser(user);
-    userStore.setAccessToken(data.access_token);
+    userStore.setUser(data.user);
+    userStore.setAccessToken(data.accessToken);
   };
 
   const handleLogout = async () => {

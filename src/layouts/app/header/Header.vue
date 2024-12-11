@@ -1,7 +1,9 @@
 <script setup>
 // import { inject, computed } from 'vue';
+import { ref } from 'vue';
+// import { useRouter } from "vue-router";
+import { useAuth } from '@hooks';
 import { useUserStore, useThemeStore } from "@store";
-import { useRouter } from "vue-router";
 
 // const websocket = inject("$websocket");
 // console.log(websocket);
@@ -10,14 +12,26 @@ import { useRouter } from "vue-router";
 
 const user = useUserStore();
 const theme = useThemeStore();
-const router = useRouter();
+// const router = useRouter();
+
+const { handleLogout } = useAuth();
+
+const isUserMenuOpen = ref(false);
+
+const showUserMenu = () => {
+  isUserMenuOpen.value = true;
+};
+
+const hideUserMenu = () => {
+  isUserMenuOpen.value = false;
+};
+
 const css = {
   header: `
     sticky top-0 w-full z-30
     h-[6vh] flex items-center
     justify-center bg-zinc-900
     text-white bg-opacity-90
-    relative
   `,
   container: `
     h-full container mx-auto
@@ -25,11 +39,13 @@ const css = {
     justify-between
   `,
   logo: `
-    w-10 cursor-pointer
+    w-8 cursor-pointer
   `,
   nav: `
     flex items-center
-    gap-8 text-sm w-full
+    justify-around
+    gap-8 text-sm
+    w-full
   `,
   link: `
     hover:text-neutral-200
@@ -37,6 +53,32 @@ const css = {
     transition duration-300
     ease cursor-pointer
   `,
+  icon: `
+    hover:text-neutral-200
+    hover:text-opacity-50
+    transition duration-300
+    ease cursor-pointer text-lg
+  `,
+  avatar: `
+    hover:bg-opacity-50
+    transition duration-300
+    ease cursor-pointer
+    rounded-full w-5
+  `,
+  userMenuWrapper: `
+    relative inline-block
+  `,
+  userMenu: `
+    absolute bg-white border
+    rounded shadow-md
+    text-black text-sm 
+    left-1/2 transform 
+    -translate-x-1/2
+  `,
+  userLink: `
+    p-1 hover:bg-gray-100
+    cursor-pointer
+  `
 };
 </script>
 
@@ -85,19 +127,42 @@ const css = {
         </router-link>
         <Icon
           icon="fa-solid fa-language"
-          :class="css.link"
+          :class="css.icon + ' ml-auto'"
         />
         <Icon
           :icon="theme.theme === 'light' ? 'fa-solid fa-moon' : 'fa-solid fa-sun'"
-          :class="css.link"
+          :class="css.icon"
           @click="theme.toggleTheme"
         />
-        <Icon
-          v-if="!user.isAuthenticated"
-          icon="fa-solid fa-circle-user"
-          :class="css.  k"
-          @click='router.push("/auth")'
-        />
+        <div v-if="user.isAuthenticated" :class="css.userMenuWrapper">
+          <!-- <img
+            :src="user.data.avatar"
+            alt="User Picture"
+            :class="css.avatar"
+          /> -->
+          <Icon
+            icon="fa-solid fa-circle-user"
+            :class="css.icon"
+            @mouseover="showUserMenu"
+          />
+          <div
+            v-if="isUserMenuOpen"
+            :class="css.userMenu"
+            @mouseover="showUserMenu"
+            @mouseleave="hideUserMenu"
+          >
+            <ul class="p-2">
+              <li :class="css.userLink">Profile</li>
+              <li :class="css.userLink">Setting</li>
+              <li
+                :class="css.userLink"
+                @click="handleLogout"
+              >
+                Exit
+              </li>
+            </ul>
+          </div>
+        </div>
       </nav>
     </div>
     <div class="absolute top-2 right-2 bg-red-100 text-black p-1">

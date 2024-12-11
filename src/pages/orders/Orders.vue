@@ -1,8 +1,12 @@
 <script setup>
 import { ref, reactive, watch, onMounted } from 'vue';
+import { useUserStore } from '@store';
 import { useOrder, useStatus, useColumns } from '@hooks';
 import OrdersFilters from './blocks/OrdersFilters.vue';
 import OrdersTable from './blocks/OrdersTable.vue';
+
+const user = useUserStore();
+console.log(user.data);
 
 const { handleGetOrders } = useOrder();
 const { handleGetColumns } = useColumns();
@@ -50,10 +54,10 @@ const handleGetData = async () => {
 };
 
 onMounted(async () => {
-  await handleGetData();
+  // await handleGetData();
 });
 
-// watch(() => orders, (newVal) => {console.log(newVal)}, { deep: true });
+// watch(() => user.data, (newVal) => {console.log(newVal)}, { deep: true });
 </script>
 
 <template>
