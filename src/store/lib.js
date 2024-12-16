@@ -1,7 +1,8 @@
-import useUserStore from "./userStore";
-import useThemeStore from './themeStore';
-import useModalStore from './modalStore';
-import useNotificationStore from './notificationStore';
+import useUserStore from "./user";
+import useThemeStore from './theme';
+import useModalStore from './modal';
+import useNotificationStore from './notification';
+import useConnectionStore from "./connection";
 
 export {
   // DATA
@@ -9,5 +10,7 @@ export {
   // UI
   useThemeStore,
   useModalStore,
-  useNotificationStore
+  useNotificationStore,
+  // PLUGINS
+  useConnectionStore,
 };

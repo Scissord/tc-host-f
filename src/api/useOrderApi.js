@@ -6,13 +6,42 @@ const useOrderApi = () => {
   const userStore = useUserStore();
   const notification = useNotificationStore();
 
-  const getOrders = async (queries) => {
+  const getOrders = async (limit = 20, page = 1, subStatus = 1, filters = []) => {
+    let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&sub_status=${subStatus}`;
+
+    if(filters.length > 0) {
+      const filteredFilters = filters.filter(filter => filter.value !== null && filter.value !== "" && filter.value !== undefined);
+      const queryParams = filteredFilters
+        .map(item => `${encodeURIComponent(item.name)}=${encodeURIComponent(item.value)}`)
+        .join('&');
+
+      if(queryParams !== "") {
+        queries += `&${queryParams}`;
+      }
+    };
+
     try {
       const response = await axios({
         method: 'GET',
-        url: `${baseUrl}/get_orders${queries}`,
-        headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
-        withCredentials: true,
+        url: `${baseUrl}/orders${queries}`,
+        // headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
+        // withCredentials: true,
+      })
+
+      return response.data;
+    } catch (err) {
+      handleError(err.response.data.detail);
+    }
+  };
+
+  const changeStatus = async (data) => {
+    try {
+      const response = await axios({
+        method: 'PATCH',
+        url: `${baseUrl}/orders/update_status`,
+        // headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
+        // withCredentials: true,
+        data
       })
 
       return response.data;
@@ -81,8 +110,11 @@ const useOrderApi = () => {
   };
 
   return {
-    getOrders, getOrderForWebmaster,
-    getOrder, saveOrder
+    getOrders, 
+    changeStatus,
+    getOrderForWebmaster,
+    getOrder, 
+    saveOrder
   };
 };
 

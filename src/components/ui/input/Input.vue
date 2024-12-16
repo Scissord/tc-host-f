@@ -1,5 +1,5 @@
 <script setup>
-defineProps({
+const props = defineProps({
   id: {
     type: [String, Number],
     required: false,
@@ -27,13 +27,14 @@ defineProps({
   onBlur: {
     type: Function,
     required: false
-  }
+  },
 });
 
 const emit = defineEmits(['update:modelValue']);
 
 const onInput = (event) => {
-  emit('update:modelValue', event.target.value);
+  const value = event.target.value;
+  emit('update:modelValue', value);
 };
 </script>
 
@@ -44,8 +45,8 @@ const onInput = (event) => {
     :value="modelValue"
     :placeholder="placeholder"
     :required="required"
-    class='input'
-    @input="onInput($event)"
+    class="input"
+    @input="onInput"
     @blur="onBlur"
   />
 </template>
@@ -63,44 +64,19 @@ const onInput = (event) => {
   box-sizing: border-box;
 }
 
-/* Стиль для фокуса */
 .input:focus {
   border-color: #d946ef;
   box-shadow: 0 0 0 3px rgba(146, 41, 195, 0.3);
   outline: none;
 }
 
-/* Стиль для обязательных полей */
-/* .input:required {
-  border-color: #ff6f61;
-} */
-
 .input::placeholder {
   color: #999;
   font-style: italic;
 }
 
-/* Стиль для ошибок */
 .input.is-error {
   border-color: #e74c3c;
   box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
-}
-
-/* Стили для различных размеров */
-.input.small {
-  padding: 0.6rem 0.8rem;
-  font-size: 0.875rem;
-}
-
-.input.large {
-  padding: 1rem 1.2rem;
-  font-size: 1.125rem;
-}
-
-/* Адаптивность */
-@media (max-width: 600px) {
-  .input {
-    font-size: 0.9rem;
-  }
 }
 </style>

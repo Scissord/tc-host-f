@@ -1,11 +1,5 @@
 <script setup>
-import { useAuth } from '@hooks';
 import SignIn from './SignIn.vue';
-
-const {
-  handleSignIn,
-} = useAuth();
-
 </script>
 
 <template>
@@ -16,9 +10,7 @@ const {
         class="w-[70%]"
       />
     </div>
-    <SignIn
-      :handleSignIn="handleSignIn"
-    />
+    <SignIn/>
   </div>
 </template>
 

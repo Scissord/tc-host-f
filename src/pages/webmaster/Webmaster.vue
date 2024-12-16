@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { ref, reactive, watch, onMounted } from 'vue';
 import { useOrder, useStatus, useColumns } from '@hooks';
 import OrdersFilters from './blocks/OrdersFilters.vue';
@@ -74,4 +74,14 @@ onMounted(async () => {
     </div>
   </div>
 
+</template> -->
+
+<script setup>
+
+</script>
+
+<template>
+  <div>
+    Webmaster
+  </div>
 </template>

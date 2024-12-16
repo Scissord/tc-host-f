@@ -13,7 +13,6 @@ const appRoutes = {
     { path: '', name: 'Home', component: Home },
     // Лидвертекс
     { path: 'orders', name: 'Orders', component: Orders },
-    { path: 'orders', name: 'Orders', component: Orders },
     { path: 'webmaster/:webmaster_id', name: 'Webmaster', component: Webmaster },
     // Скрипт для продажников
     { path: 'script/:order_id/:good_id', name: 'Script', component: Script },

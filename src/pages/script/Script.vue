@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { ref, reactive, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useOrder, useChapters, useGoods } from '@hooks'
@@ -115,5 +115,15 @@ watch(() => chapters, (newVal) => {
         />
       </div>
     </div>
+  </div>
+</template> -->
+
+<script setup>
+
+</script>
+
+<template>
+  <div>
+    Script
   </div>
 </template>

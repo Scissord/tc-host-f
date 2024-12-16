@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { ref, onMounted, reactive } from 'vue';
 import { useStatistic } from '@hooks';
 import StatisticTable from './blocks/StatisticTable.vue';
@@ -232,5 +232,15 @@ const css = {
     <div v-else class="min-h-screen flex items-center justify-center">
       <Loader/>
     </div>
+  </div>
+</template> -->
+
+<script setup>
+
+</script>
+
+<template>
+  <div>
+    Home
   </div>
 </template>

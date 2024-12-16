@@ -1,17 +1,11 @@
-import useAuthApi from "./authApi";
-import useGoodsApi from './goodsApi';
-import useChaptersApi from './chaptersApi';
-import useTextsApi from './textsApi';
-import useAnswersApi from './answersApi';
-import useOrderApi from './orderApi';
-import useStatusApi from './statusApi';
-import useColumnsApi from './columnsApi';
-import useStatisticApi from './statisticApi';
+import useAuthApi from "./useAuthApi";
+import useOrderApi from './useOrderApi';
+import useOrderSubStatusApi from './useOrderSubStatusApi';
+import useOrderColumnApi from './useOrderColumnApi';
 
 export {
-  useAuthApi, useGoodsApi,
-  useChaptersApi, useTextsApi,
-  useAnswersApi, useOrderApi,
-  useStatusApi, useColumnsApi,
-  useStatisticApi
+  useAuthApi,
+  useOrderApi,
+  useOrderSubStatusApi,
+  useOrderColumnApi
 };

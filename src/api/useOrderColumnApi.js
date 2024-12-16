@@ -2,22 +2,22 @@ import axios from 'axios';
 import { baseUrl } from '@utils';
 import { useNotificationStore, useUserStore } from '@store';
 
-const useStatusApi = () => {
+const useOrderColumnApi = () => {
   const userStore = useUserStore();
   const notification = useNotificationStore();
 
-  const getStatuses = async () => {
+  const getOrderColumns = async () => {
     try {
       const response = await axios({
         method: 'GET',
-        url: `${baseUrl}/get_statuses`,
-        headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
-        withCredentials: true,
+        url: `${baseUrl}/order_columns`,
+        // headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
+        // withCredentials: true,
       })
 
-      return response.data;
+      return response.data.orderColumns;
     } catch (err) {
-      handleError(err.response.data.detail);
+      handleError(err.response?.data?.error);
     }
   };
 
@@ -26,8 +26,8 @@ const useStatusApi = () => {
   };
 
   return {
-    getStatuses
+    getOrderColumns,
   };
 };
 
-export default useStatusApi;
+export default useOrderColumnApi;

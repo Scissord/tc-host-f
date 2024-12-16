@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { onMounted, ref, reactive, watch } from 'vue';
 import { useColumns } from '@hooks';
 
@@ -69,5 +69,16 @@ const css = {
     <div v-else class="min-h-screen flex items-center justify-center">
       <Loader/>
     </div>
+  </div>
+</template> -->
+
+
+<script setup>
+
+</script>
+
+<template>
+  <div>
+    Admin
   </div>
 </template>

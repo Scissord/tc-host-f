@@ -1,14 +1,23 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-const props = defineProps({
-  handleSignIn: { type: Function },
-})
+import { useAuthApi } from '@api';
+import { useConnectionStore } from '@store';
+
+const connection = useConnectionStore();
 
 const router = useRouter();
 
+const { signin } = useAuthApi();
+
 const login = ref('');
 const password = ref('');
+
+const handleSignIn = async () => {
+  await signin(login.value, password.value);
+  // connection.connect();
+  router.push('/');
+};
 </script>
 
 <template>
@@ -58,11 +67,8 @@ const password = ref('');
       <Button
         type="submit"
         text="Принять"
-        className="rounded-lg w-full bg-blue-500 focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 hover:bg-blue-700"
-        @click="async () => {
-          await handleSignIn(login, password);
-          router.push('/');
-        }"
+        class="rounded-lg w-full bg-blue-500 focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 hover:bg-blue-700"        
+        @click="handleSignIn"
       />
     </div>
 

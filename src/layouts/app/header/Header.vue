@@ -1,20 +1,15 @@
 <script setup>
-// import { inject, computed } from 'vue';
 import { ref } from 'vue';
-// import { useRouter } from "vue-router";
-import { useAuth } from '@hooks';
+import { useAuthApi } from '@api';
 import { useUserStore, useThemeStore } from "@store";
+import { useConnectionStore } from '@store';
 
-// const websocket = inject("$websocket");
-// console.log(websocket);
-
-// const isConnected = computed(() => websocket.state.isConnected);
+const connection = useConnectionStore();
 
 const user = useUserStore();
 const theme = useThemeStore();
-// const router = useRouter();
 
-const { handleLogout } = useAuth();
+const { logout } = useAuthApi();
 
 const isUserMenuOpen = ref(false);
 
@@ -24,6 +19,11 @@ const showUserMenu = () => {
 
 const hideUserMenu = () => {
   isUserMenuOpen.value = false;
+};
+
+const handleLogout = async () => {
+  await logout();
+  connection.disconnect();
 };
 
 const css = {
@@ -164,9 +164,6 @@ const css = {
           </div>
         </div>
       </nav>
-    </div>
-    <div class="absolute top-2 right-2 bg-red-100 text-black p-1">
-      Статус websocket:
     </div>
   </header>
 </template>

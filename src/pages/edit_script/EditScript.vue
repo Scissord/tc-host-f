@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { ref, toRaw, reactive, computed, watch, onMounted } from 'vue';
 import { useGoods, useChapters, useTexts, useAnswers } from '@hooks';
 import { useUserStore, useNotificationStore } from '@store'
@@ -300,5 +300,15 @@ watch(() => good, (newGood) => {
       :handleSaveAnswer="handleSaveAnswer"
       :handleDestroyAnswer="handleDestroyAnswer"
     />
+  </div>
+</template> -->
+
+<script setup>
+
+</script>
+
+<template>
+  <div>
+    EditScript
   </div>
 </template>
