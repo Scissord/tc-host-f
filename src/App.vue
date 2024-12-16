@@ -3,6 +3,7 @@ import { onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { socket } from '@/plugins/socket';
 import { useUserStore, useConnectionStore } from '@store';
+import { useOrder } from '@hooks';
 
 const route = useRoute();
 const router = useRouter();
@@ -10,8 +11,11 @@ const router = useRouter();
 const user = useUserStore();
 const connection = useConnectionStore();
 
+const order = useOrder();
+
 socket.off();
 connection.bindEvents();
+order.bindEvents();
 
 watch(() => user.isAuthenticated, (isAuthenticated) => {
   if(!isAuthenticated) {

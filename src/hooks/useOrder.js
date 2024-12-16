@@ -4,6 +4,7 @@ import {
   useOrderSubStatusApi, 
   useOrderColumnApi 
 } from '@api';
+import { socket } from "@/plugins/socket";
 
 const useOrder = () => {
   const { getOrders, changeStatus } = useOrderApi();
@@ -47,12 +48,14 @@ const useOrder = () => {
       ids: ids
     };
     
-    await changeStatus(data);
-    await handleGetOrders(orderState.limit, orderState.page, orderState.subStatus, orderState.filters);
+    // await changeStatus(data);
+    // await handleGetOrders(orderState.limit, orderState.page, orderState.subStatus, orderState.filters);
 
-    if(orderState.columns[0].is_checked === true) {
-      orderState.columns[0].is_checked = false;
-    };
+    // if(orderState.columns[0].is_checked === true) {
+    //   orderState.columns[0].is_checked = false;
+    // };
+
+    socket.emit("sendStatus", data);
   };
 
   const handleChangePage = async (val) => {
@@ -115,6 +118,12 @@ const useOrder = () => {
     orderState.isDataLoaded = true;
   };
 
+  const bindEvents = () => {
+    socket.on("receiveStatus", (data) => {
+      console.log(data);
+    })
+  };
+
   onMounted(async () => {
     await handleGetData();
   });
@@ -125,7 +134,8 @@ const useOrder = () => {
     handleChangePage,
     handleApplyFilters,
     handleToggleOrders,
-    handleChangeOrdersSubStatus
+    handleChangeOrdersSubStatus,
+    bindEvents
   };
 };
 

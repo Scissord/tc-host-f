@@ -1,8 +1,10 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
+import { useUserStore } from '@store';
 import { socket } from "@/plugins/socket";
 
 const useConnectionStore = defineStore("connection", () => {
+  const user = useUserStore();
   const isConnected = ref(false);
 
   const bindEvents = () => {
@@ -18,12 +20,13 @@ const useConnectionStore = defineStore("connection", () => {
   };
 
   const connect = () => {
+    socket.io.opts.query = { user_id: user.data.id };
     socket.connect();
   };
 
   const disconnect = () => {
     socket.disconnect();
-  }
+  };
 
   return {
     isConnected,
