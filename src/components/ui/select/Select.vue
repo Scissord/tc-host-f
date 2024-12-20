@@ -12,11 +12,13 @@ const props = defineProps({
   },
   value: {
     type: String,
-    required: false
+    required: false,
+    default: 'value'
   },
   label: {
     type: String,
     required: false,
+    default: 'label'
   },
 });
 
@@ -26,48 +28,42 @@ const emits = defineEmits(['update:modelValue']);
 const isOpen = ref(false);
 
 const selectOption = (option) => {
-  emits('update:modelValue', props.value ? option[props.value] : option.id);
+  emits('update:modelValue', props.value ? option[props.value] : option.value, option);
   isOpen.value = !isOpen.value;
 };
 
-const onSelectClick = () => {
+const toggleMenu = () => {
   isOpen.value = !isOpen.value;
 };
 
-const closeMenuIfClickedOutside = (event) => {
-  const container = document.querySelector('.select-container');
-  if (container && !container.contains(event.target)) {
-    isOpen.value = false;
-  }
-};
+const isObject = computed(() => {
+  return typeof props.modelValue === 'object' && props.modelValue !== null && !Array.isArray(props.modelValue);
+});
 
 const displayedName = computed(() => {
-  const option = props.options.find((option) => +option[props.value || 'value'] === +props.modelValue);
-  return option ? (props.label ? option[props.label] : option.label) : '';
-});
+  let localValue = isObject.value
+    ? +props.modelValue[props.value || 'value']
+    : +props.modelValue
 
-onMounted(() => {
-  document.addEventListener('click', closeMenuIfClickedOutside);
-});
+  const option = props.options.find((option) => +option[props.value || 'value'] === localValue);
 
-onBeforeUnmount(() => {
-  document.removeEventListener('click', closeMenuIfClickedOutside);
+  return option ? (props.label ? option[props.label] : option.label) : 'SELECT...';
 });
-
-watch(props.options, (newVal) => console.log(newVal));
 </script>
 
 <template>
   <div class="select-container">
     <div
       class="selected"
-      @click="onSelectClick"
+      @click="toggleMenu"
     >
-      <p v-if="modelValue" class="selected-text">
+      <p
+        :class="[
+          'selected-text',
+          displayedName === 'SELECT...' ? 'text-gray-600' : 'text-black'
+        ]"
+      >
         {{ displayedName }}
-      </p>
-      <p v-else class="placeholder">
-        SELECT...
       </p>
       <Icon
         :class="['icon']"
@@ -78,12 +74,12 @@ watch(props.options, (newVal) => console.log(newVal));
     <div v-if="isOpen" class="menu">
       <div
         v-for="option in options"
-        :key="value ? option[value] : option.id"
+        :key="option[value || 'value']"
         class="menu-item"
         @click="selectOption(option)"
       >
         <p class="menu-item-text">
-          {{ label ? option[label] : option.label }}
+          {{ option[label || 'label'] }}
         </p>
       </div>
     </div>
@@ -116,13 +112,6 @@ watch(props.options, (newVal) => console.log(newVal));
   font-size: 12px;
   letter-spacing: 1px;
   color: #64748b;
-}
-
-.placeholder {
-  color: #64748b;
-  font-size: 12px;
-  letter-spacing: 1px;
-  opacity: 1;
 }
 
 .menu {

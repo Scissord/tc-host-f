@@ -34,6 +34,21 @@ const useOrderApi = () => {
     }
   };
 
+  const getOrder = async (order_id) => {
+    try {
+      const response = await axios({
+        method: 'GET',
+        url: `${baseUrl}/orders/${order_id}`,
+        // headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
+        // withCredentials: true,
+      })
+
+      return response.data;
+    } catch (err) {
+      handleError(err.message);
+    }
+  };
+
   const changeStatus = async (data) => {
     try {
       const response = await axios({
@@ -55,21 +70,6 @@ const useOrderApi = () => {
       const response = await axios({
         method: 'GET',
         url: `${baseUrl}/webmaster/get_orders${queries}`,
-        headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
-        withCredentials: true,
-      })
-
-      return response.data;
-    } catch (err) {
-      handleError(err.response.data.detail);
-    }
-  };
-
-  const getOrder = async (order_id) => {
-    try {
-      const response = await axios({
-        method: 'GET',
-        url: `${baseUrl}/get_order/${order_id}`,
         headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
         withCredentials: true,
       })
@@ -111,6 +111,7 @@ const useOrderApi = () => {
 
   return {
     getOrders, 
+    getOrder,
     changeStatus,
     getOrderForWebmaster,
     getOrder, 

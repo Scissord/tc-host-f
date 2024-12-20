@@ -2,9 +2,6 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthApi } from '@api';
-import { useConnectionStore } from '@store';
-
-const connection = useConnectionStore();
 
 const router = useRouter();
 
@@ -14,9 +11,8 @@ const login = ref('');
 const password = ref('');
 
 const handleSignIn = async () => {
-  await signin(login.value, password.value);
-  // connection.connect();
-  router.push('/');
+  const status = await signin(login.value, password.value);
+  status === 200 && router.push('/');
 };
 </script>
 
@@ -75,7 +71,9 @@ const handleSignIn = async () => {
     <div class="flex flex-col">
       <p class="text-sm text-center text-gray-600">
         Забыли свой пароль?
-        <a href="#" class="text-blue-600 hover:underline">Восстановить</a>
+        <a href="#" class="text-blue-600 hover:underline">
+          Восстановить
+        </a>
       </p>
     </div>
   </form>

@@ -9,12 +9,12 @@ const useConnectionStore = defineStore("connection", () => {
 
   const bindEvents = () => {
     socket.on("connect", () => {
-      console.log('socket connected', socket.id);
+      // console.log('socket connected', socket.id);
       isConnected.value = true;
     });
 
     socket.on("disconnect", () => {
-      console.log('socket disconnected');
+      // console.log('socket disconnected');
       isConnected.value = false;
     });
   };

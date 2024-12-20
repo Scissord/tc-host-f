@@ -1,4 +1,5 @@
 <script setup>
+import { watch } from 'vue';
 import { DateFormat } from "@utils";
 
 const props = defineProps({
@@ -16,6 +17,10 @@ const props = defineProps({
     type: Function,
     required: true
   },
+  handleEntryOrder: {
+    type: Function,
+    required: true,
+  }
 })
 
 const css = {
@@ -49,7 +54,8 @@ const css = {
           :key="order.id"
           :class="[
             'transition duration-300 ease',
-            order.is_checked ? 'bg-blue-100' : 'bg-white'
+            order.is_checked ? 'bg-blue-100' : 'bg-white',
+            order.is_disabled ? 'pointer-events-none opacity-50' : ''
           ]"
         >
           <td :class='css.td'>
@@ -57,7 +63,14 @@ const css = {
               v-model="order.is_checked"
             />
           </td>
-          <td :class='css.td'>{{ order.id ?? "-" }}</td>
+          <td :class='css.td'>
+            <p 
+              class="text-blue-900 font-semibold cursor-pointer hover:underline"
+              @click="() => handleEntryOrder(order.id)"
+            >
+              {{ order.id ?? "-" }}
+            </p>
+          </td>
           <td :class='css.td'>{{ order.fio ?? "-" }}</td>
           <td
             :class='css.td'

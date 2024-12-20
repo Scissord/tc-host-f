@@ -12,7 +12,6 @@ const useAuthApi = () => {
       const response = await axios({
         method: "POST",
         url: `${baseUrl}/auth/login`,
-        // headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
         withCredentials: true,
         data: {
           login,
@@ -24,9 +23,10 @@ const useAuthApi = () => {
       user.setAccessToken(response.data.accessToken);
       notification.show("Успешно!", "success");
 
-      return response.data;
+      return response.status;
     } catch (err) {
-      handleError(err.response?.data?.error);
+      handleError(err.response.data.message);
+      return err.status;
     }
   };
 

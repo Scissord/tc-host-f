@@ -22,8 +22,8 @@ const hideUserMenu = () => {
 };
 
 const handleLogout = async () => {
-  await logout();
   connection.disconnect();
+  await logout();
 };
 
 const css = {
@@ -97,33 +97,49 @@ const css = {
         </router-link>
         <router-link
           to="/orders"
+          v-if="user.data.abilities.includes('get_orders')"
           :class="css.link"
         >
-          Управление заказами
+          Заказы
         </router-link>
         <router-link
+          to="/departments"
+          :class="css.link"
+        >
+          Отделы
+        </router-link>
+        <!-- <router-link
           :to='`/webmaster/${user.data.role_id}`'
+          v-if="+user.data.role.id === 4"
           :class="css.link"
         >
           Вебмастер
-        </router-link>
-        <router-link
+        </router-link> -->
+        <!-- <router-link
           to="/script/1284255/202690"
           :class="css.link"
         >
           Скрипт
-        </router-link>
-        <router-link
+        </router-link> -->
+        <!-- <router-link
           to="/edit_script"
           :class="css.link"
         >
           Редактор скрипта
-        </router-link>
+        </router-link> -->
         <router-link
           to="/admin"
+          v-if="user.data.abilities.includes('superadmin_page')"
           :class="css.link"
         >
           Админ
+        </router-link>
+        <router-link
+          to="/products"
+          v-if="user.data.abilities.includes('get_products')"
+          :class="css.link"
+        >
+          Товары
         </router-link>
         <Icon
           icon="fa-solid fa-language"
@@ -135,11 +151,6 @@ const css = {
           @click="theme.toggleTheme"
         />
         <div v-if="user.isAuthenticated" :class="css.userMenuWrapper">
-          <!-- <img
-            :src="user.data.avatar"
-            alt="User Picture"
-            :class="css.avatar"
-          /> -->
           <Icon
             icon="fa-solid fa-circle-user"
             :class="css.icon"
