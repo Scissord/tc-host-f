@@ -86,6 +86,7 @@ const css = {
   <header v-if='user.isAuthenticated' :class="css.header">
     <div :class="css.container">
       <nav :class="css.nav">
+        <!-- Главная -->
         <router-link
           to="/"
           :class="css.link"
@@ -95,25 +96,63 @@ const css = {
             :class="css.logo"
           />
         </router-link>
-        <router-link
+        <!-- Заказы -->
+        <!-- <router-link
           to="/orders"
-          v-if="user.data.abilities.includes('get_orders')"
+          v-if="[1, 2, 3, 5].some(role => user.data.roles.includes(role))"
           :class="css.link"
         >
           Заказы
-        </router-link>
-        <router-link
+        </router-link> -->
+        <!-- Отделы -->
+        <!-- <router-link
           to="/departments"
+          v-if="[1, 2, 3].some(role => user.data.roles.includes(role))"
           :class="css.link"
         >
           Отделы
-        </router-link>
+        </router-link> -->
+        <!-- Отдел -->
+        <!-- Команды -->
+        <!-- <router-link
+          to="/teams"
+          v-if="[1, 2, 3].some(role => user.data.roles.includes(role))"
+          :class="css.link"
+        >
+          Отделы
+        </router-link> -->
+        <!-- Команда -->
+        <!-- Товарка -->
+        <!-- <router-link
+          to="/products"
+          v-if="user.data.roles.includes(1)"
+          :class="css.link"
+        >
+          Товары
+        </router-link> -->
+        <!-- Города -->
+        <!-- <router-link
+          to="/products"
+          v-if="user.data.roles.includes(1)"
+          :class="css.link"
+        >
+          Города
+        </router-link> -->
+        <!-- Вебмастер -->
         <!-- <router-link
           :to='`/webmaster/${user.data.role_id}`'
-          v-if="+user.data.role.id === 4"
+          v-if="user.data.roles.includes(4)"
           :class="css.link"
         >
           Вебмастер
+        </router-link> -->
+        <!-- Админка -->
+        <!-- <router-link
+          to="/admin"
+          v-if="user.data.roles.includes(1)"
+          :class="css.link"
+        >
+          Админ
         </router-link> -->
         <!-- <router-link
           to="/script/1284255/202690"
@@ -127,20 +166,6 @@ const css = {
         >
           Редактор скрипта
         </router-link> -->
-        <router-link
-          to="/admin"
-          v-if="user.data.abilities.includes('superadmin_page')"
-          :class="css.link"
-        >
-          Админ
-        </router-link>
-        <router-link
-          to="/products"
-          v-if="user.data.abilities.includes('get_products')"
-          :class="css.link"
-        >
-          Товары
-        </router-link>
         <Icon
           icon="fa-solid fa-language"
           :class="css.icon + ' ml-auto'"

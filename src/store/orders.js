@@ -74,15 +74,29 @@ const useOrdersStore = defineStore('orders', () => {
 
   const handleToggleOrders = (val) => {
     state.orders.forEach((order) => {
-      order.is_checked = val;
+      if(!order.is_disabled) {
+        order.is_checked = val;
+      };
     });
   };
 
-  const handleBlockOrder = (order_id) => {
+  const handleBlockOrder = (order_id, name) => {
     const order = state.orders.find((order) => order.id === order_id);
     
     if (order) {
       order.is_disabled = true;
+      order.reserved_by = name;
+    };
+    
+    state.orders = [...state.orders];
+  };
+
+  const handleOpenOrder = (order_id, name) => {
+    const order = state.orders.find((order) => order.id === order_id);
+    
+    if (order) {
+      order.is_disabled = false;
+      order.reserved_by = name;
     };
     
     state.orders = [...state.orders];
@@ -94,7 +108,11 @@ const useOrdersStore = defineStore('orders', () => {
     });
 
     socket.on("blockOrder", (data) => {
-      handleBlockOrder(data.order_id);
+      handleBlockOrder(data.order_id, data.name);
+    });
+
+    socket.on("openOrder", (data) => {
+      handleOpenOrder(data.order_id, null);
     });
   };
 
@@ -130,6 +148,7 @@ const useOrdersStore = defineStore('orders', () => {
       ...order,
       is_checked: false,
       is_disabled: false,
+      reserved_by: null
     })));
     state.pages.splice(0, state.pages.length, ...ordersData.pages);
     state.lastPage = ordersData.lastPage;

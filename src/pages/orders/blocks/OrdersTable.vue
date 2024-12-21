@@ -60,8 +60,10 @@ const css = {
         >
           <td :class='css.td'>
             <Checkbox 
+              v-if="!order.is_disabled"
               v-model="order.is_checked"
             />
+            <p v-else>{{ order?.reserved_by ?? '' }}</p>
           </td>
           <td :class='css.td'>
             <p 

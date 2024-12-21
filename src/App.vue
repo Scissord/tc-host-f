@@ -19,24 +19,24 @@ connection.bindEvents();
 orders.bindEvents();
 order.bindEvents();
 
-watch(() => user.isAuthenticated, (isAuthenticated) => {
-  if(!isAuthenticated) {
-    router.push('/auth');
-  } else {
-    connection.connect();
-  };
-});
+// watch(() => user.isAuthenticated, (isAuthenticated) => {
+//   if(!isAuthenticated) {
+//     router.push('/auth');
+//   } else {
+//     connection.connect();
+//   };
+// });
 
-onMounted(() => {
-  if(route.path !== 'auth' && !connection.isConnected) {
-    if(!user.isAuthenticated) {
-      connection.disconnect();
-      router.push('/auth');
-      return;
-    }
-    connection.connect();
-  };
-});
+// onMounted(() => {
+//   if(route.path !== 'auth' && !connection.isConnected) {
+//     if(!user.isAuthenticated) {
+//       connection.disconnect();
+//       router.push('/auth');
+//       return;
+//     }
+//     connection.connect();
+//   };
+// });
 </script>
 
 <template>

@@ -1,17 +1,28 @@
 <script setup>
+import { onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
-import { useOrderStore } from '@store';
+import { useOrderStore, useUserStore } from '@store';
 import { DateFormat } from "@utils";
-import { onMounted } from 'vue';
 import { socket } from "@/plugins/socket";
 
 const route = useRoute();
 const order_id = route.params.order_id;
+const user = useUserStore();
 const order = useOrderStore();
 
 onMounted(async () => {
-  socket.emit("sendEntryOrder", order_id);
+  socket.emit("sendEntryOrder", {
+    order_id,
+    name: user.data.name
+  });
   await order.handleGetData(order_id);
+});
+
+onBeforeUnmount(() => {
+  socket.emit("sendExitOrder", {
+    order_id,
+    name: user.data.name
+  });
 });
 
 const css = {

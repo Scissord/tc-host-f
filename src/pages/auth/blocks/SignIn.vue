@@ -3,6 +3,10 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthApi } from '@api';
 
+const props = defineProps({
+  entity: String
+});
+
 const router = useRouter();
 
 const { signin } = useAuthApi();
@@ -11,13 +15,18 @@ const login = ref('');
 const password = ref('');
 
 const handleSignIn = async () => {
-  const status = await signin(login.value, password.value);
+  const status = await signin(login.value, password.value, props.entity);
   status === 200 && router.push('/');
 };
 </script>
 
 <template>
-  <form @submit.prevent="handleLogin" class="w-1/2 flex flex-col justify-between p-12">
+  <form @submit.prevent="handleLogin" class="w-1/2 flex flex-col justify-between p-12 relative">
+    <Icon
+      :icon="['fas', 'circle-arrow-left']"
+      class="absolute top-5 left-5 text-2xl cursor-pointer hover:opacity-50 transition duration-300 ease-in-out"
+      @click="router.push('/auth')"
+    />
     <div class="flex flex-col gap-6">
       <div class="flex items-center justify-center">
         <img

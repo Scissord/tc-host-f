@@ -7,11 +7,11 @@ const useAuthApi = () => {
   const notification = useNotificationStore();
 
   // SignIn / Войти
-  const signin = async (login, password) => {
+  const signin = async (login, password, entity) => {
     try {
       const response = await axios({
         method: "POST",
-        url: `${baseUrl}/auth/login`,
+        url: `${baseUrl}/auth/${entity}`,
         withCredentials: true,
         data: {
           login,
