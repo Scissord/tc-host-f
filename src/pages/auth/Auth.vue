@@ -12,9 +12,9 @@ const handlePress = (url) => {
   <AuthForm>
     <div class="w-1/2 flex flex-col items-center justify-center gap-6 border-r border-slate-200 px-24">
       <Button
-        text="Админ"
+        text="Пользователь"
         class="rounded-lg w-full bg-blue-500 focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 hover:bg-blue-700"        
-        @click="() => handlePress('admin')"
+        @click="() => handlePress('user')"
       />
       <Button
         text="Вебмастер"

@@ -11,11 +11,12 @@ const useAuthApi = () => {
     try {
       const response = await axios({
         method: "POST",
-        url: `${baseUrl}/auth/${entity}`,
+        url: `${baseUrl}/auth/login`,
         withCredentials: true,
         data: {
           login,
-          password
+          password,
+          entity
         },
       });
 

@@ -5,6 +5,6 @@ import SignIn from '../blocks/SignIn.vue';
 
 <template>
   <AuthForm>
-    <SignIn entity="admin"/>
+    <SignIn entity="user"/>
   </AuthForm>
 </template>
