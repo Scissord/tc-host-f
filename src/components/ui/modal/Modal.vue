@@ -13,10 +13,6 @@ const modal = useModalStore();
     <div class="bg-white max-w-lg w-full mx-4 p-6 rounded-lg shadow-lg relative">
       <h2 class="text-2xl font-semibold mb-4">{{ title }}</h2>
       <component :is="children" />
-      <Button
-        text="Close"
-        @click="modal.hide"
-      />
     </div>
   </div>
 </template>

@@ -4,6 +4,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { socket } from '@/plugins/socket';
 import { useUserStore, useConnectionStore } from '@store';
 import { useOrdersStore, useOrderStore } from '@store';
+import { setup } from '@api';
+
+setup();
 
 const route = useRoute();
 const router = useRouter();
@@ -19,24 +22,29 @@ connection.bindEvents();
 orders.bindEvents();
 order.bindEvents();
 
-// watch(() => user.isAuthenticated, (isAuthenticated) => {
-//   if(!isAuthenticated) {
-//     router.push('/auth');
-//   } else {
-//     connection.connect();
-//   };
-// });
+watch(() => user.isAuthenticated, (isAuthenticated) => {
+  if(!isAuthenticated) {
+    router.push('/auth');
+  } else {
+    connection.connect();
+  };
+});
 
-// onMounted(() => {
-//   if(route.path !== 'auth' && !connection.isConnected) {
-//     if(!user.isAuthenticated) {
-//       connection.disconnect();
-//       router.push('/auth');
-//       return;
-//     }
-//     connection.connect();
-//   };
-// });
+onMounted(() => {
+  if((
+    route.path !== 'auth' || 
+    route.path !== '/auth/user' ||
+    route.path !== '/auth/webmaster' ||
+    route.path !== '/auth/operator'
+  ) && !connection.isConnected) {
+    if(!user.isAuthenticated) {
+      connection.disconnect();
+      router.push('/auth');
+      return;
+    }
+    connection.connect();
+  };
+});
 </script>
 
 <template>

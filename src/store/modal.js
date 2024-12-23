@@ -10,13 +10,13 @@ const useModalStore = defineStore('modal', () => {
     title.value = payload.title;
     children.value = payload.children;
     isVisible.value = true;
-  }
+  };
 
   function hide() {
     title.value = '';
     children.value = null;
     isVisible.value = false;
-  }
+  };
 
   return {
     isVisible,

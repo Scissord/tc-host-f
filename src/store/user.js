@@ -17,7 +17,7 @@ const useUserStore = defineStore('user', () => {
     localStorage.setItem('access_token', tokenValue);
   };
 
-  function clearUser() {
+  function logout() {
     data.value = null;
     accessToken.value = null;
     localStorage.removeItem('user');
@@ -31,7 +31,7 @@ const useUserStore = defineStore('user', () => {
     accessToken,
     setUser,
     setAccessToken,
-    clearUser,
+    logout,
     isAuthenticated
   };
 });

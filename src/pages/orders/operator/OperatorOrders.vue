@@ -1,9 +1,9 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useOrdersStore } from '@store';
-import OrdersFilters from './blocks/OrdersFilters.vue';
-import OrdersTable from './blocks/OrdersTable.vue';
-import OrdersUnderTable from './blocks/OrdersUnderTable.vue';
+import OrdersFilters from '../blocks/OrdersFilters.vue';
+import OrdersTable from '../blocks/OrdersTable.vue';
+import OrdersUnderTable from '../blocks/OrdersUnderTable.vue';
 
 const orders = useOrdersStore();
 

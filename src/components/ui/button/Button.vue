@@ -41,12 +41,12 @@ defineProps({
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px;
+  padding: 0.5rem 1rem;
   color: #fff;
   background-color: var(--primary-color);
-  border-radius: 9999px;
+  border-radius: 0.5rem;
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
-  font-size: 16px;
+  font-size: 12px;
   cursor: pointer;
   gap: 8px; /* Расстояние между иконкой и текстом */
 }

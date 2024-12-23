@@ -3,7 +3,7 @@ import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { 
   useOrderApi, 
-  useOrderSubStatusApi, 
+  useSubStatusApi, 
   useOrderColumnApi 
 } from '@api';
 import { socket } from "@/plugins/socket";
@@ -12,7 +12,7 @@ const useOrdersStore = defineStore('orders', () => {
   const router = useRouter();
 
   const { getOrders, changeStatus } = useOrderApi();
-  const { getOrderSubStatuses } = useOrderSubStatusApi();
+  const { getSubStatuses } = useSubStatusApi();
   const { getOrderColumns } = useOrderColumnApi();
 
   const state = reactive({
@@ -121,7 +121,7 @@ const useOrdersStore = defineStore('orders', () => {
   };
 
   const handleGetSubStatuses = async () => {
-    const subStatusData = await getOrderSubStatuses();
+    const subStatusData = await getSubStatuses();
     state.subStatuses.splice(0, state.subStatuses.length, ...subStatusData);
   };
   

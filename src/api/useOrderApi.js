@@ -1,11 +1,6 @@
-import axios from 'axios';
-import { baseUrl } from '@utils';
-import { useNotificationStore, useUserStore } from '@store';
+import { api } from '@api';
 
 const useOrderApi = () => {
-  const userStore = useUserStore();
-  const notification = useNotificationStore();
-
   const getOrders = async (limit = 20, page = 1, subStatus = 1, filters = []) => {
     let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&sub_status=${subStatus}`;
 
@@ -20,64 +15,40 @@ const useOrderApi = () => {
       }
     };
 
-    try {
-      const response = await axios({
-        method: 'GET',
-        url: `${baseUrl}/orders${queries}`,
-        // headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
-        // withCredentials: true,
-      })
+    const response = await api({
+      method: 'GET',
+      url: `/orders${queries}`,
+    });
 
-      return response.data;
-    } catch (err) {
-      handleError(err.response.data.detail);
-    }
+    return response.data;
   };
 
   const getOrder = async (order_id) => {
-    try {
-      const response = await axios({
-        method: 'GET',
-        url: `${baseUrl}/orders/${order_id}`,
-        // headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
-        // withCredentials: true,
-      })
+    const response = await api({
+      method: 'GET',
+      url: `/orders/${order_id}`,
+    });
 
-      return response.data;
-    } catch (err) {
-      handleError(err.message);
-    }
+    return response.data;
   };
 
   const changeStatus = async (data) => {
-    try {
-      const response = await axios({
-        method: 'PATCH',
-        url: `${baseUrl}/orders/update_status`,
-        // headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
-        // withCredentials: true,
-        data
-      })
+    const response = await api({
+      method: 'PATCH',
+      url: `/orders/update_status`,
+      data
+    });
 
-      return response.data;
-    } catch (err) {
-      handleError(err.response.data.detail);
-    }
+    return response.data;
   };
 
   const getOrderForWebmaster = async (queries) => {
-    try {
-      const response = await axios({
-        method: 'GET',
-        url: `${baseUrl}/webmaster/get_orders${queries}`,
-        headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
-        withCredentials: true,
-      })
+    const response = await api({
+      method: 'GET',
+      url: `$/webmaster/get_orders${queries}`,
+    });
 
-      return response.data;
-    } catch (err) {
-      handleError(err.response.data.detail);
-    }
+    return response.data;
   };
 
   const saveOrder = async (order_id, data) => {
@@ -89,24 +60,13 @@ const useOrderApi = () => {
       data.additional1 = `${year}-${month}-${day}`;
     }
 
-    try {
-      const response = await axios({
-        method: 'PATCH',
-        url: `${baseUrl}/update_order/${order_id}`,
-        headers: { 'Authorization': `Bearer ${userStore.accessToken}` },
-        withCredentials: true,
-        data
-      })
-      notification.show('Заказ успешно обновлён!', 'success');
+    const response = await api({
+      method: 'PATCH',
+      url: `${baseUrl}/update_order/${order_id}`,
+      data
+    });
 
-      return response.data;
-    } catch (err) {
-      handleError(err.response.data.detail);
-    }
-  };
-
-  const handleError = (error) => {
-    notification.show(error || 'Что-то пошло не так!', 'error');
+    return response.data;
   };
 
   return {

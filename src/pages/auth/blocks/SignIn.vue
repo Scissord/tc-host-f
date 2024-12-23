@@ -16,7 +16,19 @@ const password = ref('');
 
 const handleSignIn = async () => {
   const status = await signin(login.value, password.value, props.entity);
-  status === 200 && router.push('/');
+  if(status === 200) {
+    switch(props.entity) {
+      case 'user':
+        router.push('/user/orders');
+        break;
+      case 'webmaster':
+        router.push('/webmaster/orders');
+        break;
+      case 'operator':
+        router.push('/operator/orders');
+        break; 
+    }
+  }
 };
 </script>
 
