@@ -10,10 +10,30 @@ const useDepartmentApi = () => {
     return response.data;
   };
 
-  const getHeadAbility = async (department_id) => {
+  const createDepartment = async (data) => {
     const response = await api({
-      method: 'GET',
-      url: `/departments/head_ability/${department_id}`,
+      method: 'POST',
+      url: '/departments',
+      data
+    });
+
+    return response.data;
+  };
+  
+  const updateDepartment = async (id, data) => {
+    const response = await api({
+      method: 'PATCH',
+      url: `/departments/${id}`,
+      data
+    });
+
+    return response.data;
+  };
+
+  const deleteDepartment = async (id) => {
+    const response = await api({
+      method: 'DELETE',
+      url: `/departments/${id}`,
     });
 
     return response.data;
@@ -21,7 +41,9 @@ const useDepartmentApi = () => {
 
   return {
     getDepartments,
-    getHeadAbility
+    createDepartment,
+    updateDepartment,
+    deleteDepartment
   };
 };
 

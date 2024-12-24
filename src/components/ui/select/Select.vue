@@ -1,9 +1,9 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps({
   modelValue: {
-    type: [Object, Number, String],
+    type: [Object, Number, String, Array, null],
     required: true,
   },
   options: {
@@ -13,23 +13,41 @@ const props = defineProps({
   value: {
     type: String,
     required: false,
-    default: 'value'
+    default: 'value',
   },
   label: {
     type: String,
     required: false,
-    default: 'label'
+    default: 'label',
+  },
+  multiple: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 
 const emits = defineEmits(['update:modelValue']);
 
-// const loading = ref(false);
 const isOpen = ref(false);
 
 const selectOption = (option) => {
-  emits('update:modelValue', props.value ? option[props.value] : option.value, option);
-  isOpen.value = !isOpen.value;
+  if (props.multiple) {
+    const currentValue = Array.isArray(props.modelValue) ? props.modelValue : [];
+    const optionValue = option[props.value || 'value'];
+
+    if (currentValue.includes(+optionValue)) {
+      // Если опция уже выбрана, убираем её из массива
+      emits('update:modelValue', currentValue.filter((item) => +item !== +optionValue));
+    } else {
+      // Если опция не выбрана, добавляем её в массив
+      emits('update:modelValue', [...currentValue, +optionValue]);
+    }
+  } else {
+    // Для одиночного выбора
+    emits('update:modelValue', option[props.value || 'value']);
+    isOpen.value = false; // Закрыть меню
+  }
 };
 
 const toggleMenu = () => {
@@ -41,26 +59,33 @@ const isObject = computed(() => {
 });
 
 const displayedName = computed(() => {
+  if (props.multiple) {
+    // Для мульти-выбора отображаем список выбранных опций
+    const selectedOptions = props.options.filter((option) =>
+      Array.isArray(props.modelValue) && props.modelValue.includes(+option[props.value || 'value'])
+    );
+    return selectedOptions.length
+      ? selectedOptions.map((option) => option[props.label || 'label']).join(', ')
+      : 'Выберите...';
+  }
+
   let localValue = isObject.value
     ? +props.modelValue[props.value || 'value']
-    : +props.modelValue
+    : +props.modelValue;
 
   const option = props.options.find((option) => +option[props.value || 'value'] === localValue);
 
-  return option ? (props.label ? option[props.label] : option.label) : 'SELECT...';
+  return option ? (props.label ? option[props.label] : option.label) : 'Выберите...';
 });
 </script>
 
 <template>
   <div class="select-container">
-    <div
-      class="selected"
-      @click="toggleMenu"
-    >
+    <div class="selected" @click="toggleMenu">
       <p
         :class="[
           'selected-text',
-          displayedName === 'SELECT...' ? 'text-gray-600' : 'text-black'
+          displayedName === 'Выберите...' ? 'text-gray-600' : 'text-black'
         ]"
       >
         {{ displayedName }}
@@ -81,6 +106,7 @@ const displayedName = computed(() => {
         <p class="menu-item-text">
           {{ option[label || 'label'] }}
         </p>
+        <span v-if="props.multiple && modelValue.includes(+option[value || 'value'])" class="selected-mark">✔</span>
       </div>
     </div>
   </div>
@@ -89,6 +115,7 @@ const displayedName = computed(() => {
 <style scoped>
 .select-container {
   min-width: 100px;
+  max-width: 250px;
   position: relative;
   background: white;
 }
@@ -99,9 +126,9 @@ const displayedName = computed(() => {
   justify-content: space-between;
 
   width: 100%;
-  height: 30px;
+  min-height: 30px;
   padding: 8px;
-  transition: .2s linear;
+  transition: 0.2s linear;
   border: 1px solid #cbd5e1;
   cursor: pointer;
   user-select: none;
@@ -130,6 +157,9 @@ const displayedName = computed(() => {
   background-color: white;
   transition: background-color 0.3s ease;
   padding: 0.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .menu-item:hover {
@@ -139,10 +169,16 @@ const displayedName = computed(() => {
 .menu-item-text {
   font-size: 12px;
   line-height: 1.25rem;
+  user-select: none;
 }
 
 .icon {
   transition: transform 0.3s ease;
   transform-origin: center;
+}
+
+.selected-mark {
+  font-size: 12px;
+  color: green;
 }
 </style>

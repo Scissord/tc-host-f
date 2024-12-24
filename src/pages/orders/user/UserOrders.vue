@@ -1,11 +1,11 @@
 <script setup>
 import { onMounted } from 'vue';
-import { useOrdersStore } from '@store';
-import OrdersFilters from '../blocks/OrdersFilters.vue';
-import OrdersTable from '../blocks/OrdersTable.vue';
-import OrdersUnderTable from '../blocks/OrdersUnderTable.vue';
+import { useUserOrdersStore } from '@store';
+import OrdersFilters from './blocks/OrdersFilters.vue';
+import OrdersTable from './blocks/OrdersTable.vue';
+import OrdersUnderTable from './blocks/OrdersUnderTable.vue';
 
-const orders = useOrdersStore();
+const orders = useUserOrdersStore();
 
 onMounted(async () => {
   await orders.handleGetData();
@@ -13,11 +13,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-screen p-6 flex flex-col gap-6 text-xs">
+  <div v-if="orders.state.isDataLoaded" class="min-h-screen p-6 flex flex-col gap-6 text-xs">
     <h1 class="font-bold text-2xl">
       Управление заказами
     </h1>
-    <div v-if="orders.state.isDataLoaded" class="min-h-screen flex flex-col gap-6">
+    <div class="min-h-screen flex flex-col gap-6">
       <OrdersFilters
         :subStatus="orders.state.subStatus"
         :subStatuses="orders.state.subStatuses"
@@ -41,9 +41,8 @@ onMounted(async () => {
         :handleChangeOrdersSubStatus="orders.handleChangeOrdersSubStatus"
       />
     </div>
-    <div v-else class="min-h-screen flex items-center justify-center">
-      <Loader/>
-    </div>
   </div>
-
+  <div v-else class="min-h-screen flex items-center justify-center">
+    <Loader/>
+  </div>
 </template>

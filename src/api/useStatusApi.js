@@ -1,50 +1,50 @@
 import { api } from '@api';
 
-const useProductApi = () => {
-  const getProducts = async () => {
+const useStatus = () => {
+  const getStatuses = async () => {
     const response = await api({
       method: 'GET',
-      url: `/products`,
-    });
+      url: '/statuses',
+    })
 
     return response.data;
   };
 
-  const createProduct = async (data) => {
+  const createStatus = async (data) => {
     const response = await api({
       method: 'POST',
-      url: '/products',
+      url: '/statuses',
       data
     });
 
     return response.data;
   };
   
-  const updateProduct = async (id, data) => {
+  const updateStatus = async (id, data) => {
     const response = await api({
       method: 'PATCH',
-      url: `/products/${id}`,
+      url: `/statuses/${id}`,
       data
     });
 
     return response.data;
   };
 
-  const deleteProduct = async (id) => {
+  const deleteStatus = async (id) => {
     const response = await api({
       method: 'DELETE',
-      url: `/products/${id}`,
+      url: `/statuses/${id}`,
     });
 
     return response.data;
   };
 
   return {
-    getProducts,
-    createProduct,
-    updateProduct,
-    deleteProduct    
+    getStatuses,
+    createStatus,
+    updateStatus,
+    deleteStatus,
   };
 };
 
-export default useProductApi;
+export default useStatus;

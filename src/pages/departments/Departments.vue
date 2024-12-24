@@ -1,22 +1,16 @@
 <script setup>
-import { reactive, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { useDepartmentApi } from '@api';
+import { onMounted } from 'vue';
+import { useDepartments } from '@hooks';
+import DepartmentsTable from './blocks/DepartmentsTable.vue';
 
-const router = useRouter();
-
-const { getDepartments } = useDepartmentApi();
-
-const state = reactive({
-  isDataLoaded: false,
-  departments: [],
-});
-
-const handleGetData = async () => {
-  state.isDataLoaded = false;
-  state.departments = await getDepartments();
-  state.isDataLoaded = true;
-};
+const { 
+  state,
+  handleAddDepartment,
+  handleEditDepartment,
+  handleSaveDepartment,
+  handleDeleteDepartment,
+  handleGetData
+} = useDepartments();
 
 onMounted(async () => {
   await handleGetData();
@@ -24,16 +18,27 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-screen p-6 grid grid-cols-3" v-if="state.isDataLoaded">
-    <div class="flex flex-col gap-3 text-black">
-      <p 
-        v-for="department in state.departments" 
-        :key="department.id"
-        class="cursor-pointer hover:bg-gray-300"
-        @click="router.push(`/departments/${department.id}`)"
-      >
-        {{ department.title }}
-      </p>
+  <div v-if="state.isDataLoaded" class="min-h-screen p-6 flex flex-col gap-6 text-xs">
+    <div class="flex items-center justify-between">
+      <h1 class="font-bold text-2xl">
+        Отделы
+      </h1>
+      <Button 
+        text="Добавить"
+        @click="handleAddDepartment"
+      />
     </div>
+    <div class="min-h-screen flex flex-col gap-6">
+      <DepartmentsTable
+        :departments="state.departments"
+        :subStatuses="state.subStatuses"
+        :handleEditDepartment="handleEditDepartment"
+        :handleSaveDepartment="handleSaveDepartment"
+        :handleDeleteDepartment="handleDeleteDepartment"
+      />
+    </div>
+  </div>
+  <div v-else class="min-h-screen flex items-center justify-center">
+    <Loader/>
   </div>
 </template>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 import { baseUrl } from '@utils';
 import { useUserStore, useNotificationStore } from '@store';
 import { useAuthApi } from '@api';
@@ -9,6 +10,8 @@ export const api = axios.create({
 });
 
 export const setup = () => {
+  const router = useRouter();
+
   const user = useUserStore();
   const notification = useNotificationStore(); 
   const { refresh } = useAuthApi();
@@ -49,9 +52,13 @@ export const setup = () => {
           if (refreshError.response.status === 401) {
             user.logout();
             notification.show('Сессия истекла. Пожалуйста, войдите заново.', 'error');
-          }
+          };
           return Promise.reject(refreshError);
-        }
+        };
+      };
+
+      if (error.response.status === 400) {
+        router.push('/');
       }
 
       // Прочие ошибки

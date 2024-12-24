@@ -1,16 +1,16 @@
 <script setup>
 import { onMounted } from 'vue';
-import { useProducts } from '@hooks';
-import ProductsTable from './blocks/ProductsTable.vue';
+import { useCities } from '@hooks';
+import CitiesTable from './blocks/CitiesTable.vue';
 
 const { 
   state,
-  handleAddProduct,
-  handleEditProduct,
-  handleSaveProduct,
-  handleDeleteProduct,
-  handleGetData 
-} = useProducts();
+  handleAddCity,
+  handleEditCity,
+  handleSaveCity,
+  handleDeleteCity,
+  handleGetData
+} = useCities();
 
 onMounted(async () => {
   await handleGetData();
@@ -21,19 +21,19 @@ onMounted(async () => {
   <div v-if="state.isDataLoaded" class="min-h-screen p-6 flex flex-col gap-6 text-xs">
     <div class="flex items-center justify-between">
       <h1 class="font-bold text-2xl">
-        Продукты
+        Города
       </h1>
       <Button 
         text="Добавить"
-        @click="handleAddProduct"
+        @click="handleAddCity"
       />
     </div>
     <div class="min-h-screen flex flex-col gap-6">
-      <ProductsTable
-        :products="state.products"
-        :handleEditProduct="handleEditProduct"
-        :handleSaveProduct="handleSaveProduct"
-        :handleDeleteProduct="handleDeleteProduct"
+      <CitiesTable
+        :cities="state.cities"
+        :handleEditCity="handleEditCity"
+        :handleSaveCity="handleSaveCity"
+        :handleDeleteCity="handleDeleteCity"
       />
     </div>
   </div>

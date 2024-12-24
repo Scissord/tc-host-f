@@ -12,14 +12,6 @@ const props = defineProps({
     required: true,
     default: []
   },
-  handleToggleOrders: {
-    type: Function,
-    required: true
-  },
-  handleEntryOrder: {
-    type: Function,
-    required: true,
-  }
 })
 
 const css = {
@@ -38,12 +30,7 @@ const css = {
             :key="column.id" 
             :class='css.th'
           >
-            <Checkbox 
-              v-if="column.id === 0" 
-              v-model="column.is_checked"
-              @update:modelValue="handleToggleOrders"
-            />          
-            <p v-else>{{ column.label }}</p>
+            <p>{{ column.label }}</p>
           </th>
         </tr>
       </thead>
@@ -51,23 +38,11 @@ const css = {
         <tr
           v-for="order in orders"
           :key="order.id"
-          :class="[
-            'transition duration-300 ease',
-            order.is_checked ? 'bg-blue-100' : 'bg-white',
-            order.is_disabled ? 'pointer-events-none opacity-50' : ''
-          ]"
+          class="transition duration-300 ease bg-white"
         >
-          <td :class='css.td'>
-            <Checkbox 
-              v-if="!order.is_disabled"
-              v-model="order.is_checked"
-            />
-            <p v-else>{{ order?.reserved_by ?? '' }}</p>
-          </td>
           <td :class='css.td'>
             <p 
               class="text-blue-900 font-semibold cursor-pointer hover:underline"
-              @click="() => handleEntryOrder(order.id)"
             >
               {{ order.id ?? "-" }}
             </p>
@@ -97,12 +72,8 @@ const css = {
           <td :class='css.td'>{{ order.postal_code ?? '-' }}</td>
           <td :class='css.td'>{{ order.comment ?? '-' }}</td>
           <td :class='css.td'>{{ order.utm_term ?? '-' }}</td>
-          <td :class='css.td'>
-            <p v-if="order.webmaster">{{ order.webmaster.name ?? '-' }}</p>
-          </td>
-          <td :class='css.td'>
-            <p v-if="order.operator">{{ order.operator.name ?? '-' }}</p>
-          </td>
+          <td :class='css.td'>{{ order.webmaster ?? '-' }}</td>
+          <td :class='css.td'>{{ order.operator ?? '-' }}</td>
           <td :class='css.td'>
             <p v-if="order.status">
               {{ order.status.name ?? '-' }}

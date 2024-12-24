@@ -8,10 +8,10 @@ import {
 } from '@api';
 import { socket } from "@/plugins/socket";
 
-const useOrdersStore = defineStore('orders', () => {
+const useUserOrdersStore = defineStore('user_order', () => {
   const router = useRouter();
 
-  const { getOrders, changeStatus } = useOrderApi();
+  const { getUserOrders, changeStatus } = useOrderApi();
   const { getSubStatuses } = useSubStatusApi();
   const { getOrderColumns } = useOrderColumnApi();
 
@@ -122,7 +122,7 @@ const useOrdersStore = defineStore('orders', () => {
 
   const handleGetSubStatuses = async () => {
     const subStatusData = await getSubStatuses();
-    state.subStatuses.splice(0, state.subStatuses.length, ...subStatusData);
+    state.subStatuses.splice(0, state.subStatuses.length, ...subStatusData.subStatuses);
   };
   
   const handleGetOrderColumns = async () => {
@@ -142,7 +142,7 @@ const useOrdersStore = defineStore('orders', () => {
   };
 
   const handleGetOrders = async (limit, page, subStatus, filters) => {
-    const ordersData = await getOrders(limit, page, subStatus, filters);
+    const ordersData = await getUserOrders(limit, page, subStatus, filters);
 
     state.orders.splice(0, state.orders.length, ...ordersData.orders.map((order) => ({
       ...order,
@@ -179,4 +179,4 @@ const useOrdersStore = defineStore('orders', () => {
   };
 });
 
-export default useOrdersStore;
+export default useUserOrdersStore;

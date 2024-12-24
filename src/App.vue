@@ -3,7 +3,12 @@ import { onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { socket } from '@/plugins/socket';
 import { useUserStore, useConnectionStore } from '@store';
-import { useOrdersStore, useOrderStore } from '@store';
+import { 
+  useUserOrdersStore,
+  useWebmasterOrdersStore,  
+  useOperatorOrdersStore, 
+  useOrderStore 
+} from '@store';
 import { setup } from '@api';
 
 setup();
@@ -14,12 +19,16 @@ const router = useRouter();
 const user = useUserStore();
 const connection = useConnectionStore();
 
-const orders = useOrdersStore();
+const userOrders = useUserOrdersStore();
+const webmasterOrders = useWebmasterOrdersStore();
+const operatorOrders = useOperatorOrdersStore();
 const order = useOrderStore();
 
 socket.off();
 connection.bindEvents();
-orders.bindEvents();
+userOrders.bindEvents();
+webmasterOrders.bindEvents();
+operatorOrders.bindEvents();
 order.bindEvents();
 
 watch(() => user.isAuthenticated, (isAuthenticated) => {

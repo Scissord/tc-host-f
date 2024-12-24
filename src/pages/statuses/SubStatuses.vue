@@ -1,19 +1,19 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { useTeams } from '@hooks';
-import TeamsTable from './blocks/TeamsTable.vue';
+import { useSubStatus } from '@hooks';
+import SubStatusesTable from './blocks/SubStatusesTable.vue';
 
 const route = useRoute();
-const department_id = route.params.department_id;
+const status_id = route.params.status_id;
 const { 
   state,
-  handleAddTeam,
-  handleEditTeam,
-  handleSaveTeam,
-  handleDeleteTeam,
-  handleGetData 
-} = useTeams(department_id);
+  handleAddSubStatus,
+  handleEditSubStatus,
+  handleSaveSubStatus,
+  handleDeleteSubStatus,
+  handleGetData
+} = useSubStatus(status_id);
 
 onMounted(async () => {
   await handleGetData();
@@ -24,20 +24,19 @@ onMounted(async () => {
   <div v-if="state.isDataLoaded" class="min-h-screen p-6 flex flex-col gap-6 text-xs">
     <div class="flex items-center justify-between">
       <h1 class="font-bold text-2xl">
-        Команды отдела {{ department_id }}
+        Подстатусы статуса - {{ status_id }}
       </h1>
       <Button 
         text="Добавить"
-        @click="handleAddTeam"
+        @click="handleAddSubStatus"
       />
     </div>
     <div class="min-h-screen flex flex-col gap-6">
-      <TeamsTable
-        :teams="state.teams"
-        :subStatuses="state.subStatuses"
-        :handleEditTeam="handleEditTeam"
-        :handleSaveTeam="handleSaveTeam"
-        :handleDeleteTeam="handleDeleteTeam"
+      <SubStatusesTable
+        :sub_statuses="state.sub_statuses"
+        :handleEditSubStatus="handleEditSubStatus"
+        :handleSaveSubStatus="handleSaveSubStatus"
+        :handleDeleteSubStatus="handleDeleteSubStatus"
       />
     </div>
   </div>

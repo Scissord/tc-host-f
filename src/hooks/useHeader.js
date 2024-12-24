@@ -7,6 +7,9 @@ const useHeader = () => {
   const state = reactive({
     get_orders: null,
     get_products: null,
+    get_cities: null,
+    get_departments: null,
+    get_statuses: null,
   });
 
   const { logout } = useAuthApi();
@@ -33,6 +36,9 @@ const useHeader = () => {
     const abilities = await getAbilitiesForHeader();
     state.get_orders = abilities.get_orders;
     state.get_products = abilities.get_products;
+    state.get_cities = abilities.get_cities;
+    state.get_departments = abilities.get_departments;
+    state.get_statuses = abilities.get_statuses;
   };
 
   onMounted(async () => {

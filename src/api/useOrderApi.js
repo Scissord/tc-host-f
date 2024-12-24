@@ -1,7 +1,7 @@
 import { api } from '@api';
 
 const useOrderApi = () => {
-  const getOrders = async (limit = 20, page = 1, subStatus = 1, filters = []) => {
+  const getUserOrders = async (limit = 20, page = 1, subStatus = 1, filters = []) => {
     let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&sub_status=${subStatus}`;
 
     if(filters.length > 0) {
@@ -17,7 +17,27 @@ const useOrderApi = () => {
 
     const response = await api({
       method: 'GET',
-      url: `/orders${queries}`,
+      url: `/orders/user${queries}`,
+    });
+
+    return response.data;
+  };
+
+  const getWebmasterOrders = async (limit = 20, page = 1) => {
+    let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}`;
+
+    const response = await api({
+      method: 'GET',
+      url: `/orders/webmaster${queries}`,
+    });
+
+    return response.data;
+  };
+
+  const getOperatorOrders = async (queries) => {
+    const response = await api({
+      method: 'GET',
+      url: `/orders/operator${queries}`,
     });
 
     return response.data;
@@ -42,15 +62,6 @@ const useOrderApi = () => {
     return response.data;
   };
 
-  const getOrderForWebmaster = async (queries) => {
-    const response = await api({
-      method: 'GET',
-      url: `$/webmaster/get_orders${queries}`,
-    });
-
-    return response.data;
-  };
-
   const saveOrder = async (order_id, data) => {
     if(data.additional1) {
       const parsedDate = new Date(data.additional1);
@@ -62,7 +73,7 @@ const useOrderApi = () => {
 
     const response = await api({
       method: 'PATCH',
-      url: `${baseUrl}/update_order/${order_id}`,
+      url: `/orders/update_order/${order_id}`,
       data
     });
 
@@ -70,10 +81,11 @@ const useOrderApi = () => {
   };
 
   return {
-    getOrders, 
     getOrder,
+    getUserOrders, 
+    getWebmasterOrders,
+    getOperatorOrders,
     changeStatus,
-    getOrderForWebmaster,
     getOrder, 
     saveOrder
   };

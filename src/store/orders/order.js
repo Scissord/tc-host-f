@@ -34,6 +34,10 @@ const useOrderStore = defineStore('order', () => {
     socket.on("receiveEntryOrder", (data) => {
       router.push(`/orders/${data.order_id}`);
     });
+
+    socket.on("reservedOrder", () => {
+      router.push('/');
+    });
   };
 
   return {

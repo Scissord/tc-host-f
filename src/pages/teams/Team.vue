@@ -1,19 +1,17 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { useTeams } from '@hooks';
-import TeamsTable from './blocks/TeamsTable.vue';
+import { useTeam } from '@hooks';
+import TeamTable from './blocks/TeamTable.vue';
 
 const route = useRoute();
-const department_id = route.params.department_id;
+const team_id = route.params.team_id;
 const { 
   state,
-  handleAddTeam,
-  handleEditTeam,
-  handleSaveTeam,
-  handleDeleteTeam,
+  handleAddOperator,
+  handleDeleteOperator,
   handleGetData 
-} = useTeams(department_id);
+} = useTeam(team_id);
 
 onMounted(async () => {
   await handleGetData();
@@ -24,20 +22,17 @@ onMounted(async () => {
   <div v-if="state.isDataLoaded" class="min-h-screen p-6 flex flex-col gap-6 text-xs">
     <div class="flex items-center justify-between">
       <h1 class="font-bold text-2xl">
-        Команды отдела {{ department_id }}
+        Операторы команды {{ team_id }}
       </h1>
       <Button 
         text="Добавить"
-        @click="handleAddTeam"
+        @click="handleAddOperator"
       />
     </div>
     <div class="min-h-screen flex flex-col gap-6">
-      <TeamsTable
-        :teams="state.teams"
-        :subStatuses="state.subStatuses"
-        :handleEditTeam="handleEditTeam"
-        :handleSaveTeam="handleSaveTeam"
-        :handleDeleteTeam="handleDeleteTeam"
+      <TeamTable
+        :operators="state.operators"
+        :handleDeleteOperator="handleDeleteOperator"
       />
     </div>
   </div>

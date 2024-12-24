@@ -23,7 +23,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="min-w-[150px] flex items-center justify-between gap-3">
+  <div class="min-w-[150px] max-w-[220px] flex items-center justify-between gap-3">
     <div class="flex items-center justify-between gap-3 w-[50%]">
       <p
         v-for="p in pages"
@@ -44,13 +44,13 @@ defineProps({
     <div class="ml-auto flex items-center gap-3">
       <Button
         :icon="['fas', 'chevron-left']"
-        class="py-2 px-3"
+        class="py-2 px-3 rounded-full"
         iconSize="text-[8px]"
         @click="handleChangePage(1)"
       />
       <Button
         :icon="['fas', 'chevron-right']"
-        class="py-2 px-3"
+        class="py-2 px-3 rounded-full"
         iconSize="text-[8px]"
         @click="handleChangePage(lastPage)"
       />

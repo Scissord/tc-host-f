@@ -1,39 +1,39 @@
 <script setup>
 import { onMounted } from 'vue';
-import { useProducts } from '@hooks';
-import ProductsTable from './blocks/ProductsTable.vue';
+import { useStatus } from '@hooks';
+import StatusesTable from './blocks/StatusesTable.vue';
 
 const { 
   state,
-  handleAddProduct,
-  handleEditProduct,
-  handleSaveProduct,
-  handleDeleteProduct,
+  handleAddStatus,
+  handleEditStatus,
+  handleSaveStatus,
+  handleDeleteStatus,
   handleGetData 
-} = useProducts();
+} = useStatus();
 
 onMounted(async () => {
   await handleGetData();
-})
+});
 </script>
 
 <template>
   <div v-if="state.isDataLoaded" class="min-h-screen p-6 flex flex-col gap-6 text-xs">
     <div class="flex items-center justify-between">
       <h1 class="font-bold text-2xl">
-        Продукты
+        Статусы
       </h1>
       <Button 
         text="Добавить"
-        @click="handleAddProduct"
+        @click="handleAddStatus"
       />
     </div>
     <div class="min-h-screen flex flex-col gap-6">
-      <ProductsTable
-        :products="state.products"
-        :handleEditProduct="handleEditProduct"
-        :handleSaveProduct="handleSaveProduct"
-        :handleDeleteProduct="handleDeleteProduct"
+      <StatusesTable
+        :statuses="state.statuses"
+        :handleEditStatus="handleEditStatus"
+        :handleSaveStatus="handleSaveStatus"
+        :handleDeleteStatus="handleDeleteStatus"
       />
     </div>
   </div>

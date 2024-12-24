@@ -61,6 +61,30 @@ const {
         >
           Офферы
         </router-link>
+        <!-- Офферы  -->
+        <router-link
+          to="/cities"
+          v-if="user.data.abilities.includes(state.get_cities)"
+          :class="css.link"
+        >
+          Города
+        </router-link>
+        <!-- Отделы  -->
+        <router-link
+          to="/departments"
+          v-if="user.data.abilities.includes(state.get_departments)"
+          :class="css.link"
+        >
+          Отделы
+        </router-link>
+        <!-- Отделы  -->
+        <router-link
+          to="/statuses"
+          v-if="user.data.abilities.includes(state.get_statuses)"
+          :class="css.link"
+        >
+          Статусы
+        </router-link>
         <Icon
           icon="fa-solid fa-language"
           :class="css.icon + ' ml-auto'"

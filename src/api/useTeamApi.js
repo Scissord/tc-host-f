@@ -1,60 +1,60 @@
 import { api } from '@api';
 
-const useSubStatus = () => {
-  const getSubStatuses = async () => {
+const useTeamApi = () => {
+  const findTeams = async (department_id) => {
     const response = await api({
       method: 'GET',
-      url: '/sub_statuses',
+      url: `/teams/${department_id}`,
     });
 
     return response.data;
   };
 
-  const findSubStatuses = async (status_id) => {
+  const getTeam = async (team_id) => {
     const response = await api({
       method: 'GET',
-      url: `/sub_statuses/${status_id}`,
+      url: `/teams/data/${team_id}`,
     });
 
     return response.data;
   };
 
-  const createSubStatus = async (data) => {
+  const createTeam = async (data) => {
     const response = await api({
       method: 'POST',
-      url: '/sub_statuses',
+      url: '/teams',
       data
     });
 
     return response.data;
   };
   
-  const updateSubStatus = async (id, data) => {
+  const updateTeam = async (id, data) => {
     const response = await api({
       method: 'PATCH',
-      url: `/sub_statuses/${id}`,
+      url: `/teams/${id}`,
       data
     });
 
     return response.data;
   };
 
-  const deleteSubStatus = async (id) => {
+  const deleteTeam = async (id) => {
     const response = await api({
       method: 'DELETE',
-      url: `/sub_statuses/${id}`,
+      url: `/teams/${id}`,
     });
 
     return response.data;
   };
 
   return {
-    getSubStatuses,
-    findSubStatuses,
-    createSubStatus,
-    updateSubStatus,
-    deleteSubStatus,
+    findTeams,
+    getTeam,
+    createTeam,
+    updateTeam,
+    deleteTeam
   };
 };
 
-export default useSubStatus;
+export default useTeamApi;

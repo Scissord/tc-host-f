@@ -1,50 +1,50 @@
 import { api } from '@api';
 
-const useProductApi = () => {
-  const getProducts = async () => {
+const useCityApi = () => {
+  const getCities = async () => {
     const response = await api({
       method: 'GET',
-      url: `/products`,
-    });
+      url: `/cities`,
+    })
 
     return response.data;
   };
 
-  const createProduct = async (data) => {
+  const createCity = async (data) => {
     const response = await api({
       method: 'POST',
-      url: '/products',
+      url: '/cities',
       data
     });
 
     return response.data;
   };
   
-  const updateProduct = async (id, data) => {
+  const updateCity = async (id, data) => {
     const response = await api({
       method: 'PATCH',
-      url: `/products/${id}`,
+      url: `/cities/${id}`,
       data
     });
 
     return response.data;
   };
 
-  const deleteProduct = async (id) => {
+  const deleteCity = async (id) => {
     const response = await api({
       method: 'DELETE',
-      url: `/products/${id}`,
+      url: `/cities/${id}`,
     });
 
     return response.data;
   };
 
   return {
-    getProducts,
-    createProduct,
-    updateProduct,
-    deleteProduct    
+    getCities,
+    createCity,
+    updateCity,
+    deleteCity    
   };
 };
 
-export default useProductApi;
+export default useCityApi;
