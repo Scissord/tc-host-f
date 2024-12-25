@@ -1,60 +1,60 @@
 import { api } from '@api';
 
-const useOperatorApi = () => {
-  const getOperators = async () => {
+const useWebmasterApi = () => {
+  const getWebmasters = async () => {
     const response = await api({
       method: 'GET',
-      url: `/operators`,
+      url: `/webmasters`,
     });
 
     return response.data;
   };
 
-  const getFreeOperators = async () => {
+  const getFreeWebmasters = async () => {
     const response = await api({
       method: 'GET',
-      url: '/operators/free',
+      url: `/webmasters/free`,
     });
 
     return response.data;
   };
 
-  const createOperator = async (data) => {
+  const createWebmaster = async (data) => {
     const response = await api({
       method: 'POST',
-      url: '/operators',
+      url: '/webmasters',
       data
     });
 
     return response.data;
   };
-
-  const updateOperator = async (id, data) => {
+  
+  const updateWebmaster = async (id, data) => {
     const response = await api({
       method: 'PATCH',
-      url: `/operators/${id}`,
+      url: `/webmasters/${id}`,
       data
     });
 
     return response.data;
   };
 
-  const deleteOperator = async (id) => {
+  const deleteWebmaster = async (id) => {
     const response = await api({
       method: 'DELETE',
-      url: `/operators/${id}`,
+      url: `/webmasters/${id}`,
     });
 
     return response.data;
   };
 
   return {
-    getOperators,
-    getFreeOperators,
-    createOperator,
-    updateOperator,
-    deleteOperator,
+    getWebmasters,
+    getFreeWebmasters,
+    createWebmaster,
+    updateWebmaster,
+    deleteWebmaster,    
   };
 };
 
-export default useOperatorApi;
+export default useWebmasterApi;

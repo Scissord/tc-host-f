@@ -1,19 +1,28 @@
 import { api } from '@api';
 
 const useTeamApi = () => {
-  const findTeams = async (department_id) => {
+  const getTeams = async () => {
     const response = await api({
       method: 'GET',
-      url: `/teams/${department_id}`,
+      url: `/teams`,
     });
 
     return response.data;
   };
 
-  const getTeam = async (team_id) => {
+  const findTeam = async (team_id) => {
     const response = await api({
       method: 'GET',
-      url: `/teams/data/${team_id}`,
+      url: `/teams/${team_id}`,
+    });
+
+    return response.data;
+  };
+  
+  const getTeamsByDepartment = async (department_id) => {
+    const response = await api({
+      method: 'GET',
+      url: `/teams/department/${department_id}`,
     });
 
     return response.data;
@@ -48,12 +57,24 @@ const useTeamApi = () => {
     return response.data;
   };
 
+  const addOperator = async (user_id, data) => {
+    const response = await api({
+      method: 'patch',
+      url: `/teams/operator/${user_id}`,
+      data
+    });
+
+    return response.data;
+  };
+
   return {
-    findTeams,
-    getTeam,
+    getTeams,
+    getTeamsByDepartment,
+    findTeam,
     createTeam,
     updateTeam,
-    deleteTeam
+    deleteTeam,
+    addOperator,
   };
 };
 

@@ -15,7 +15,7 @@ const useTeams = (department_id) => {
   const { getSubStatuses } = useSubStatusApi();
 
   const { 
-    findTeams,
+    getTeamsByDepartment,
     createTeam,
     updateTeam,
     deleteTeam
@@ -62,7 +62,7 @@ const useTeams = (department_id) => {
     state.isDataLoaded = false;
     const subStatusesData = await getSubStatuses();
     state.subStatuses = subStatusesData.subStatuses;
-    const data = await findTeams(department_id);
+    const data = await getTeamsByDepartment(department_id);
     state.teams = data.teams.map(team => ({
       ...team,
       is_editable: false

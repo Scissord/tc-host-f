@@ -12,14 +12,14 @@ const useTeam = (team_id) => {
 
   const modal = useModalStore();
 
-  const { getTeam } = useTeamApi(); 
+  const { findTeam, addOperator } = useTeamApi(); 
   const { getFreeOperators, updateOperator } = useOperatorApi();
   
   const handleAddOperator = () => {
     modal.show({
       title: 'Добавление оператора',
       children: h(AddOperatorModal, { 
-        updateOperator, 
+        addOperator, 
         operators: state.operators,
         free_operators: state.free_operators,
         team_id
@@ -39,7 +39,7 @@ const useTeam = (team_id) => {
     state.isDataLoaded = false;
     const operatorData = await getFreeOperators()
     state.free_operators = operatorData.free_operators;
-    const teamData = await getTeam(team_id);
+    const teamData = await findTeam(team_id);
     state.operators = teamData.operators.map(operator => ({
       ...operator,
       is_editable: false

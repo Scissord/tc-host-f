@@ -1,7 +1,5 @@
-import { reactive, h } from 'vue';
-import { useModalStore } from '@store';
+import { reactive } from 'vue';
 import { useUserApi } from '@api';
-import AddUserModal from '@/pages/admin/blocks/AddUserModal.vue';
 
 const useUsers = () => {
   const state = reactive({
@@ -9,24 +7,11 @@ const useUsers = () => {
     users: []
   });
 
-  const modal = useModalStore();
-
   const { 
     getUsers,
-    createUser,
     updateUser,
     deleteUser 
   } = useUserApi(); 
-  
-  const handleAddUser = () => {
-    modal.show({
-      title: 'Добавление товара',
-      children: h(AddUserModal, { 
-        createUser, 
-        users: state.users, 
-      }),
-    })
-  }; 
   
   const handleEditUser = (id) => {
     const user = state.users.find((u) => +u.id === +id)
@@ -59,7 +44,7 @@ const useUsers = () => {
     };
   };
   
-  const handleGetData = async () => {
+  const handleUsersGetData = async () => {
     state.isDataLoaded = false;
     const data = await getUsers();
     state.users = data.users.map(user => ({
@@ -70,12 +55,11 @@ const useUsers = () => {
   };
   
   return {
-    state,
-    handleAddUser,
+    userState: state,
     handleEditUser,
     handleSaveUser,
     handleDeleteUser,
-    handleGetData 
+    handleUsersGetData 
   };
 };
 

@@ -7,6 +7,8 @@ import useTeam from './useTeam';
 import useStatus from './useStatus';
 import useSubStatus from './useSubStatus';
 import useUsers from './useUsers';
+import useWebmasters from './useWebmasters';
+import useOperators from './useOperators';
 
 export { 
   useHeader,
@@ -18,4 +20,6 @@ export {
   useStatus,
   useSubStatus,
   useUsers,
+  useWebmasters,
+  useOperators,
 };

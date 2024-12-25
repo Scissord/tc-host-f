@@ -2,39 +2,37 @@
 import { reactive } from 'vue';
 import { useModalStore, useNotificationStore } from '@store';
 
-const props = defineProps({
-  addOperator: {
-    type: Function,
-    required: true
-  },
-  operators: {
-    type: Array,
-    required: true,
-    default: []
-  },
-  free_operators: {
-    type: Array,
-    required: true,
-    default: []
-  },
-  team_id: String
-})
-
 const modal = useModalStore();
 const notification = useNotificationStore();
 
-const user = reactive({ id: null });
+const props = defineProps({
+  createWebmaster: {
+    type: Function,
+    required: true
+  },
+  webmasters: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  free_webmasters: {
+    type: Array,
+    required: true,
+    default: []
+  },
+});
 
-const handleUpdateOperator = async () => {
-  if(!user.id){
-    notification.show('Выберите оператора!', 'warning');
+const webmaster = reactive({
+  user_id: null,
+});
+
+const handleCreateWebmaster = async () => {
+  if(!webmaster.user_id){
+    notification.show('Заполните все поля!', 'warning');
     return;
   };
-  const data = await props.addOperator(user.id, { 
-    team_id: props.team_id,
-    deleted_at: null,
-  });
-  props.operators.push(data.operator);
+  const data = await props.createWebmaster(webmaster);
+  props.webmasters.push(data.webmaster);
   modal.hide();
 };
 </script>
@@ -42,10 +40,10 @@ const handleUpdateOperator = async () => {
 <template>
   <div class="flex flex-col gap-6">
     <div class="grid grid-cols-2 gap-6">
-      <h1>Оператор</h1>
+      <h1>Пользователь</h1>
       <Select
-        v-model="user.id"
-        :options="free_operators"
+        v-model="webmaster.user_id"
+        :options="free_webmasters"
         value="id"
         label="name"
       />
@@ -53,7 +51,7 @@ const handleUpdateOperator = async () => {
     <div class="flex items-center gap-3 justify-end">
       <Button
         text="Сохранить"
-        @click="handleUpdateOperator"
+        @click="handleCreateWebmaster"
         class="bg-green-500 hover:bg-green-400"
       />
       <Button

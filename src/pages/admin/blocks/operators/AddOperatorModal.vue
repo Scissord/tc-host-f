@@ -2,12 +2,20 @@
 import { reactive } from 'vue';
 import { useModalStore, useNotificationStore } from '@store';
 
+const modal = useModalStore();
+const notification = useNotificationStore();
+
 const props = defineProps({
-  addOperator: {
+  createOperator: {
     type: Function,
     required: true
   },
   operators: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  teams: {
     type: Array,
     required: true,
     default: []
@@ -17,23 +25,19 @@ const props = defineProps({
     required: true,
     default: []
   },
-  team_id: String
-})
+});
 
-const modal = useModalStore();
-const notification = useNotificationStore();
+const operator = reactive({
+  user_id: null,
+  team_id: null,
+});
 
-const user = reactive({ id: null });
-
-const handleUpdateOperator = async () => {
-  if(!user.id){
-    notification.show('Выберите оператора!', 'warning');
+const handleCreateOperator = async () => {
+  if(!operator.user_id || !operator.team_id){
+    notification.show('Заполните все поля!', 'warning');
     return;
   };
-  const data = await props.addOperator(user.id, { 
-    team_id: props.team_id,
-    deleted_at: null,
-  });
+  const data = await props.createOperator(operator);
   props.operators.push(data.operator);
   modal.hide();
 };
@@ -42,18 +46,25 @@ const handleUpdateOperator = async () => {
 <template>
   <div class="flex flex-col gap-6">
     <div class="grid grid-cols-2 gap-6">
-      <h1>Оператор</h1>
+      <h1>Пользователь</h1>
       <Select
-        v-model="user.id"
+        v-model="operator.user_id"
         :options="free_operators"
         value="id"
         label="name"
+      />
+      <h1>Команда</h1>
+      <Select
+        v-model="operator.team_id"
+        :options="teams"
+        value="id"
+        label="title"
       />
     </div>
     <div class="flex items-center gap-3 justify-end">
       <Button
         text="Сохранить"
-        @click="handleUpdateOperator"
+        @click="handleCreateOperator"
         class="bg-green-500 hover:bg-green-400"
       />
       <Button

@@ -65,7 +65,7 @@
                 Пароль
               </th>
               <th 
-                :class="[css.th, 'w-[200px]']"
+                :class="css.th"
               >
                 Имя
               </th>
@@ -140,6 +140,6 @@
       </div>
     </div>
     <div class="flex items-center justify-center" v-if="users.length === 0">
-      <p class="font-bold text-2xl">Продукты не найдены</p>
+      <p class="font-bold text-2xl">Пользователи не найдены</p>
     </div>
   </template>

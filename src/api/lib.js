@@ -11,6 +11,7 @@ import useDepartmentApi from './useDepartmentApi';
 import useTeamApi from './useTeamApi';
 import useOperatorApi from './useOperatorApi';
 import useUserApi from './useUserApi';
+import useWebmasterApi from './useWebmasterApi';
 
 export {
   api,
@@ -27,4 +28,5 @@ export {
   useTeamApi,
   useOperatorApi,
   useUserApi,
+  useWebmasterApi,
 };
