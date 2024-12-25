@@ -85,6 +85,14 @@ const {
         >
           Статусы
         </router-link>
+        <!-- Отделы  -->
+        <router-link
+          to="/admin"
+          v-if="user.data.abilities.includes(state.get_users)"
+          :class="css.link"
+        >
+          Админ
+        </router-link>
         <Icon
           icon="fa-solid fa-language"
           :class="css.icon + ' ml-auto'"

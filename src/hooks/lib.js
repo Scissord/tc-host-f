@@ -6,6 +6,7 @@ import useTeams from './useTeams';
 import useTeam from './useTeam';
 import useStatus from './useStatus';
 import useSubStatus from './useSubStatus';
+import useUsers from './useUsers';
 
 export { 
   useHeader,
@@ -16,4 +17,5 @@ export {
   useTeam,
   useStatus,
   useSubStatus,
+  useUsers,
 };

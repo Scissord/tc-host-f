@@ -59,7 +59,7 @@ onMounted(() => {
 <template>
   <div 
     :class="[
-      'absolute top-2 right-2 text-white p-1 z-50',
+      'fixed top-2 right-2 text-white p-1 z-50',
       connection.isConnected ? 'bg-green-500' : 'bg-red-500'
     ]"
   >

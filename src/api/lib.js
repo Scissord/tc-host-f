@@ -10,6 +10,7 @@ import useCityApi from './useCityApi';
 import useDepartmentApi from './useDepartmentApi';
 import useTeamApi from './useTeamApi';
 import useOperatorApi from './useOperatorApi';
+import useUserApi from './useUserApi';
 
 export {
   api,
@@ -25,4 +26,5 @@ export {
   useCityApi,
   useTeamApi,
   useOperatorApi,
+  useUserApi,
 };

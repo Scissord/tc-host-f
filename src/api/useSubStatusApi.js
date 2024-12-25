@@ -19,6 +19,15 @@ const useSubStatus = () => {
     return response.data;
   };
 
+  const getOperatorSubStatuses = async () => {
+    const response = await api({
+      method: 'GET',
+      url: '/sub_statuses/operator/data',
+    });
+
+    return response.data;
+  };
+
   const createSubStatus = async (data) => {
     const response = await api({
       method: 'POST',
@@ -51,6 +60,7 @@ const useSubStatus = () => {
   return {
     getSubStatuses,
     findSubStatuses,
+    getOperatorSubStatuses,
     createSubStatus,
     updateSubStatus,
     deleteSubStatus,

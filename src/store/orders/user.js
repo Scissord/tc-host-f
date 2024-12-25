@@ -24,6 +24,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
     pages: [],
     subStatus: 1,
     newSubStatus: 1,
+    newSubStatusLength: 0,
     // arrays
     subStatuses: [],
     columns: [],
@@ -35,6 +36,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
     state.page = 1;
     state.subStatus = +val;
     state.newSubStatus = +val;
+    state.newSubStatusLength = state.subStatuses.find((ss) => +ss.id === +val)?.orders_count ?? 0 
     state.columns[0].is_checked = false;
     await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
   };
@@ -72,7 +74,22 @@ const useUserOrdersStore = defineStore('user_order', () => {
     await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
   };
 
+  const handleToggleOrder = async (val) => {
+    const currentLength = state.orders.filter(order => order.is_checked === true).length
+    if(currentLength === 0) {
+      state.newSubStatusLength = state.subStatuses.find((ss) => +ss.id === +state.subStatus)?.orders_count ?? 0 
+      return;
+    };
+
+    state.newSubStatusLength = currentLength;
+  };
+
   const handleToggleOrders = (val) => {
+    if(val) {
+      state.newSubStatusLength = state.orders.length;
+    } else {
+      state.newSubStatusLength = state.subStatuses.find((ss) => +ss.id === +state.subStatus)?.orders_count ?? 0;
+    }
     state.orders.forEach((order) => {
       if(!order.is_disabled) {
         order.is_checked = val;
@@ -122,6 +139,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
 
   const handleGetSubStatuses = async () => {
     const subStatusData = await getSubStatuses();
+    state.newSubStatusLength = subStatusData.subStatuses[0].orders_count;
     state.subStatuses.splice(0, state.subStatuses.length, ...subStatusData.subStatuses);
   };
   
@@ -173,6 +191,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
     handleApplyFilters,
     bindEvents,
     handleEntryOrder,
+    handleToggleOrder,
     handleToggleOrders,
     handleChangeOrdersSubStatus,
     handleGetData,

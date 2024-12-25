@@ -32,11 +32,13 @@ onMounted(async () => {
       <OrdersTable
         :orders="orders.state.orders"
         :columns="orders.state.columns"
+        :handleToggleOrder="orders.handleToggleOrder"
         :handleToggleOrders="orders.handleToggleOrders"
         :handleEntryOrder="orders.handleEntryOrder"
       />
       <OrdersUnderTable
         :newSubStatus="orders.state.newSubStatus"
+        :newSubStatusLength="orders.state.newSubStatusLength"
         :subStatuses="orders.state.subStatuses"
         :handleChangeOrdersSubStatus="orders.handleChangeOrdersSubStatus"
       />

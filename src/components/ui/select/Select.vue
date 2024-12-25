@@ -25,6 +25,11 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  length: {
+    type: [String, Number],
+    required: false,
+    default: 0
+  },
 });
 
 const emits = defineEmits(['update:modelValue']);
@@ -89,6 +94,9 @@ const displayedName = computed(() => {
         ]"
       >
         {{ displayedName }}
+        <span v-if="length">
+          ({{ length }})
+        </span>
       </p>
       <Icon
         :class="['icon']"

@@ -34,7 +34,9 @@ const useOrderApi = () => {
     return response.data;
   };
 
-  const getOperatorOrders = async (queries) => {
+  const getOperatorOrders = async (limit = 20, page = 1, subStatus = 1) => {
+    const queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&sub_status=${subStatus}`;
+
     const response = await api({
       method: 'GET',
       url: `/orders/operator${queries}`,

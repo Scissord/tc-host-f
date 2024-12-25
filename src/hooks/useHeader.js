@@ -10,6 +10,7 @@ const useHeader = () => {
     get_cities: null,
     get_departments: null,
     get_statuses: null,
+    get_users: null,
   });
 
   const { logout } = useAuthApi();
@@ -39,6 +40,7 @@ const useHeader = () => {
     state.get_cities = abilities.get_cities;
     state.get_departments = abilities.get_departments;
     state.get_statuses = abilities.get_statuses;
+    state.get_users = abilities.get_users;
   };
 
   onMounted(async () => {
