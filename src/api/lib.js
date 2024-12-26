@@ -12,6 +12,9 @@ import useTeamApi from './useTeamApi';
 import useOperatorApi from './useOperatorApi';
 import useUserApi from './useUserApi';
 import useWebmasterApi from './useWebmasterApi';
+import useRoleApi from './useRoleApi';
+import useAssignedRoleApi from './useAssignedRoleApi';
+import usePermissionApi from './usePermissionApi';
 
 export {
   api,
@@ -29,4 +32,7 @@ export {
   useOperatorApi,
   useUserApi,
   useWebmasterApi,
+  useRoleApi,
+  useAssignedRoleApi,
+  usePermissionApi,
 };

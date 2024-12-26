@@ -1,11 +1,27 @@
 <script setup>
-import { onMounted } from 'vue';
-import { useUserOrdersStore } from '@store';
+import { onMounted, h } from 'vue';
+import { useUserOrdersStore, useModalStore } from '@store';
+import { useOrderApi } from '@api';
 import OrdersFilters from './blocks/OrdersFilters.vue';
 import OrdersTable from './blocks/OrdersTable.vue';
 import OrdersUnderTable from './blocks/OrdersUnderTable.vue';
+import AddOrderModal from '../AddOrderModal.vue';
 
+const modal = useModalStore();
 const orders = useUserOrdersStore();
+
+const { createOrder } = useOrderApi();
+
+const openCreateOrderModal = async () => {
+  modal.show({
+    title: 'Добавление заказа',
+    children: h(AddOrderModal, { 
+      createOrder, 
+      changeState: orders.handleChangeStateAfterAddOrder,
+      orders: orders.state.orders, 
+    }),
+  })
+};
 
 onMounted(async () => {
   await orders.handleGetData();
@@ -14,9 +30,16 @@ onMounted(async () => {
 
 <template>
   <div v-if="orders.state.isDataLoaded" class="min-h-screen p-6 flex flex-col gap-6 text-xs">
-    <h1 class="font-bold text-2xl">
-      Управление заказами
-    </h1>
+    <div class="flex items-center justify-between">
+      <h1 class="font-bold text-2xl">
+        Управление заказами
+      </h1>
+      <Button
+        text='Создать'
+        @click='openCreateOrderModal'
+      />
+    </div>
+
     <div class="min-h-screen flex flex-col gap-6">
       <OrdersFilters
         :subStatus="orders.state.subStatus"

@@ -5,6 +5,7 @@ import registerModal from './ui/modal/registerModal';
 import registerPaginate from './ui/paginate/registerPaginate';
 import registerCheckbox from './ui/checkbox/registerCheckbox';
 import registerSelect from './ui/select/registerSelect';
+import registerPhoneInput from './ui/phone_input/registerPhoneInput';
 
 export default function registerComponents(app) {
   registerButton(app);
@@ -14,4 +15,5 @@ export default function registerComponents(app) {
   registerPaginate(app);
   registerCheckbox(app);
   registerSelect(app);
+  registerPhoneInput(app)
 };

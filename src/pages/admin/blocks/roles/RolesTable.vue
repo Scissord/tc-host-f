@@ -1,33 +1,23 @@
 <script setup>
 defineProps({
-  free_operators: {
+  roles: {
     type: Array,
     required: true,
     default: []
   },
-  teams: {
-    type: Array,
-    required: true,
-    default: []
-  },
-  operators: {
-    type: Array,
-    required: true,
-    default: []
-  },
-  handleAddOperator: {
+  handleAddRole: {
     type: Function,
     required: true
   },
-  handleEditOperator: {
+  handleEditRole: {
     type: Function,
     required: true
   },
-  handleSaveOperator: {
+  handleSaveRole: {
     type: Function,
     required: true
   },
-  handleDeleteOperator: {
+  handleDeleteRole: {
     type: Function,
     required: true
   },
@@ -44,11 +34,11 @@ const css = {
   <div class="flex flex-col gap-3">
     <div class="flex items-center justify-between">
       <h1 class="font-bold text-2xl">
-        Операторы
+        Роли
       </h1>
       <Button 
         text="Добавить"
-        @click="handleAddOperator"
+        @click="handleAddRole"
       />
     </div>
     <div class="w-full">
@@ -60,26 +50,26 @@ const css = {
             >
             </th>
             <th 
-              :class="[css.th, 'w-[100px]']" 
+              :class="[css.th, 'w-[50px]']" 
             >
-              operator_id
+              ID
             </th>
             <th 
               :class="[css.th, 'w-[200px]']" 
             >
-              Команда
+              Название
             </th>
-            <th
-              :class="css.th"
+            <th 
+              :class="css.th" 
             >
-              user_id
+              Описание
             </th>
           </tr>
         </thead>
         <tbody>
           <tr
-            v-for="operator in operators"
-            :key="operator.id"
+            v-for="role in roles"
+            :key="role.id"
             class="bg-white"
           >
             <td :class='css.td'>
@@ -87,43 +77,45 @@ const css = {
                 class="flex justify-center items-center space-x-2"
               >
                 <Icon 
-                  v-if="!operator.is_editable"
+                  v-if="!role.is_editable"
                   :icon="['fas', 'pen-to-square']" 
                   :class="css.icon"
-                  @click="handleEditOperator(operator.id)"
+                  @click="handleEditRole(role.id)"
                 />
                 <Icon 
                   v-else
                   :icon="['fas', 'floppy-disk']" 
                   :class="css.icon"
-                  @click="handleSaveOperator(operator.id)"
+                  @click="handleSaveRole(role.id)"
                 />
                 <Icon 
                   :icon="['fas', 'trash']" 
                   :class="css.icon"
-                  @click="handleDeleteOperator(operator.id)"
+                  @click="handleDeleteRole(role.id)"
                 />
               </div>
             </td>
-            <td :class="css.td">{{ operator.id ?? '-' }}</td>
+            <td :class="css.td">{{ role.id ?? '-' }}</td>
             <td :class="css.td">
-              <p v-if="!operator.is_editable">{{ operator.team_id ?? '-' }}</p>
-              <Select
+              <p v-if="!role.is_editable">{{ role.name ?? '-' }}</p>
+              <Input
                 v-else
-                v-model="operator.team_id"
-                :options="teams"
-                value="id"
-                label="title"
+                :id="'role' + role.id"
+                type="text"
+                v-model="role.name"
+                placeholder="..."
+                class="text-xs p-1"
               />
             </td>
             <td :class="css.td">
-              <p v-if="!operator.is_editable">{{ operator.user_id ?? '-' }}</p>
-              <Select
+              <p v-if="!role.is_editable">{{ role.title ?? '-' }}</p>
+              <Input
                 v-else
-                v-model="operator.user_id"
-                :options="free_operators"
-                value="id"
-                label="name"
+                :id="'role' + role.id"
+                type="text"
+                v-model="role.title"
+                placeholder="..."
+                class="text-xs p-1"
               />
             </td>
           </tr>
@@ -131,7 +123,7 @@ const css = {
       </table>
     </div>
   </div>
-  <div class="flex items-center justify-center" v-if="operators.length === 0">
-    <p class="font-bold text-2xl">Операторы не найдены</p>
+  <div class="flex items-center justify-center" v-if="roles.length === 0">
+    <p class="font-bold text-2xl">Роли не найдены</p>
   </div>
 </template>

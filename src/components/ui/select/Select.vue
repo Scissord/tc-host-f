@@ -50,7 +50,7 @@ const selectOption = (option) => {
     }
   } else {
     // Для одиночного выбора
-    emits('update:modelValue', option[props.value || 'value']);
+    emits('update:modelValue', option[props.value || 'value'], option);
     isOpen.value = false; // Закрыть меню
   }
 };
@@ -78,7 +78,7 @@ const displayedName = computed(() => {
     ? +props.modelValue[props.value || 'value']
     : +props.modelValue;
 
-  const option = props.options.find((option) => +option[props.value || 'value'] === localValue);
+  const option = props.options.find((option) => +option[props.value || 'value'] == localValue);
 
   return option ? (props.label ? option[props.label] : option.label) : 'Выберите...';
 });
@@ -151,7 +151,7 @@ const displayedName = computed(() => {
 
 .menu {
   position: absolute;
-  min-height: 100px;
+  min-height: 50px;
   max-height: 300px;
   top: 100%;
   width: 100%;

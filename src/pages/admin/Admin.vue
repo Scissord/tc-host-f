@@ -1,20 +1,29 @@
 <script setup>
 import { onMounted, h } from 'vue';
-import { useUsers, useWebmasters, useOperators } from '@hooks';
+import { useUsers, useWebmasters, useOperators, useRoles, useAssignedRoles, usePermissions, useAbilities } from '@hooks';
+import { useUserApi, useWebmasterApi, useOperatorApi, useRoleApi, useAssignedRoleApi, usePermissionApi } from '@api';
 import { useModalStore } from '@store';
-import { useUserApi, useWebmasterApi, useOperatorApi } from '@api';
 import UsersTable from './blocks/users/UsersTable.vue';
 import AddUserModal from './blocks/users/AddUserModal.vue';
 import WebmastersTable from './blocks/webmasters/WebmastersTable.vue';
 import AddWebmasterModal from './blocks/webmasters/AddWebmasterModal.vue';
 import OperatorsTable from './blocks/operators/OperatorsTable.vue';
 import AddOperatorModal from './blocks/operators/AddOperatorModal.vue';
+import RolesTable from './blocks/roles/RolesTable.vue';
+import AddRoleModal from './blocks/roles/AddRoleModal.vue';
+import AssignedRolesTable from './blocks/assigned_roles/AssignedRolesTable.vue';
+import AddAssignedRoleModal from './blocks/assigned_roles/AddAssignedRoleModal.vue';
+import PermissionsTable from './blocks/permissions/PermissionsTable.vue';
+import AddPermissionModal from './blocks/permissions/AddPermissionModal.vue';
 
 const modal = useModalStore();
 
 const { createUser } = useUserApi(); 
 const { createWebmaster } = useWebmasterApi(); 
 const { createOperator } = useOperatorApi(); 
+const { createRole } = useRoleApi(); 
+const { createAssignedRole } = useAssignedRoleApi();
+const { createPermission } = usePermissionApi();
 
 const { 
   userState,
@@ -39,6 +48,31 @@ const {
   handleDeleteOperator,
   handleOperatorsGetData 
 } = useOperators();
+
+const { 
+  roleState,
+  handleEditRole,
+  handleSaveRole,
+  handleDeleteRole,
+  handleRolesGetData 
+} = useRoles();
+
+const { 
+  assignedRoleState,
+  handleDeleteAssignedRole,
+  handleAssignedRoleGetData 
+} = useAssignedRoles();
+
+const { 
+  permissionState,
+  handleDeletePermission,
+  handlePermissionGetData 
+} = usePermissions();
+
+const { 
+  abilityState,
+  handleAbilityGetData
+} = useAbilities();
 
 const handleAddUser = () => {
   modal.show({
@@ -73,10 +107,47 @@ const handleAddOperator = () => {
   })
 };
 
+const handleAddRole = () => {
+  modal.show({
+    title: 'Добавление роли',
+    children: h(AddRoleModal, { 
+      roles: roleState.roles,
+      createRole, 
+    }),
+  });
+};
+
+const handleAddAssignedRole = (role_id) => {
+  modal.show({
+    title: 'Добавление роли для пользователя',
+    children: h(AddAssignedRoleModal, { 
+      role_id,
+      assigned_roles: assignedRoleState.assigned_roles,
+      createAssignedRole, 
+      users: userState.users, 
+    }),
+  })
+};
+
+const handleAddPermission = (entity_id, entity_type) => {
+  modal.show({
+    title: 'Добавление доступа к пользователю или роли',
+    children: h(AddPermissionModal, { 
+      entity_id,
+      entity_type,
+      abilities: abilityState.abilities,
+      permissions: permissionState.permissions,
+      createPermission,
+    }),
+  })
+};
+
 onMounted(async () => {
   await handleUsersGetData();
   await handleWebmastersGetData();
   await handleOperatorsGetData();
+  await handleRolesGetData();
+  await handleAbilityGetData();
 })
 </script>
 
@@ -109,6 +180,29 @@ onMounted(async () => {
         :handleEditOperator="handleEditOperator"
         :handleSaveOperator="handleSaveOperator"
         :handleDeleteOperator="handleDeleteOperator"
+      />
+      <RolesTable
+        v-if="roleState.isDataLoaded"
+        :roles="roleState.roles"
+        :handleAddRole="handleAddRole"
+        :handleEditRole="handleEditRole"
+        :handleSaveRole="handleSaveRole"
+        :handleDeleteRole="handleDeleteRole"
+      />
+      <AssignedRolesTable
+        :roles="roleState.roles"
+        :assigned_roles="assignedRoleState.assigned_roles"
+        :handleAddAssignedRole="handleAddAssignedRole"
+        :handleDeleteAssignedRole="handleDeleteAssignedRole"
+        :handleAssignedRoleGetData="handleAssignedRoleGetData"
+      />
+      <PermissionsTable
+        :roles="roleState.roles"
+        :users="userState.users"
+        :permissions="permissionState.permissions"
+        :handleAddPermission="handleAddPermission"
+        :handleDeletePermission="handleDeletePermission"
+        :handlePermissionGetData="handlePermissionGetData"
       />
     </div>
   </div>

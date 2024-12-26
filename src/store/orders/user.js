@@ -32,6 +32,26 @@ const useUserOrdersStore = defineStore('user_order', () => {
     orders: [],
   });
 
+  const handleChangeStateAfterAddOrder = async () => {
+    // checkboxes
+    const allChecked = state.orders.every(order => order.is_checked);
+    if(!allChecked) {
+      state.columns[0].is_checked = false;
+      state.orders = state.orders.map((order) => ({
+        ...order,
+        is_checked: false,
+      }))
+    }
+
+    // in header
+    const currentStatus = state.subStatuses.find((oss) => +oss.id === +state.subStatus)
+    const newLength = +currentStatus.orders_count + 1;
+    // statuses
+    currentStatus.orders_count = newLength;
+    // under table
+    state.newSubStatusLength = newLength;
+  };
+
   const handleChangeSubStatus = async (val) => {
     state.page = 1;
     state.subStatus = +val;
@@ -42,24 +62,42 @@ const useUserOrdersStore = defineStore('user_order', () => {
   };
 
   const handleChangeOrdersSubStatus = async (val) => {
-    const allUnchecked = state.orders.every(order => !order.is_checked);
-    if (allUnchecked) return;
-
     const ids = state.orders
       .filter(order => order.is_checked)
       .map(order => order.id);
 
     const data = {
-      sub_status_id: val,
+      old_sub_status_id: state.subStatus,
+      new_sub_status_id: val,
       ids: ids
     };
 
     await changeStatus(data);
-    await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
+    await handleGetOrders(state.limit, state.page, state.subStatus);
 
     if(state.columns[0].is_checked === true) {
       state.columns[0].is_checked = false;
     };
+
+    if(ids.length === 0) {
+      const currentStatus = state.subStatuses.find((oss) => +oss.id === +state.subStatus)
+      const newStatus = state.subStatuses.find((oss) => +oss.id === +val)
+      // new_status
+      newStatus.orders_count = +newStatus.orders_count + +currentStatus.orders_count;
+      // current_status
+      const newLength = 0;
+      currentStatus.orders_count = newLength;
+      state.newSubStatusLength = newLength;
+    } else {
+      const currentStatus = state.subStatuses.find((oss) => +oss.id === +state.subStatus);
+      const newStatus = state.subStatuses.find((oss) => +oss.id === +val);
+      // new_status
+      newStatus.orders_count = +newStatus.orders_count + ids.length;
+      // current_status
+      const newLength = +currentStatus.orders_count - ids.length;
+      currentStatus.orders_count = newLength;
+      state.newSubStatusLength = newLength;
+    } 
 
     socket.emit("sendStatus", data);
   };
@@ -86,7 +124,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
 
   const handleToggleOrders = (val) => {
     if(val) {
-      state.newSubStatusLength = state.orders.length;
+      state.newSubStatusLength = state.orders.filter(order => !order.is_disabled).length;
     } else {
       state.newSubStatusLength = state.subStatuses.find((ss) => +ss.id === +state.subStatus)?.orders_count ?? 0;
     }
@@ -103,8 +141,12 @@ const useUserOrdersStore = defineStore('user_order', () => {
     if (order) {
       order.is_disabled = true;
       order.reserved_by = name;
+      if(order.is_checked) {
+        state.newSubStatusLength = state.newSubStatusLength - 1;
+        order.is_checked = false;
+      };
     };
-    
+
     state.orders = [...state.orders];
   };
 
@@ -186,6 +228,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
 
   return {
     state,
+    handleChangeStateAfterAddOrder,
     handleChangeSubStatus,
     handleChangePage,
     handleApplyFilters,

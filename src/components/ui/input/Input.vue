@@ -54,7 +54,7 @@ const onInput = (event) => {
 <style>
 .input {
   width: 100%;
-  padding: 0.6rem 1rem;
+  padding: 0.5rem 1rem;
   font-size: 1rem;
   border-radius: 0.375rem;
   border: 1px solid #e2e8f0;

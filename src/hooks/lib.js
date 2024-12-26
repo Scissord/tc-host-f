@@ -9,8 +9,12 @@ import useSubStatus from './useSubStatus';
 import useUsers from './useUsers';
 import useWebmasters from './useWebmasters';
 import useOperators from './useOperators';
+import useRoles from './useRoles';
+import useAssignedRoles from './useAssignedRoles';
+import usePermissions from './usePermissions';
+import useAbilities from './useAbilities';
 
-export { 
+export {
   useHeader,
   useProducts,
   useCities,
@@ -22,4 +26,8 @@ export {
   useUsers,
   useWebmasters,
   useOperators,
+  useRoles,
+  useAssignedRoles,
+  usePermissions,
+  useAbilities,
 };

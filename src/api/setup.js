@@ -13,7 +13,7 @@ export const setup = () => {
   const router = useRouter();
 
   const user = useUserStore();
-  const notification = useNotificationStore(); 
+  const notification = useNotificationStore();
   const { refresh } = useAuthApi();
 
   // 1. Add accessToken to every request
@@ -57,7 +57,7 @@ export const setup = () => {
         };
       };
 
-      if (error.response.status === 400) {
+      if (error.response.status === 403) {
         router.push('/');
       }
 

@@ -4,13 +4,13 @@ const useOrderApi = () => {
   const getUserOrders = async (limit = 20, page = 1, subStatus = 1, filters = []) => {
     let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&sub_status=${subStatus}`;
 
-    if(filters.length > 0) {
+    if (filters.length > 0) {
       const filteredFilters = filters.filter(filter => filter.value !== null && filter.value !== "" && filter.value !== undefined);
       const queryParams = filteredFilters
         .map(item => `${encodeURIComponent(item.name)}=${encodeURIComponent(item.value)}`)
         .join('&');
 
-      if(queryParams !== "") {
+      if (queryParams !== "") {
         queries += `&${queryParams}`;
       }
     };
@@ -54,28 +54,30 @@ const useOrderApi = () => {
     return response.data;
   };
 
-  const changeStatus = async (data) => {
+  const createOrder = async (data) => {
     const response = await api({
-      method: 'PATCH',
-      url: `/orders/update_status`,
+      method: 'POST',
+      url: `/orders`,
       data
     });
 
     return response.data;
   };
 
-  const saveOrder = async (order_id, data) => {
-    if(data.additional1) {
-      const parsedDate = new Date(data.additional1);
-      const year = parsedDate.getFullYear();
-      const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
-      const day = String(parsedDate.getDate()).padStart(2, '0');
-      data.additional1 = `${year}-${month}-${day}`;
-    }
-
+  const updateOrder = async (id, data) => {
     const response = await api({
       method: 'PATCH',
-      url: `/orders/update_order/${order_id}`,
+      url: `/orders/${id}`,
+      data
+    });
+
+    return response.data;
+  };
+
+  const changeStatus = async (data) => {
+    const response = await api({
+      method: 'PATCH',
+      url: '/orders/update_status',
       data
     });
 
@@ -84,12 +86,13 @@ const useOrderApi = () => {
 
   return {
     getOrder,
-    getUserOrders, 
+    getUserOrders,
     getWebmasterOrders,
     getOperatorOrders,
+    createOrder,
+    updateOrder,
     changeStatus,
-    getOrder, 
-    saveOrder
+    getOrder,
   };
 };
 
