@@ -77,7 +77,7 @@ const useOrderApi = () => {
   const changeStatus = async (data) => {
     const response = await api({
       method: 'PATCH',
-      url: '/orders/update_status',
+      url: '/orders/status/update',
       data
     });
 
