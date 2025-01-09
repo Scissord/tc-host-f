@@ -32,65 +32,28 @@ const css = {
   th: 'text-left border border-slate-200 p-1 whitespace-nowrap',
   td: 'border border-slate-200 p-1',
   icon: 'hover:text-gray-300 cursor-pointer',
+  tablename: 'text-left p-2 border',
 };
 </script>
 
 <template>
-  <div class="z-1 w-full">
-    <table class="z-1 w-full border-collapse border border-slate-200 table-fixed">
+  <div class="bg-white mt-4 p-4 rounded shadow">
+    <table class="w-full border-collapse">
       <thead>
-        <tr>
-          <th 
-            :class="[css.th, 'w-[50px]']"
-          >
-          </th>
-          <th 
-            :class="[css.th, 'w-[50px]']"
-          >
-            ID
-          </th>
-          <th 
-            :class="[css.th, 'w-[150px]']"
-          >
-            Название
-          </th>
-          <th 
-            :class='css.th'
-          >
-            Статусы
-          </th>
+        <tr class="bg-gray-200">
+          <th :class=tablename>ID</th>
+          <th :class=tablename>Название</th>
+          <th :class=tablename>Статусы</th> 
+          <th :class=tablename>Действия</th>
         </tr>
       </thead>
       <tbody>
         <tr
           v-for="department in departments"
           :key="department.id"
-          class="bg-white z-1"
+          class="hover:bg-gray-100"
         >
-          <td :class='css.td'>
-            <div
-              class="flex justify-center items-center space-x-2"
-            >
-              <Icon 
-                v-if="!department.is_editable"
-                :icon="['fas', 'pen-to-square']" 
-                :class="css.icon"
-                @click="handleEditDepartment(department.id)"
-              />
-              <Icon 
-                v-else
-                :icon="['fas', 'floppy-disk']" 
-                :class="css.icon"
-                @click="handleSaveDepartment(department.id)"
-              />
-              <Icon 
-                :icon="['fas', 'trash']" 
-                :class="css.icon"
-                @click="handleDeleteDepartment(department.id)"
-              />
-            </div>
-          </td>
-          <td :class="[css.td, 'w-[50px]']">
+          <td class="p-2 border w-12">
             <p 
               class="text-blue-900 font-semibold cursor-pointer hover:underline"
               @click="() => router.push(`/departments/${department.id}`)"
@@ -98,7 +61,8 @@ const css = {
               {{ department.id ?? "-" }}
             </p>
           </td>
-          <td :class="[css.td, 'w-[200px]']">
+            <!-- Name Column -->
+          <td class="p-2 border">
             <p v-if="!department.is_editable">{{ department.title ?? '-' }}</p>
             <Input
               v-else
@@ -106,35 +70,66 @@ const css = {
               type="text"
               v-model="department.title"
               placeholder="Название..."
-              class="text-xs p-1"
+              class="text-xs p-1 border rounded-md"
             />
           </td>
-          <td :class="[css.td, 'w-[200px]']">
+            <!-- Statuses Column -->
+          <td class="p-2 border">
             <div 
               v-if="!department.is_editable"  
-              class="flex items-center gap-3"
+              class="flex flex-wrap items-center gap-2"
             >
-              <p 
+              <span 
                 v-for="sub_status in department.sub_status_ids"
                 :key="sub_status"
+                class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs"
               >
                 {{ sub_status }}
-              </p>
+              </span>
             </div>
             <Select
               v-else
               v-model="department.sub_status_ids"
-              :options="subStatuses"
+              :options="state.subStatuses"
               value="id"
               label="name"
               multiple
+              class="border rounded-md p-2"
             />
+          </td>
+          <!-- Actions Column -->
+          <td class="p-2 border w-12">
+            <div class="flex justify-start gap-2 items-center">
+              <!-- Edit Button -->
+              <button
+                v-if="!department.is_editable"
+                @click="handleEditDepartment(department.id)"
+                class="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-full shadow-md flex items-center justify-center"
+                title="Edit Department"
+              >
+                <Icon icon="fa-solid fa-pen" class="text-lg" />
+              </button>
+              <!-- Save Button -->
+              <button
+                v-else
+                @click="handleSaveDepartment(department.id)"
+                class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-full shadow-md flex items-center justify-center"
+                title="Save"
+              >
+                <Icon icon="fa-solid fa-save" class="text-lg" />
+              </button>
+              <!-- Delete Button -->
+              <button
+                @click="handleDeleteDepartment(department.id)"
+                class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow-md flex items-center justify-center"
+                title="Delete Department"
+              >
+                <Icon icon="fa-solid fa-trash" class="text-lg" />
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
-  </div>
-  <div class="flex items-center justify-center" v-if="departments.length === 0">
-    <p class="font-bold text-2xl">Отделы не найдены</p>
   </div>
 </template>
