@@ -14,20 +14,6 @@ const css = {
     transition duration-300
     ease cursor-pointer
   `,
-  title: `
-    hover:text-neutral-200
-    hover:text-opacity-50
-    transition duration-300
-    ease cursor-pointer
-    text-md
-  `,
-  link: `
-    hover:text-blue-200
-    hover:text-opacity-50
-    transition duration-300
-    ease cursor-pointer
-    text-sky-700 text-sm
-  `
 }
 </script>
 

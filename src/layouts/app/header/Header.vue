@@ -116,7 +116,7 @@ const rootUrl = computed(() => {
         v-if="user.data.abilities.includes(state.get_users)"
         :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
       >
-        <Icon :class="css.icon" icon="fa-solid fa-user-tie" />
+        <Icon :class="css.icon" icon="fa-solid fa-lock" />
         <span v-if="isSidebarExpanded">Админ</span>
       </router-link>
     </nav>
