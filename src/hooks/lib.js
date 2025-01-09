@@ -15,6 +15,7 @@ import usePermissions from './usePermissions';
 import useAbilities from './useAbilities';
 import useUserStatistics from './useUserStatistics';
 import useWebmasterStatistics from './useWebmasterStatistics';
+import useOperatorStatistics from './useOperatorStatistics';
 
 export {
   useHeader,
@@ -34,4 +35,5 @@ export {
   useAbilities,
   useUserStatistics,
   useWebmasterStatistics,
+  useOperatorStatistics,
 };

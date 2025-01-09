@@ -2,19 +2,19 @@ import { reactive, onMounted } from 'vue';
 import { useStatisticApi } from '@api';
 import { useUserStore } from '@store';
 
-const useWebmasterStatistics = () => {
+const useOperatorStatistics = () => {
   const user = useUserStore();
-  const { getWebmasterStatistic } = useStatisticApi();
+  const { getOperatorStatistic } = useStatisticApi();
 
   const state = reactive({
     isDataLoaded: false,
     statistics: [],
-    webmaster_id: user.data.webmaster_id,
+    operator_id: user.data.operator_id,
   });
 
   const handleGetData = async () => {
     state.isDataLoaded = false;
-    const data = await getWebmasterStatistic(state.range[0], state.range[1], state.webmaster_id);
+    const data = await getOperatorStatistic(state.range[0], state.range[1], state.operator_id);
     state.statistics = data.statistics;
     console.log(state.statistics);
     state.isDataLoaded = true;
@@ -32,4 +32,4 @@ const useWebmasterStatistics = () => {
   };
 };
 
-export default useWebmasterStatistics;
+export default useOperatorStatistics;

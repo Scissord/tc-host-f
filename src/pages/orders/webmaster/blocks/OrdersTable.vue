@@ -40,13 +40,7 @@ const css = {
           :key="order.id"
           class="transition duration-300 ease bg-white"
         >
-          <td :class='css.td'>
-            <p 
-              class="text-blue-900 font-semibold cursor-pointer hover:underline"
-            >
-              {{ order.id ?? "-" }}
-            </p>
-          </td>
+          <td :class='css.td'>{{ order.id ?? "-" }}</td>
           <td :class='css.td'>{{ order.fio ?? "-" }}</td>
           <td
             :class='css.td'

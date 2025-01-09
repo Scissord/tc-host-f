@@ -40,7 +40,6 @@ const rootUrl = computed(() => {
       <!-- Главная -->
       <router-link
         :to="rootUrl"
-        v-if="user.data.abilities.includes(state.get_users)"
         :class="[css.link, 'justify-center']"
       >
         <img
