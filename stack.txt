@@ -1,0 +1,157 @@
+1) vue3 composition api
+2) pinia
+3) 
+
+<script setup>
+import { onMounted } from 'vue';
+import { useCities } from '@hooks';
+import CitiesTable from './blocks/CitiesTable.vue';
+
+const { 
+  state,
+  handleAddCity,
+  handleEditCity,
+  handleSaveCity,
+  handleDeleteCity,
+  handleGetData
+} = useCities();
+
+onMounted(async () => {
+  await handleGetData();
+})
+</script>
+
+<template>
+  <div v-if="state.isDataLoaded" class="min-h-screen p-6 flex flex-col gap-6 text-xs">
+    <div class="flex items-center justify-between">
+      <h1 class="font-bold text-2xl">
+        Города
+      </h1>
+      <Button 
+        text="Добавить"
+        @click="handleAddCity"
+      />
+    </div>
+    <div class="min-h-screen flex flex-col gap-6">
+      <CitiesTable
+        :cities="state.cities"
+        :handleEditCity="handleEditCity"
+        :handleSaveCity="handleSaveCity"
+        :handleDeleteCity="handleDeleteCity"
+      />
+    </div>
+  </div>
+  <div v-else class="min-h-screen flex items-center justify-center">
+    <Loader/>
+  </div>
+</template>
+
+
+permissiontable.vue
+
+<script setup>
+import { ref, computed } from 'vue';
+
+defineProps({
+  roles: {
+    type: Array,
+    required: true,
+    default: [] 
+  },
+  users: {
+    type: Array,
+    required: true,
+    default: [] 
+  },
+  permissions: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  handleAddPermission: {
+    type: Function,
+    required: true
+  },
+  handleDeletePermission: {
+    type: Function,
+    required: true
+  },
+  handlePermissionGetData: {
+    type: Function,
+    required: true
+  },
+});
+
+const witch = ref(0);
+const entities = [
+  { value: 0, label: 'По ролям' },
+  { value: 1, label: 'По пользователям' },
+];
+const entity_id = ref(null);
+
+
+
+const css = {
+  th: 'text-left border border-slate-200 p-1',
+  td: 'border border-slate-200 p-1',
+  icon: 'hover:text-gray-300 cursor-pointer',
+};
+</script>
+
+<template>
+  <div class="flex flex-col gap-3">
+    <div class="flex flex-wrap justify-between items-center bg-zinc-600 text-white p-4 rounded-lg">
+      <h1 class="font-bold text-2xl">
+        Выдать пользователю или роли доступ
+      </h1>
+      <Button 
+        v-if="entity_id"
+        text="Добавить"
+        @click="() => handleAddPermission(entity_id, witch === 0 ? 'role' : 'user')"
+        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
+      />
+    </div>
+  <div class="grid grid-cols-6 gap-0 mt-6">
+    <Select
+      v-model="witch"
+      :options="entities"
+    />
+
+    <Select
+      v-model="entity_id"
+      @update:modelValue="(val) => handlePermissionGetData(val, witch === 0 ? 'role' : 'user')"
+      :options="witch === 0 ? roles : users"
+      value="id"
+      :label="witch === 0 ? 'title' : 'name'"
+    />
+  </div>
+    <div class="w-full">
+      <table class="w-full border-collapse border border-slate-200 table-fixed">
+        <thead>
+          <tr>
+            <th :class="css.th">Доступ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="permission in permissions" :key="permission.id" class="bg-white">
+            <td :class='css.td'>
+              <div class="flex justify-center items-center space-x-2">
+                <Icon 
+                  :icon="['fas', 'trash']" 
+                  :class="css.icon"
+                  @click="handleDeletePermission(permission.id)"
+                />
+              </div>
+            </td>
+            <td :class="css.td">
+              {{ permission.title ?? '-' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="flex items-center justify-center" v-if="permissions.length === 0">
+    <p class="font-bold text-2xl">Доступа не найдены</p>
+  </div>
+</template>

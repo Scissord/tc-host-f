@@ -29,16 +29,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="orders.state.isDataLoaded" class="min-h-screen p-6 flex flex-col gap-6 text-xs">
-    <div class="flex items-center justify-between">
-      <h1 class="font-bold text-2xl">
-        Управление заказами
-      </h1>
-      <Button
-        text='Создать'
-        @click='openCreateOrderModal'
-      />
-    </div>
+  <div
+      class="flex-grow min-h-screen p-6 transition-all duration-300 ease-in-out"
+      :class="isSidebarExpanded ? 'ml-[20vw]' : 'ml-[5vw]'"
+    >
+      <div v-if="orders.state.isDataLoaded" class="flex flex-col gap-6 text-xs">
+        <div class="flex items-center justify-between">
+          <h1 class="font-bold text-2xl">Управление заказами</h1>
+          <Button text="Создать" @click="openCreateOrderModal" />
+        </div>
+      
 
     <div class="min-h-screen flex flex-col gap-6">
       <OrdersFilters
@@ -69,5 +69,6 @@ onMounted(async () => {
   </div>
   <div v-else class="min-h-screen flex items-center justify-center">
     <Loader/>
+  </div>
   </div>
 </template>

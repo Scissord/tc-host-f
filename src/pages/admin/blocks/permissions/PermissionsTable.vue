@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 defineProps({
   roles: {
@@ -13,6 +13,11 @@ defineProps({
     default: [] 
   },
   permissions: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  abilities: {
     type: Array,
     required: true,
     default: []
@@ -31,12 +36,34 @@ defineProps({
   },
 });
 
-const witch = ref(0);
-const entities = [
-  { value: 0, label: 'Роли' },
-  { value: 1, label: 'Пользователи' },
+// const witch = ref(0);
+ const entities = [
+   { value: 0, label: 'По ролям' },
+   { value: 1, label: 'По пользователям' },
 ];
-const entity_id = ref(null);
+// const entity_id = ref(null);
+const witch = ref(0); // 0 for roles, 1 for users
+const entity_id = ref(null); // Selected role or user ID
+
+// Helper method to check if an ability is assigned to the selected role/user
+const isAbilityAssigned = (abilityId) => {
+  return permissions.some(
+    (permission) =>
+      permission.ability_id === abilityId &&
+      permission.entity_id === entity_id.value &&
+      permission.entity_type === (witch.value === 0 ? 'role' : 'user')
+  );
+};
+
+// Handle checkbox change
+const handleCheckboxChange = (abilityId, hasPermission) => {
+  if (hasPermission) {
+    handleDeletePermission(abilityId);
+  } else {
+    handleAddPermission(entity_id.value, witch.value === 0 ? 'role' : 'user', abilityId);
+  }
+};
+
 
 const css = {
   th: 'text-left border border-slate-200 p-1',
@@ -47,95 +74,62 @@ const css = {
 
 <template>
   <div class="flex flex-col gap-3">
-    <div class="flex items-center justify-between">
+    <!-- Header -->
+    <div class="flex flex-wrap justify-between items-center bg-zinc-600 text-white p-4 rounded-lg">
       <h1 class="font-bold text-2xl">
         Выдать пользователю или роли доступ
       </h1>
-      <Button 
-        v-if="entity_id"
-        text="Добавить"
-        @click="() => handleAddPermission(entity_id, witch === 0 ? 'role' : 'user')"
+    </div>
+
+    <!-- Dropdown Menus -->
+    <div class="grid grid-cols-2 gap-4 mt-6">
+      <Select
+        v-model="witch"
+        :options="entities"
+        class="w-full"
+      />
+      <Select
+        v-model="entity_id"
+        @update:modelValue="(val) => handlePermissionGetData(val, witch === 0 ? 'role' : 'user')"
+        :options="witch === 0 ? roles : users"
+        value="id"
+        :label="witch === 0 ? 'title' : 'name'"
+        class="w-full"
       />
     </div>
 
-    <Select
-      v-model="witch"
-      :options="entities"
-    />
-
-    <Select
-      v-model="entity_id"
-      @update:modelValue="(val) => handlePermissionGetData(val, witch === 0 ? 'role' : 'user')"
-      :options="witch === 0 ? roles : users"
-      value="id"
-      :label="witch === 0 ? 'title' : 'name'"
-    />
-
-    <div class="w-full">
-      <table class="w-full border-collapse border border-slate-200 table-fixed">
+    <!-- Permissions Table -->
+    <div class="w-full bg-white shadow-md rounded-lg mt-4 p-4">
+      <table class="w-full border-collapse border border-slate-200">
         <thead>
-          <tr>
-            <th 
-              :class="[css.th, 'w-[50px]']" 
-            >
-            </th>
-            <th 
-              :class="[css.th, 'w-[50px]']" 
-            >
-              ID
-            </th>
-            <th 
-              :class="css.th" 
-            >
-              Доступ
-            </th>
-            <th 
-              :class="css.th" 
-            >
-              ID Сущности
-            </th>
-            <th 
-              :class="css.th" 
-            >
-              Сущность
-            </th>
+          <tr class="bg-gray-100">
+            <th :class="css.th">Доступ</th>
+            <th :class="[css.th, 'text-center']">Выбрано</th>
           </tr>
         </thead>
         <tbody>
           <tr
-            v-for="permission in permissions"
-            :key="permission.id"
-            class="bg-white"
+            v-for="ability in abilities"
+            :key="ability.id"
+            class="hover:bg-gray-50"
           >
-            <td :class='css.td'>
-              <div
-                class="flex justify-center items-center space-x-2"
-              >
-                <Icon 
-                  :icon="['fas', 'trash']" 
-                  :class="css.icon"
-                  @click="handleDeletePermission(permission.id)"
-                />
-              </div>
-            </td>
             <td :class="css.td">
-              {{ permission.id ?? '-' }}
+              {{ ability.title }}
             </td>
-            <td :class="css.td">
-              {{ permission.ability_id ?? '-' }}
-            </td>
-            <td :class="css.td">
-              {{ permission.entity_id ?? '-' }}
-            </td>
-            <td :class="css.td">
-              {{ permission.entity_type ?? '-' }}
+            <td :class="[css.td, 'text-center']">
+              <input
+                type="checkbox"
+                :checked="isAbilityAssigned(ability.id)"
+                @change="handleCheckboxChange(
+                  ability.id, 
+                  isAbilityAssigned(ability.id)
+                )"
+                class="form-checkbox h-5 w-5 text-green-600"
+              />
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-  </div>
-  <div class="flex items-center justify-center" v-if="permissions.length === 0">
-    <p class="font-bold text-2xl">Доступа не найдены</p>
   </div>
 </template>

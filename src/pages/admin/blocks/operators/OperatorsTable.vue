@@ -42,13 +42,14 @@ const css = {
 
 <template>
   <div class="flex flex-col gap-3">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-wrap justify-between items-center bg-zinc-600 text-white p-4 rounded-lg">
       <h1 class="font-bold text-2xl">
         Операторы
       </h1>
       <Button 
         text="Добавить"
         @click="handleAddOperator"
+        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
       />
     </div>
     <div class="w-full">
@@ -60,7 +61,7 @@ const css = {
             >
             </th>
             <th 
-              :class="[css.th, 'w-[100px]']" 
+              :class="[css.th, 'w-[150px]']" 
             >
               operator_id
             </th>

@@ -32,13 +32,14 @@ const css = {
 
 <template>
   <div class="flex flex-col gap-3">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-wrap justify-between items-center bg-zinc-600 text-white p-4 rounded-lg">
       <h1 class="font-bold text-2xl">
         Роли
       </h1>
       <Button 
         text="Добавить"
         @click="handleAddRole"
+        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
       />
     </div>
     <div class="w-full">

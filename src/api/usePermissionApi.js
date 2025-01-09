@@ -6,7 +6,7 @@ const usePermissionApi = () => {
       method: 'GET',
       url: `/permissions/${entity_id}/${entity_type}`,
     });
-
+    console.log(response.data)
     return response.data;
   };
 

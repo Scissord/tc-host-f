@@ -20,6 +20,8 @@ import Statuses from '@/pages/statuses/Statuses.vue';
 import SubStatuses from '@/pages/statuses/SubStatuses.vue';
 // admin
 import Admin from '@/pages/admin/Admin.vue';
+//test
+import Test from '@/pages/test/test.vue';
 // script
 // import Script from '@/pages/script/Script.vue';
 // import EditScript from '@/pages/edit_script/EditScript.vue';
@@ -50,6 +52,8 @@ const appRoutes = {
     { path: 'statuses/:status_id', name: 'SubStatuses', component: SubStatuses },
     // Админка
     { path: 'admin', name: 'Admin', component: Admin },
+    // Test Page
+    { path: 'test', name: 'test', component: Test },
     // Скрипт для продажников
     // { path: 'script/:order_id/:good_id', name: 'Script', component: Script },
     // { path: 'edit_script', name: 'EditScript', component: EditScript },

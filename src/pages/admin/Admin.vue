@@ -148,7 +148,7 @@ onMounted(async () => {
   await handleOperatorsGetData();
   await handleRolesGetData();
   await handleAbilityGetData();
-})
+});
 </script>
 
 <template>
@@ -200,6 +200,7 @@ onMounted(async () => {
         :roles="roleState.roles"
         :users="userState.users"
         :permissions="permissionState.permissions"
+        :abilities="abilityState.abilities"
         :handleAddPermission="handleAddPermission"
         :handleDeletePermission="handleDeletePermission"
         :handlePermissionGetData="handlePermissionGetData"

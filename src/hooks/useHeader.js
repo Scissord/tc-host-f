@@ -48,60 +48,83 @@ const useHeader = () => {
   });
 
   const css = {
-    header: `
-      sticky top-0 w-full z-30
-      h-[6vh] flex items-center
-      justify-center bg-zinc-900
-      text-white bg-opacity-90
+      logoContainer: `
+          flex items-center justify-center
+          transition-all duration-300 ease-in-out  
+          w-11
     `,
-    container: `
-      h-full container mx-auto
-      flex items-center
-      justify-between
-    `,
-    logo: `
-      w-8 cursor-pointer
-    `,
-    nav: `
-      flex items-center
-      justify-around
-      gap-8 text-sm
-      w-full
-    `,
-    link: `
-      hover:text-neutral-200
-      hover:text-opacity-50
-      transition duration-300
-      ease cursor-pointer
-    `,
-    icon: `
-      hover:text-neutral-200
-      hover:text-opacity-50
-      transition duration-300
-      ease cursor-pointer text-lg
-    `,
-    avatar: `
-      hover:bg-opacity-50
-      transition duration-300
-      ease cursor-pointer
-      rounded-full w-5
-    `,
-    userMenuWrapper: `
-      relative inline-block
-    `,
-    userMenu: `
-      absolute bg-white border
-      rounded shadow-md
-      text-black text-sm 
-      left-1/2 transform 
-      -translate-x-1/2
-    `,
-    userLink: `
-      p-1 hover:bg-gray-100
-      cursor-pointer
-    `
-  };
-
+      header: `
+          fixed top-0 left-0 z-30
+          h-screen flex flex-col
+          bg-zinc-900 text-white
+          bg-opacity-90
+          transition-all duration-100 ease-in-out
+          w-[5vw] hover:w-[15vw]
+      `,
+      sidebarContainer: `
+          flex flex-col justify-between
+          h-full
+          transition-all duration-300 ease-in-out
+        
+      `,
+      topSection: `
+          flex flex-col gap-4 p-4
+          pb-auto
+      `,
+      bottomSection: `
+          flex flex-col items-left ml-4 gap-4 p-4
+          w-full
+          transition-all duration-300 ease-in-out
+      `,
+      link: `
+          whitespace-nowrap
+      `,
+      nav: `
+          flex flex-col items-start
+          justify-start gap-8
+          w-full
+      `,
+      icon: `
+          flex-shrink-0 text-lg
+          w-[2.5vw] text-center
+      `,
+      iconWithText: `
+          flex items-center gap-4
+          text-white text-lg
+          whitespace-nowrap
+          transition-all duration-300 ease-in-out
+      `,
+        userMenuExpanded: `
+          absolute bottom-full left-0
+          bg-white border rounded shadow-md
+          text-black text-sm
+          w-[150px]
+          opacity-100 pointer-events-auto
+          transition-all duration-300 ease-in-out
+      `,
+        userMenuCollapsed: `
+          mt-2 bg-white border rounded shadow-md
+          text-black text-sm
+          w-0 opacity-0
+          pointer-events-none
+          transition-all duration-300 ease-in-out
+          absolute left-0
+      `,
+        userMenuWrapper: `
+          relative
+          flex flex-col items-start
+      `,
+      userMenu: `
+          bg-white border rounded shadow-md
+          text-black text-sm
+         
+      `,
+        userLink: `
+          flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer
+      `,
+    };
+      // items-start justify-start
+      //
   return {
     state,
     isUserMenuOpen,
