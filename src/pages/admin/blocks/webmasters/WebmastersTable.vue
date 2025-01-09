@@ -47,7 +47,7 @@ const css = {
         class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
       />
     </div>
-    <div class="w-full">
+    <div class="w-full overflow-x-auto">
       <table class="w-full border-collapse border border-slate-200 table-fixed">
         <thead>
           <tr>
@@ -61,9 +61,14 @@ const css = {
               webmaster_id
             </th>
             <th
-              :class="css.th"
+              :class="[css.th, 'w-[200px]']" 
             >
               user_id
+            </th>
+            <th
+              :class="[css.th, 'w-[200px]']"
+            >
+              Имя
             </th>
           </tr>
         </thead>
@@ -107,6 +112,7 @@ const css = {
                 label="name"
               />
             </td>
+            <td :class="css.td">{{ webmaster.name ?? '-' }}</td>
           </tr>
         </tbody>
       </table>

@@ -3,18 +3,18 @@ import { onMounted, h } from 'vue';
 import { useUsers, useWebmasters, useOperators, useRoles, useAssignedRoles, usePermissions, useAbilities } from '@hooks';
 import { useUserApi, useWebmasterApi, useOperatorApi, useRoleApi, useAssignedRoleApi, usePermissionApi } from '@api';
 import { useModalStore } from '@store';
-import UsersTable from './blocks/users/UsersTable.vue';
-import AddUserModal from './blocks/users/AddUserModal.vue';
-import WebmastersTable from './blocks/webmasters/WebmastersTable.vue';
-import AddWebmasterModal from './blocks/webmasters/AddWebmasterModal.vue';
-import OperatorsTable from './blocks/operators/OperatorsTable.vue';
-import AddOperatorModal from './blocks/operators/AddOperatorModal.vue';
-import RolesTable from './blocks/roles/RolesTable.vue';
-import AddRoleModal from './blocks/roles/AddRoleModal.vue';
-import AssignedRolesTable from './blocks/assigned_roles/AssignedRolesTable.vue';
-import AddAssignedRoleModal from './blocks/assigned_roles/AddAssignedRoleModal.vue';
-import PermissionsTable from './blocks/permissions/PermissionsTable.vue';
-import AddPermissionModal from './blocks/permissions/AddPermissionModal.vue';
+import UsersTable from '../admin/blocks/users/UsersTable.vue';
+import AddUserModal from '../admin/blocks/users/AddUserModal.vue';
+import WebmastersTable from '../admin/blocks/webmasters/WebmastersTable.vue';
+import AddWebmasterModal from '../admin/blocks/webmasters/AddWebmasterModal.vue';
+import OperatorsTable from '../admin/blocks/operators/OperatorsTable.vue';
+import AddOperatorModal from '../admin/blocks/operators/AddOperatorModal.vue';
+import RolesTable from '../admin/blocks/roles/RolesTable.vue';
+import AddRoleModal from '../admin/blocks/roles/AddRoleModal.vue';
+import AssignedRolesTable from '../admin/blocks/assigned_roles/AssignedRolesTable.vue';
+import AddAssignedRoleModal from '../admin/blocks/assigned_roles/AddAssignedRoleModal.vue';
+import PermissionsTable from '../admin/blocks/permissions/PermissionsTable.vue';
+import AddPermissionModal from '../admin/blocks/permissions/AddPermissionModal.vue';
 
 const modal = useModalStore();
 
@@ -143,68 +143,96 @@ const handleAddPermission = (entity_id, entity_type) => {
 };
 
 onMounted(async () => {
-  await handleUsersGetData();
-  await handleWebmastersGetData();
-  await handleOperatorsGetData();
-  await handleRolesGetData();
-  await handleAbilityGetData();
+  await Promise.all([
+    await handleUsersGetData(),
+    await handleWebmastersGetData(),
+    await handleOperatorsGetData(),
+    await handleRolesGetData(),
+    await handleAbilityGetData(),
+  ])
 });
 </script>
 
 <template>
-  <div v-if="userState.isDataLoaded" class="min-h-screen p-6 text-xs">
-    <div class="min-h-screen flex flex-col gap-6">
-      <UsersTable
-        v-if="userState.isDataLoaded"
-        :users="userState.users"
-        :handleAddUser="handleAddUser"
-        :handleEditUser="handleEditUser"
-        :handleSaveUser="handleSaveUser"
-        :handleDeleteUser="handleDeleteUser"
-      />
-      <WebmastersTable
-        v-if="webmasterState.isDataLoaded"
-        :free_webmasters="webmasterState.free_webmasters"
-        :webmasters="webmasterState.webmasters"
-        :handleAddWebmaster="handleAddWebmaster"
-        :handleEditWebmaster="handleEditWebmaster"
-        :handleSaveWebmaster="handleSaveWebmaster"
-        :handleDeleteWebmaster="handleDeleteWebmaster"
-      />
-      <OperatorsTable
-        v-if="operatorState.isDataLoaded"
-        :teams="operatorState.teams"
-        :free_operators="operatorState.free_operators"
-        :operators="operatorState.operators"
-        :handleAddOperator="handleAddOperator"
-        :handleEditOperator="handleEditOperator"
-        :handleSaveOperator="handleSaveOperator"
-        :handleDeleteOperator="handleDeleteOperator"
-      />
-      <RolesTable
-        v-if="roleState.isDataLoaded"
-        :roles="roleState.roles"
-        :handleAddRole="handleAddRole"
-        :handleEditRole="handleEditRole"
-        :handleSaveRole="handleSaveRole"
-        :handleDeleteRole="handleDeleteRole"
-      />
-      <AssignedRolesTable
-        :roles="roleState.roles"
-        :assigned_roles="assignedRoleState.assigned_roles"
-        :handleAddAssignedRole="handleAddAssignedRole"
-        :handleDeleteAssignedRole="handleDeleteAssignedRole"
-        :handleAssignedRoleGetData="handleAssignedRoleGetData"
-      />
-      <PermissionsTable
-        :roles="roleState.roles"
-        :users="userState.users"
-        :permissions="permissionState.permissions"
-        :abilities="abilityState.abilities"
-        :handleAddPermission="handleAddPermission"
-        :handleDeletePermission="handleDeletePermission"
-        :handlePermissionGetData="handlePermissionGetData"
-      />
+  <div v-if="userState.isDataLoaded" class="min-h-screen p-6 transition-all duration-300 ease-in-out ml-[5vw]">
+    <div class="flex flex-wrap justify-between items-center bg-zinc-600 text-white p-4 rounded-lg">
+      <h1 class="text-2xl font-bold">Админ Панель</h1>
+    </div>
+
+    <div class="flex flex-col gap-6 mt-6">
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <UsersTable
+          v-if="userState.isDataLoaded" 
+          :users="userState.users"
+          :handleAddUser="handleAddUser"
+          :handleEditUser="handleEditUser"
+          :handleSaveUser="handleSaveUser"
+          :handleDeleteUser="handleDeleteUser"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-6 mt-6">
+        <div class="bg-white rounded-lg shadow-md p-4">
+          <WebmastersTable
+            v-if="webmasterState.isDataLoaded"
+            :free_webmasters="webmasterState.free_webmasters"
+            :webmasters="webmasterState.webmasters"
+            :handleAddWebmaster="handleAddWebmaster"
+            :handleEditWebmaster="handleEditWebmaster"
+            :handleSaveWebmaster="handleSaveWebmaster"
+            :handleDeleteWebmaster="handleDeleteWebmaster"
+          />
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-4">
+          <OperatorsTable
+            v-if="operatorState.isDataLoaded"
+            :teams="operatorState.teams"
+            :free_operators="operatorState.free_operators"
+            :operators="operatorState.operators"
+            :handleAddOperator="handleAddOperator"
+            :handleEditOperator="handleEditOperator"
+            :handleSaveOperator="handleSaveOperator"
+            :handleDeleteOperator="handleDeleteOperator"
+          />
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg p-4">
+          <RolesTable
+            v-if="roleState.isDataLoaded"
+            :roles="roleState.roles"
+            :handleAddRole="handleAddRole"
+            :handleEditRole="handleEditRole"
+            :handleSaveRole="handleSaveRole"
+            :handleDeleteRole="handleDeleteRole"
+          />
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg p-4">
+          <AssignedRolesTable
+            v-if="roleState.isDataLoaded && assignedRoleState.isDataLoaded"
+            :roles="roleState.roles"
+            :assigned_roles="assignedRoleState.assigned_roles"
+            :handleAddAssignedRole="handleAddAssignedRole"
+            :handleDeleteAssignedRole="handleDeleteAssignedRole"
+            :handleAssignedRoleGetData="handleAssignedRoleGetData"
+          />
+        </div>
+      </div>
+
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <PermissionsTable
+          v-if="roleState.isDataLoaded && userState.isDataLoaded && abilityState.isDataLoaded"
+          :permissions="permissionState.permissions"
+          :roles="roleState.roles"
+          :users="userState.users"
+          :abilities="abilityState.abilities"
+          :handleAddPermission="handleAddPermission"
+          :handleDeletePermission="handleDeletePermission"
+          :handlePermissionGetData="handlePermissionGetData"
+        />
+      </div>
     </div>
   </div>
 </template>
+  

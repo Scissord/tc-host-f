@@ -36,7 +36,7 @@ const rootUrl = computed(() => {
     @mouseenter="handleSidebarHover"
     @mouseleave="handleSidebarLeave"
   >
-    <nav :class="[css.nav, isSidebarExpanded ? 'px-6 gap-4' : 'gap-7']">
+    <nav :class="[css.nav, isSidebarExpanded ? 'px-4 gap-4' : 'gap-7']">
       <!-- Главная -->
       <router-link
         :to="rootUrl"
@@ -122,7 +122,7 @@ const rootUrl = computed(() => {
       </router-link>
     </nav>
 
-    <div :class="[css.nav, isSidebarExpanded ? 'px-6 gap-4' : 'gap-7']">
+    <div :class="[css.nav, isSidebarExpanded ? 'px-4 gap-4' : 'gap-7']">
       <div 
         :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
       >

@@ -42,7 +42,7 @@ const css = {
         class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
       />
     </div>
-    <div class="w-full">
+    <div class="w-full overflow-x-auto">
       <table class="w-full border-collapse border border-slate-200 table-fixed">
         <thead>
           <tr>
@@ -61,7 +61,7 @@ const css = {
               Название
             </th>
             <th 
-              :class="css.th" 
+              :class="[css.th, 'w-[200px]']" 
             >
               Описание
             </th>

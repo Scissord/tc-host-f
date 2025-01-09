@@ -57,18 +57,13 @@ const css = {
       label="title"
     />
 
-    <div class="w-full">
+    <div class="w-full overflow-x-auto">
       <table class="w-full border-collapse border border-slate-200 table-fixed">
         <thead>
           <tr>
             <th 
               :class="[css.th, 'w-[50px]']" 
             >
-            </th>
-            <th 
-              :class="[css.th, 'w-[50px]']" 
-            >
-              ID
             </th>
             <th 
               :class="css.th" 
@@ -94,8 +89,7 @@ const css = {
                 />
               </div>
             </td>
-            <td :class="css.td">{{ assigned_role.id ?? '-' }}</td>
-            <td :class="css.td">{{ assigned_role.entity_id ?? '-' }}</td>
+            <td :class="css.td">{{ assigned_role.name ?? '-' }}</td>
           </tr>
         </tbody>
       </table>

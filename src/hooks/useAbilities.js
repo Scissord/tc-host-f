@@ -14,7 +14,6 @@ const useAbilities = () => {
   const handleAbilityGetData = async () => {
     state.isDataLoaded = false;
     const data = await getAbilities();
-    console.log(data);
     state.abilities = data.abilities;
     state.isDataLoaded = true;
   };

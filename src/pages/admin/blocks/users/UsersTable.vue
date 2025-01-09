@@ -66,7 +66,7 @@
                 Пароль
               </th>
               <th 
-                :class="css.th"
+                :class="[css.th, 'w-[200px]']"
               >
                 Имя
               </th>

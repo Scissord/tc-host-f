@@ -52,7 +52,7 @@ const css = {
         class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
       />
     </div>
-    <div class="w-full">
+    <div class="w-full overflow-x-auto">
       <table class="w-full border-collapse border border-slate-200 table-fixed">
         <thead>
           <tr>
@@ -65,15 +65,20 @@ const css = {
             >
               operator_id
             </th>
+            <th
+              :class="[css.th, 'w-[200px]']" 
+            >
+              user_id
+            </th>
             <th 
               :class="[css.th, 'w-[200px]']" 
             >
               Команда
             </th>
-            <th
-              :class="css.th"
+            <th 
+              :class="[css.th, 'w-[200px]']" 
             >
-              user_id
+              Имя
             </th>
           </tr>
         </thead>
@@ -108,16 +113,6 @@ const css = {
             </td>
             <td :class="css.td">{{ operator.id ?? '-' }}</td>
             <td :class="css.td">
-              <p v-if="!operator.is_editable">{{ operator.team_id ?? '-' }}</p>
-              <Select
-                v-else
-                v-model="operator.team_id"
-                :options="teams"
-                value="id"
-                label="title"
-              />
-            </td>
-            <td :class="css.td">
               <p v-if="!operator.is_editable">{{ operator.user_id ?? '-' }}</p>
               <Select
                 v-else
@@ -127,6 +122,17 @@ const css = {
                 label="name"
               />
             </td>
+            <td :class="css.td">
+              <p v-if="!operator.is_editable">{{ operator.team_id ?? '-' }}</p>
+              <Select
+                v-else
+                v-model="operator.team_id"
+                :options="teams"
+                value="id"
+                label="title"
+              />
+            </td>
+            <td :class="css.td">{{ operator.name ?? '-' }}</td>
           </tr>
         </tbody>
       </table>
