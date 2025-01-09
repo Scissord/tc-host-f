@@ -36,7 +36,7 @@ const css = {
           <th class="text-left p-2 border">#</th>
           <th class="text-left p-2 border">Названия</th>
           <th class="text-left p-2 border">Цена</th>
-          <th class="text-left p-2 border">Действие</th>
+          <th class="text-left p-2 border">Действия</th>
         </tr>
       </thead>
       <tbody>

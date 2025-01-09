@@ -4,18 +4,18 @@ import { useCities } from '@hooks';
 import CitiesHeader from './blocks/CitiesHeader.vue';
 import CitiesTable from './blocks/CitiesTable.vue';
 
-const { 
+const {
   state,
   handleAddCity,
   handleEditCity,
   handleSaveCity,
   handleDeleteCity,
-  handleGetData
+  handleGetData,
 } = useCities();
 
 onMounted(async () => {
   await handleGetData();
-})
+});
 </script>
 
 <template>

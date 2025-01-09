@@ -1,72 +1,59 @@
 <script setup>
-import { useRouter } from 'vue-router';
 
 defineProps({
   operators: {
     type: Array,
     required: true,
-    default: []
+    default: [],
   },
   handleDeleteOperator: {
     type: Function,
-    required: true
+    required: true,
   },
 });
-
-const router = useRouter();
-
-const css = {
-  th: 'text-left border border-slate-200 p-1 whitespace-nowrap',
-  td: 'border border-slate-200 p-1',
-  icon: 'hover:text-gray-300 cursor-pointer',
-};
 </script>
 
 <template>
-  <div class="z-1 w-full">
-    <table class="z-1 w-full border-collapse border border-slate-200 table-fixed">
+  <div class="bg-white mt-4 p-4 rounded shadow">
+    <table class="w-full border-collapse">
       <thead>
-        <tr>
-          <th 
-            :class="[css.th, 'w-[50px]']"
-          >
-          </th>
-          <th 
-            :class="[css.th, 'w-[50px]']"
-          >
-            ID
-          </th>
-          <th 
-            :class="css.th"
-          >
-            Имя
-          </th>
+        <tr class="bg-gray-200">
+          <th class='text-left p-2 border'>ID</th>
+          <th class='text-left p-2 border'>Название</th>
+          <th class='text-left p-2 border'>Действия</th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="operator in operators"
-          :key="operator.id"
-          class="bg-white z-1"
-        >
-          <td :class='css.td'>
-            <div
-              class="flex justify-center items-center space-x-2"
-            >
-              <Icon 
-                :icon="['fas', 'trash']" 
-                :class="css.icon"
+        <tr v-for="operator in operators" :key="operator.id" class="hover:bg-gray-100">
+          <td class="p-2 border w-12">
+            {{ operator.id ?? "-" }}
+          </td>
+          <!-- Name Column -->
+          <td class="p-2 border">
+            <p v-if="!operator.is_editable">{{ operator.name ?? "-" }}</p>
+            <Input
+              v-else
+              :id="'operator' + operator.id"
+              type="text"
+              v-model="operator.name"
+              placeholder="Название..."
+              class="text-xs p-1 border rounded-md"
+            />
+          </td>
+          <!-- Actions Column -->
+          <td class="p-2 border w-12">
+            <div class="flex justify-start gap-2 items-center">
+              <button
                 @click="handleDeleteOperator(operator.id)"
-              />
+                class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow-md flex items-center justify-center"
+                title="Delete Operator"
+              >
+                <Icon icon="fa-solid fa-trash" class="text-lg" />
+              </button>
             </div>
           </td>
-          <td :class="[css.td, 'w-[50px]']">{{ operator.id ?? "-" }}</td>
-          <td :class="css.td">{{ operator.name ?? '-' }}</td>
         </tr>
       </tbody>
     </table>
-  </div>
-  <div class="flex items-center justify-center" v-if="operators.length === 0">
-    <p class="font-bold text-2xl">Операторы не найдены</p>
   </div>
 </template>

@@ -144,11 +144,11 @@ const rootUrl = computed(() => {
 
       <div 
         v-if="user.isAuthenticated"
+        @click="showUserMenu"
         :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
       >
         <div :class="css.userMenuWrapper" @mouseleave="hideUserMenu">
           <div
-            @click="showUserMenu"
             title="User Menu"
             class="flex items-center gap-2 cursor-pointer"
           >

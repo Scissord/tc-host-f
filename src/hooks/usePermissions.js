@@ -9,15 +9,21 @@ const usePermissions = () => {
 
   const {
     getPermissionsByEntity,
-    deletePermission
+    togglePermission,
   } = usePermissionApi();
 
-  const handleDeletePermission = async (id) => {
-    const confirm = window.confirm('Вы уверены?');
-    if (confirm) {
-      await deletePermission(id);
-      state.permissions = state.permissions.filter((p) => +p.id !== +id);
-    };
+  const handleTogglePermission = async (entity_id, entity_type, ability_id) => {
+    const permission = await togglePermission({ entity_id, entity_type, ability_id });
+    const isExist = state.permissions.find((p) =>
+      +p.entity_id === entity_id &&
+      p.entity_type === entity_type &&
+      +p.ability_id === ability_id
+    );
+    if (isExist) {
+      state.permissions.filter((p) => +p.id !== +permission.id)
+    } else {
+      state.permissions.push(permission);
+    }
   };
 
   const handlePermissionGetData = async (entity_id, entity_type) => {
@@ -29,7 +35,7 @@ const usePermissions = () => {
 
   return {
     permissionState: state,
-    handleDeletePermission,
+    handleTogglePermission,
     handlePermissionGetData
   };
 };

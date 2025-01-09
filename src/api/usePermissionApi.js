@@ -6,13 +6,12 @@ const usePermissionApi = () => {
       method: 'GET',
       url: `/permissions/${entity_id}/${entity_type}`,
     });
-    console.log(response.data)
     return response.data;
   };
 
-  const createPermission = async (data) => {
+  const togglePermission = async (data) => {
     const response = await api({
-      method: 'POST',
+      method: 'PATCH',
       url: '/permissions',
       data
     });
@@ -20,19 +19,9 @@ const usePermissionApi = () => {
     return response.data;
   };
 
-  const deletePermission = async (id) => {
-    const response = await api({
-      method: 'DELETE',
-      url: `/permissions/${id}`,
-    });
-
-    return response.data;
-  };
-
   return {
     getPermissionsByEntity,
-    createPermission,
-    deletePermission
+    togglePermission,
   };
 };
 

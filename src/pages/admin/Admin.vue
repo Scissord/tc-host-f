@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, h } from 'vue';
 import { useUsers, useWebmasters, useOperators, useRoles, useAssignedRoles, usePermissions, useAbilities } from '@hooks';
-import { useUserApi, useWebmasterApi, useOperatorApi, useRoleApi, useAssignedRoleApi, usePermissionApi } from '@api';
+import { useUserApi, useWebmasterApi, useOperatorApi, useRoleApi, useAssignedRoleApi } from '@api';
 import { useModalStore } from '@store';
 import UsersTable from '../admin/blocks/users/UsersTable.vue';
 import AddUserModal from '../admin/blocks/users/AddUserModal.vue';
@@ -14,7 +14,6 @@ import AddRoleModal from '../admin/blocks/roles/AddRoleModal.vue';
 import AssignedRolesTable from '../admin/blocks/assigned_roles/AssignedRolesTable.vue';
 import AddAssignedRoleModal from '../admin/blocks/assigned_roles/AddAssignedRoleModal.vue';
 import PermissionsTable from '../admin/blocks/permissions/PermissionsTable.vue';
-import AddPermissionModal from '../admin/blocks/permissions/AddPermissionModal.vue';
 
 const modal = useModalStore();
 
@@ -23,7 +22,6 @@ const { createWebmaster } = useWebmasterApi();
 const { createOperator } = useOperatorApi(); 
 const { createRole } = useRoleApi(); 
 const { createAssignedRole } = useAssignedRoleApi();
-const { createPermission } = usePermissionApi();
 
 const { 
   userState,
@@ -65,7 +63,7 @@ const {
 
 const { 
   permissionState,
-  handleDeletePermission,
+  handleTogglePermission,
   handlePermissionGetData 
 } = usePermissions();
 
@@ -125,19 +123,6 @@ const handleAddAssignedRole = (role_id) => {
       assigned_roles: assignedRoleState.assigned_roles,
       createAssignedRole, 
       users: userState.users, 
-    }),
-  })
-};
-
-const handleAddPermission = (entity_id, entity_type) => {
-  modal.show({
-    title: 'Добавление доступа к пользователю или роли',
-    children: h(AddPermissionModal, { 
-      entity_id,
-      entity_type,
-      abilities: abilityState.abilities,
-      permissions: permissionState.permissions,
-      createPermission,
     }),
   })
 };
@@ -210,7 +195,7 @@ onMounted(async () => {
 
         <div class="bg-white shadow-md rounded-lg p-4">
           <AssignedRolesTable
-            v-if="roleState.isDataLoaded && assignedRoleState.isDataLoaded"
+            v-if="roleState.isDataLoaded"
             :roles="roleState.roles"
             :assigned_roles="assignedRoleState.assigned_roles"
             :handleAddAssignedRole="handleAddAssignedRole"
@@ -227,8 +212,7 @@ onMounted(async () => {
           :roles="roleState.roles"
           :users="userState.users"
           :abilities="abilityState.abilities"
-          :handleAddPermission="handleAddPermission"
-          :handleDeletePermission="handleDeletePermission"
+          :handleTogglePermission="handleTogglePermission"
           :handlePermissionGetData="handlePermissionGetData"
         />
       </div>

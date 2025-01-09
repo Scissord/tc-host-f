@@ -3,98 +3,90 @@ defineProps({
   sub_statuses: {
     type: Array,
     required: true,
-    default: []
+    default: [],
   },
   handleEditSubStatus: {
     type: Function,
-    required: true
+    required: true,
   },
   handleSaveSubStatus: {
     type: Function,
-    required: true
+    required: true,
   },
   handleDeleteSubStatus: {
     type: Function,
-    required: true
+    required: true,
   },
 });
-
-const css = {
-  th: 'text-left border border-slate-200 p-1 whitespace-nowrap',
-  td: 'border border-slate-200 p-1',
-  icon: 'hover:text-gray-300 cursor-pointer',
-};
 </script>
 
 <template>
-  <div class="z-1 w-full">
-    <table class="z-1 w-full border-collapse border border-slate-200 table-fixed">
+  <div class="bg-white mt-4 p-4 rounded shadow">
+    <table class="w-full border-collapse">
       <thead>
-        <tr>
-          <th 
-            :class="[css.th, 'w-[50px]']"
-          >
-          </th>
-          <th 
-            :class="[css.th, 'w-[50px]']"
-          >
-            ID
-          </th>
-          <th 
-            :class="css.th"
-          >
-            Название
-          </th>
+        <tr class="bg-gray-200 text-gray-700">
+          <th class="text-left p-2 border w-12">ID</th>
+          <th class="text-left p-2 border">Название</th>
+          <th class="text-left p-2 border">Действия</th>
         </tr>
       </thead>
       <tbody>
         <tr
           v-for="sub_status in sub_statuses"
           :key="sub_status.id"
-          class="bg-white z-1"
+          class="hover:bg-gray-100 transition-colors duration-300"
         >
-          <td :class='css.td'>
-            <div
-              class="flex justify-center items-center space-x-2"
-            >
-              <Icon 
-                v-if="!sub_status.is_editable"
-                :icon="['fas', 'pen-to-square']" 
-                :class="css.icon"
-                @click="handleEditSubStatus(sub_status.id)"
-              />
-              <Icon 
-                v-else
-                :icon="['fas', 'floppy-disk']" 
-                :class="css.icon"
-                @click="handleSaveSubStatus(sub_status.id)"
-              />
-              <Icon 
-                :icon="['fas', 'trash']" 
-                :class="css.icon"
-                @click="handleDeleteSubStatus(sub_status.id)"
-              />
-            </div>
+          <!-- ID Column -->
+          <td class="p-2 border w-12">
+            <p>
+              {{ sub_status.id ?? "-" }}
+            </p>
           </td>
-          <td :class="[css.td, 'w-[50px]']">
-            {{ sub_status.id ?? "-" }}
-          </td>
-          <td :class="css.td">
-            <p v-if="!sub_status.is_editable">{{ sub_status.name ?? '-' }}</p>
+
+          <!-- Name Column -->
+          <td class="p-2 border">
+            <p v-if="!sub_status.is_editable">
+              {{ sub_status.name ?? "-" }}
+            </p>
             <Input
               v-else
               :id="'sub_status' + sub_status.id"
               type="text"
               v-model="sub_status.name"
-              placeholder="Введите..."
-              class="text-xs p-1"
+              placeholder="Введите название..."
+              class="border rounded px-2 py-1 text-gray-700"
             />
+          </td>
+          <!-- Actions Column -->
+          <td class="p-2 border w-12">
+            <div class="flex justify-center gap-2">
+              <button
+                v-if="!sub_status.is_editable"
+                @click="handleEditSubStatus(sub_status.id)"
+                class="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-full shadow flex items-center justify-center"
+                title="Редактировать"
+              >
+                <Icon icon="fa-solid fa-pen" class="text-lg" />
+              </button>
+              <button
+                v-else
+                @click="handleSaveSubStatus(sub_status.id)"
+                class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-full shadow flex items-center justify-center"
+                title="Сохранить"
+              >
+                <Icon icon="fa-solid fa-save" class="text-lg" />
+              </button>
+              <button
+                @click="handleDeleteSubStatus(sub_status.id)"
+                class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-full shadow flex items-center justify-center"
+                title="Удалить"
+              >
+                <Icon icon="fa-solid fa-trash" class="text-lg" />
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
-  </div>
-  <div class="flex items-center justify-center" v-if="sub_statuses.length === 0">
-    <p class="font-bold text-2xl">Подстатусы не найдены</p>
   </div>
 </template>

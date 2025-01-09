@@ -22,11 +22,7 @@ const props = defineProps({
     required: true,
     default: []
   },
-  handleAddPermission: {
-    type: Function,
-    required: true
-  },
-  handleDeletePermission: {
+  handleTogglePermission: {
     type: Function,
     required: true
   },
@@ -44,16 +40,12 @@ const entities = [
 
 const entity_id = ref(null);
 
-const isChecked = (abilityId) => {
-  return !!props.permissions.find((p) => +p.ability_id === abilityId);
+const isChecked = (ability_id) => {
+  return !!props.permissions.find((p) => +p.ability_id === +ability_id);
 };
 
-const togglePermission = (abilityId) => {
-  if (isChecked(abilityId)) {
-    props.handleDeletePermission(abilityId);
-  } else {
-    props.handleAddPermission(abilityId);
-  }
+const togglePermission = (entity_id, entity_type, ability_id) => {
+  props.handleTogglePermission(entity_id, entity_type, ability_id);
 };
 
 const css = {
@@ -75,7 +67,7 @@ const css = {
       <Select
         v-model="witch"
         :options="entities"
-        class="w-full"
+        class="w-[250px]"
       />
       <Select
         v-model="entity_id"
@@ -83,6 +75,7 @@ const css = {
         :options="witch === 0 ? roles : users"
         value="id"
         :label="witch === 0 ? 'title' : 'name'"
+        class="w-[250px]"
       />
     </div>
 
@@ -105,8 +98,9 @@ const css = {
             </td>
             <td :class="[css.td, 'text-center']">
               <Checkbox
+                v-if="entity_id"
                 :modelValue="isChecked(ability.id)"
-                @update:modelValue="() => togglePermission(ability.id)"
+                @update:modelValue="() => togglePermission(entity_id, witch === 0 ? 'role' : 'user', ability.id)"
               />
             </td>
           </tr>

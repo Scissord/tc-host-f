@@ -34,8 +34,7 @@ const css = {
 <template>
   <!-- Page Container -->
   <div
-    class="min-h-screen grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 bg-gray-100 text-gray-800"
-    :class="isSidebarExpanded ? 'ml-[20vw]' : 'ml-[5vw]'"
+    class="min-h-screen grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 bg-gray-100 text-gray-800 ml-[5vw]"
   >
     <!-- Floating Action Buttons -->
     <Icon
@@ -122,10 +121,7 @@ const css = {
           placeholder="..."
         />
       </div>
-    </div>
 
-    <!-- Additional Cards -->
-    <div class="bg-white rounded-lg shadow-md p-6 space-y-4">
       <div class="flex flex-col gap-2">
         <h1 class="text-sm font-semibold text-gray-600">Город:</h1>
         <p v-if="!order.state.order.is_editable" class="text-gray-700">
@@ -184,30 +180,29 @@ const css = {
         </p>
       </div>
     </div>
-<!-- Third Card -->
-<div class="bg-white rounded-lg shadow-md p-6 space-y-4 min-h-[350px]">
-  <!-- Additional Fields: additional1 - additional9 -->
-  <div
-    v-for="i in 9"
-    :key="`additional${i}`"
-    class="flex flex-col gap-2"
-  >
-    <h1 class="text-sm font-semibold text-gray-600">
-      Дополнительное {{ i }}:
-    </h1>
-    <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
-      {{ order.state.order[`additional${i}`] ?? '-' }}
-    </p>
-    <Input
-      v-else
-      :id="`additional${i}`"
-      v-model="order.state.order[`additional${i}`]"
-      type="text"
-      class="border rounded-md p-2 text-gray-700"
-      placeholder="..."
-    />
+
+    <div class="bg-white rounded-lg shadow-md p-6 space-y-4 min-h-screen">
+      <div
+        v-for="i in 10"
+        :key="`additional${i}`"
+        class="flex flex-col gap-2"
+      >
+        <h1 class="text-sm font-semibold text-gray-600">
+          Дополнительное {{ i }}:
+        </h1>
+        <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
+          {{ order.state.order[`additional${i}`] ?? '-' }}
+        </p>
+        <Input
+          v-else
+          :id="`additional${i}`"
+          v-model="order.state.order[`additional${i}`]"
+          type="text"
+          class="border rounded-md p-2 text-gray-700"
+          placeholder="..."
+        />
+      </div>
+    </div>
   </div>
-</div>
-</div>
 </template>
 

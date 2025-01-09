@@ -74,6 +74,7 @@ const useHeader = () => {
       w-full flex items-center gap-3
       whitespace-nowrap cursor-pointer
       transition-all duration-300 ease-in-out
+      select-none
     `,
     openLink: `
       justify-start hover:bg-gray-400 
