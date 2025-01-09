@@ -43,9 +43,9 @@ const css = {
           <p class="font-mono text-lg font-bold">Talk&Call</p>
         </div>
         <p class="text-xs">
-          This site was created to help you make
-          connect with customers and leadvertex.
-          Hope you enjoy it.
+          This site was developed to help operators 
+          communicate with customers.
+          <br/>Hope you enjoy it.
         </p>
         <div class="flex items-center gap-3">
           <Icon icon="fa-brands fa-instagram" :class="css.icon" />
@@ -60,61 +60,9 @@ const css = {
           <Icon icon="fa-brands fa-steam" :class="css.icon" />
         </div>
       </div>
-      <div class="flex flex-col gap-3">
-        <h1 :class="css.title">Products</h1>
-        <p :class="css.link">WordPress Themes</p>
-        <p :class="css.link">WooCommerce Themes</p>
-        <p :class="css.link">HTML5 Templates</p>
-        <p :class="css.link">Shopify Themes</p>
-        <p :class="css.link">Zemez</p>
-        <p :class="css.link">MotoCMS</p>
-        <p :class="css.link">Welbium</p>
-        <p :class="css.link">MotoPress</p>
-        <p :class="css.link">MonsterONE</p>
-        <p :class="css.link">Novi Builder</p>
-      </div>
-      <div class="flex flex-col gap-3">
-        <h1 :class="css.title">Products</h1>
-        <p :class="css.link">WordPress Themes</p>
-        <p :class="css.link">WooCommerce Themes</p>
-        <p :class="css.link">HTML5 Templates</p>
-        <p :class="css.link">Shopify Themes</p>
-        <p :class="css.link">Zemez</p>
-        <p :class="css.link">MotoCMS</p>
-        <p :class="css.link">Welbium</p>
-        <p :class="css.link">MotoPress</p>
-        <p :class="css.link">MonsterONE</p>
-        <p :class="css.link">Novi Builder</p>
-      </div>
-      <div class="flex flex-col gap-3">
-        <h1 :class="css.title">Products</h1>
-        <p :class="css.link">WordPress Themes</p>
-        <p :class="css.link">WooCommerce Themes</p>
-        <p :class="css.link">HTML5 Templates</p>
-        <p :class="css.link">Shopify Themes</p>
-        <p :class="css.link">Zemez</p>
-        <p :class="css.link">MotoCMS</p>
-        <p :class="css.link">Welbium</p>
-        <p :class="css.link">MotoPress</p>
-        <p :class="css.link">MonsterONE</p>
-        <p :class="css.link">Novi Builder</p>
-      </div>
-      <div class="flex flex-col gap-3">
-        <h1 :class="css.title">Products</h1>
-        <p :class="css.link">WordPress Themes</p>
-        <p :class="css.link">WooCommerce Themes</p>
-        <p :class="css.link">HTML5 Templates</p>
-        <p :class="css.link">Shopify Themes</p>
-        <p :class="css.link">Zemez</p>
-        <p :class="css.link">MotoCMS</p>
-        <p :class="css.link">Welbium</p>
-        <p :class="css.link">MotoPress</p>
-        <p :class="css.link">MonsterONE</p>
-        <p :class="css.link">Novi Builder</p>
-      </div>
       <div class="col-span-6 border-b"></div>
       <div class="col-span-2">
-        <p class="text-xs">Copyright © 2024 Talk&Call. All rights reserved.</p>
+        <p class="text-xs">Copyright © 2025 Talk&Call. All rights reserved.</p>
       </div>
       <div class="col-span-3 text-xs">
         <div class="flex items-center gap-6">
