@@ -19,6 +19,7 @@ const useHeader = () => {
   const connection = useConnectionStore();
 
   const isUserMenuOpen = ref(false);
+  const isSidebarExpanded = ref(false);
 
   const showUserMenu = () => {
     isUserMenuOpen.value = true;
@@ -31,6 +32,15 @@ const useHeader = () => {
   const handleLogout = async () => {
     connection.disconnect();
     await logout();
+  };
+
+  // Handle sidebar hover
+  const handleSidebarHover = () => {
+    isSidebarExpanded.value = true;
+  };
+
+  const handleSidebarLeave = () => {
+    isSidebarExpanded.value = false;
   };
 
   const handleGetUrls = async () => {
@@ -49,57 +59,62 @@ const useHeader = () => {
 
   const css = {
     header: `
-      sticky top-0 w-full z-30
-      h-[6vh] flex items-center
-      justify-center bg-zinc-900
-      text-white bg-opacity-90
-    `,
-    container: `
-      h-full container mx-auto
-      flex items-center
-      justify-between
-    `,
-    logo: `
-      w-8 cursor-pointer
+      fixed top-0 left-0 z-30
+      h-screen flex flex-col justify-between
+      bg-zinc-900 text-white
+      bg-opacity-90
+      transition-all duration-300 ease-in-out
+      w-[5vw] hover:w-[12vw]
     `,
     nav: `
-      flex items-center
-      justify-around
-      gap-8 text-sm
-      w-full
+      flex flex-col items-center
+      py-6
     `,
     link: `
-      hover:text-neutral-200
-      hover:text-opacity-50
-      transition duration-300
-      ease cursor-pointer
+      w-full flex items-center gap-3
+      whitespace-nowrap cursor-pointer
+      transition-all duration-300 ease-in-out
+    `,
+    openLink: `
+      justify-start hover:bg-gray-400 
+      py-1 px-3 rounded-lg
+    `,
+    closedLink: `
+      justify-center
+    `,
+    logo: `
+      transition-all duration-300 ease-in-out  
     `,
     icon: `
-      hover:text-neutral-200
-      hover:text-opacity-50
-      transition duration-300
-      ease cursor-pointer text-lg
+      text-lg
     `,
-    avatar: `
-      hover:bg-opacity-50
-      transition duration-300
-      ease cursor-pointer
-      rounded-full w-5
+    userMenuExpanded: `
+      absolute bottom-full left-0
+      bg-white border rounded shadow-md
+      text-black text-sm
+      w-[150px]
+      opacity-100 pointer-events-auto
+      transition-all duration-300 ease-in-out
+    `,
+    userMenuCollapsed: `
+      mt-2 bg-white border rounded shadow-md
+      text-black text-sm
+      w-0 opacity-0
+      pointer-events-none
+      transition-all duration-300 ease-in-out
+      absolute left-0
     `,
     userMenuWrapper: `
-      relative inline-block
+      relative
+      flex flex-col items-start
     `,
     userMenu: `
-      absolute bg-white border
-      rounded shadow-md
-      text-black text-sm 
-      left-1/2 transform 
-      -translate-x-1/2
+      bg-white border rounded shadow-md
+      text-black text-sm
     `,
     userLink: `
-      p-1 hover:bg-gray-100
-      cursor-pointer
-    `
+      flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer
+    `,
   };
 
   return {
@@ -108,6 +123,9 @@ const useHeader = () => {
     showUserMenu,
     hideUserMenu,
     handleLogout,
+    isSidebarExpanded,
+    handleSidebarHover,
+    handleSidebarLeave,
     css
   };
 };

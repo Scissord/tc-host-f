@@ -19,7 +19,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="state.isDataLoaded" class="min-h-screen p-6 flex flex-col gap-6 text-xs">
+  <div v-if="state.isDataLoaded" class="ml-[5vw] min-h-screen p-6 flex flex-col gap-6 text-xs">
     <h1 class="font-bold text-2xl">
       Статистика по конверсиям
     </h1>

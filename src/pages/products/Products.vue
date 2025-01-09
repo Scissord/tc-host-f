@@ -1,43 +1,38 @@
 <script setup>
-import { onMounted } from 'vue';
-import { useProducts } from '@hooks';
-import ProductsTable from './blocks/ProductsTable.vue';
+import { onMounted } from "vue";
+import { useProducts } from "@hooks";
+import ProductsHeader from "./blocks/ProductsHeader.vue";
+import ProductsTable from "./blocks/ProductsTable.vue";
 
-const { 
+const {
   state,
   handleAddProduct,
   handleEditProduct,
-  handleSaveProduct,
   handleDeleteProduct,
-  handleGetData 
+  handleSaveProduct,
+  handleGetData,
 } = useProducts();
 
 onMounted(async () => {
   await handleGetData();
-})
+});
 </script>
 
 <template>
-  <div v-if="state.isDataLoaded" class="min-h-screen p-6 flex flex-col gap-6 text-xs">
-    <div class="flex items-center justify-between">
-      <h1 class="font-bold text-2xl">
-        Продукты
-      </h1>
-      <Button 
-        text="Добавить"
-        @click="handleAddProduct"
-      />
-    </div>
-    <div class="min-h-screen flex flex-col gap-6">
-      <ProductsTable
-        :products="state.products"
-        :handleEditProduct="handleEditProduct"
-        :handleSaveProduct="handleSaveProduct"
-        :handleDeleteProduct="handleDeleteProduct"
-      />
-    </div>
+  <div v-if="state.isDataLoaded" class="min-h-screen p-6 transition-all duration-300 ease-in-out ml-[5vw]">
+    <ProductsHeader 
+      :handleAddProduct="handleAddProduct"
+    />
+
+    <ProductsTable
+      :products="state.products"
+      :handleEditProduct="handleEditProduct"
+      :handleDeleteProduct="handleDeleteProduct"
+      :handleSaveProduct="handleSaveProduct"
+    />
   </div>
+  
   <div v-else class="min-h-screen flex items-center justify-center">
-    <Loader/>
+    <Loader />
   </div>
 </template>

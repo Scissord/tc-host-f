@@ -1,18 +1,21 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useHeader } from "@hooks";
 import { useUserStore, useThemeStore } from "@store";
 
 const user = useUserStore();
 const theme = useThemeStore();
 
-const { 
+const {
   state,
   isUserMenuOpen,
   showUserMenu,
   hideUserMenu,
   handleLogout,
-  css
+  isSidebarExpanded,
+  handleSidebarHover,
+  handleSidebarLeave,
+  css,
 } = useHeader();
 
 const rootUrl = computed(() => {
@@ -26,119 +29,147 @@ const rootUrl = computed(() => {
 });
 </script>
 
+
 <template>
-  <header v-if='user.isAuthenticated' :class="css.header">
-    <div :class="css.container">
-      <nav :class="css.nav">
-        <!-- Главная -->
-        <router-link
-          :to="rootUrl"
-          :class="css.link"
-        >
-          <img
-            src="/pics/logo.png"
-            :class="css.logo"
-          />
-        </router-link>
-        <!-- Заказы (все)  -->
-        <router-link
-          to="/user/orders"
-          v-if="user.data.abilities.includes(state.get_orders)"
-          :class="css.link"
-        >
-          Заказы
-        </router-link>
-        <!-- Заказы вебмастер -->
-        <router-link
-          to="/webmaster/orders"
-          v-if="user.data.webmaster_id"
-          :class="css.link"
-        >
-          Заказы
-        </router-link>
-        <!-- Заказы оператор  -->
-        <router-link
-          to="/operator/orders"
-          v-if="user.data.operator_id"
-          :class="css.link"
-        >
-          Заказы
-        </router-link>
-        <!-- Офферы  -->
-        <router-link
-          to="/products"
-          v-if="user.data.abilities.includes(state.get_products)"
-          :class="css.link"
-        >
-          Офферы
-        </router-link>
-        <!-- Офферы  -->
-        <router-link
-          to="/cities"
-          v-if="user.data.abilities.includes(state.get_cities)"
-          :class="css.link"
-        >
-          Города
-        </router-link>
-        <!-- Отделы  -->
-        <router-link
-          to="/departments"
-          v-if="user.data.abilities.includes(state.get_departments)"
-          :class="css.link"
-        >
-          Отделы
-        </router-link>
-        <!-- Отделы  -->
-        <router-link
-          to="/statuses"
-          v-if="user.data.abilities.includes(state.get_statuses)"
-          :class="css.link"
-        >
-          Статусы
-        </router-link>
-        <!-- Отделы  -->
-        <router-link
-          to="/admin"
-          v-if="user.data.abilities.includes(state.get_users)"
-          :class="css.link"
-        >
-          Админ
-        </router-link>
-        <Icon
-          icon="fa-solid fa-language"
-          :class="css.icon + ' ml-auto'"
+  <header v-if='user.isAuthenticated' 
+    :class="css.header"
+    @mouseenter="handleSidebarHover"
+    @mouseleave="handleSidebarLeave"
+  >
+    <nav :class="[css.nav, isSidebarExpanded ? 'px-6 gap-4' : 'gap-7']">
+      <!-- Главная -->
+      <router-link
+        :to="rootUrl"
+        v-if="user.data.abilities.includes(state.get_users)"
+        :class="[css.link, 'justify-center']"
+      >
+        <img
+          src="/pics/logo.png"
+          :class="[css.logo, isSidebarExpanded ? 'w-16' : 'w-11']"
         />
+      </router-link>
+      <!-- Заказы (все)  -->
+      <router-link
+        to="/user/orders"
+        v-if="user.data.abilities.includes(state.get_orders)"
+        :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
+      >
+        <Icon :class="css.icon" icon="fa-solid fa-cart-shopping" />
+        <span v-if="isSidebarExpanded">Заказы</span>
+      </router-link>
+      <!-- Заказы вебмастер -->
+      <router-link
+        to="/webmaster/orders"
+        v-if="user.data.webmaster_id"
+        :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
+      >
+        <Icon :class="css.icon" icon="fa-solid fa-cart-shopping" />
+        <span v-if="isSidebarExpanded">Заказы</span>
+      </router-link>
+      <!-- Заказы оператор  -->
+      <router-link
+        to="/operator/orders"
+        v-if="user.data.operator_id"
+        :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
+      >
+        <Icon :class="css.icon" icon="fa-solid fa-cart-shopping" />
+        <span v-if="isSidebarExpanded">Заказы</span>
+      </router-link>
+      <!-- Офферы  -->
+      <router-link
+        to="/products"
+        v-if="user.data.abilities.includes(state.get_products)"
+        :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
+      >
+        <Icon :class="css.icon" icon="fa-solid fa-box" />
+        <span v-if="isSidebarExpanded">Офферы</span>
+      </router-link>
+      <!-- Офферы  -->
+      <router-link
+        to="/cities"
+        v-if="user.data.abilities.includes(state.get_cities)"
+        :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
+      >
+        <Icon :class="css.icon" icon="fa-solid fa-city" />
+        <span v-if="isSidebarExpanded">Города</span>
+      </router-link>
+      <!-- Отделы  -->
+      <router-link
+        to="/departments"
+        v-if="user.data.abilities.includes(state.get_departments)"
+        :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
+      >
+        <Icon :class="css.icon" icon="fa-solid fa-building-user" />
+        <span v-if="isSidebarExpanded">Отделы</span>
+      </router-link>
+      <!-- Status  -->
+      <router-link
+        to="/statuses"
+        v-if="user.data.abilities.includes(state.get_statuses)"
+        :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
+      >
+        <Icon :class="css.icon" icon="fa-solid fa-circle-check" />
+        <span v-if="isSidebarExpanded">Статусы</span>
+      </router-link>
+      <!-- Admin  -->
+      <router-link
+        to="/admin"
+        v-if="user.data.abilities.includes(state.get_users)"
+        :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
+      >
+        <Icon :class="css.icon" icon="fa-solid fa-user-tie" />
+        <span v-if="isSidebarExpanded">Админ</span>
+      </router-link>
+    </nav>
+
+    <div :class="[css.nav, isSidebarExpanded ? 'px-6 gap-4' : 'gap-7']">
+      <div 
+        :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
+      >
+        <Icon icon="fa-solid fa-language"/>
+        <span v-if="isSidebarExpanded">Язык</span>
+      </div>
+
+      <div 
+        :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
+        @click="theme.toggleTheme"
+      >
         <Icon
           :icon="theme.theme === 'light' ? 'fa-solid fa-moon' : 'fa-solid fa-sun'"
-          :class="css.icon"
-          @click="theme.toggleTheme"
         />
-        <div v-if="user.isAuthenticated" :class="css.userMenuWrapper">
-          <Icon
-            icon="fa-solid fa-circle-user"
-            :class="css.icon"
-            @mouseover="showUserMenu"
-          />
+        <span v-if="isSidebarExpanded">
+          {{ theme.theme === 'light' ? 'Темный Режим' : 'Светлый Режим' }}
+        </span>
+      </div>
+
+      <div 
+        v-if="user.isAuthenticated"
+        :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
+      >
+        <div :class="css.userMenuWrapper" @mouseleave="hideUserMenu">
+          <div
+            @click="showUserMenu"
+            title="User Menu"
+            class="flex items-center gap-2 cursor-pointer"
+          >
+            <Icon icon="fa-solid fa-circle-user" />
+            <span v-if="isSidebarExpanded">{{ user.data.login }}</span>
+          </div>
           <div
             v-if="isUserMenuOpen"
-            :class="css.userMenu"
-            @mouseover="showUserMenu"
-            @mouseleave="hideUserMenu"
+            :class="css.userMenuExpanded"
           >
-            <ul class="p-2">
-              <li :class="css.userLink">{{ user.data.login }}</li>
-              <li :class="css.userLink">Profile</li>
-              <li :class="css.userLink">Setting</li>
-              <li
-                :class="css.userLink"
-                @click="handleLogout"
-              >
-                Exit
-              </li>
-            </ul>
+            <div :class="css.userLink" @click="hideUserMenu">
+              <Icon icon="fa-solid fa-cog" />
+              <span>Настройки</span>
+            </div>
+            <div :class="css.userLink" @click="handleLogout">
+              <Icon icon="fa-solid fa-sign-out-alt" />
+              <span>Выход</span>
+            </div>
           </div>
         </div>
-      </nav>
+      </div>
     </div>
   </header>
 </template>
