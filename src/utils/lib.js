@@ -1,9 +1,9 @@
 import baseUrl from "./baseUrl";
 import DateFormat from './DateFormat';
-import filerFilters from './filterFilters';
+import formatRange from './formatRange';
 
 export {
-  baseUrl, 
+  baseUrl,
   DateFormat,
-  filerFilters
+  formatRange,
 };

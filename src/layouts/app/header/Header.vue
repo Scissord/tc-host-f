@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue';
 import { useHeader } from "@hooks";
 import { useUserStore, useThemeStore } from "@store";
 
@@ -13,6 +14,16 @@ const {
   handleLogout,
   css
 } = useHeader();
+
+const rootUrl = computed(() => {
+  if(user.data.webmaster_id) {
+    return '/webmaster/statistics';
+  };
+  if(user.data.operator_id) {
+    return '/operator/statistics';
+  };
+  return '/user/statistics';
+});
 </script>
 
 <template>
@@ -21,7 +32,7 @@ const {
       <nav :class="css.nav">
         <!-- Главная -->
         <router-link
-          to="/"
+          :to="rootUrl"
           :class="css.link"
         >
           <img

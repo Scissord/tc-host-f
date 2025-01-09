@@ -15,6 +15,7 @@ import useWebmasterApi from './useWebmasterApi';
 import useRoleApi from './useRoleApi';
 import useAssignedRoleApi from './useAssignedRoleApi';
 import usePermissionApi from './usePermissionApi';
+import useStatisticApi from './useStatisticApi';
 
 export {
   api,
@@ -35,4 +36,5 @@ export {
   useRoleApi,
   useAssignedRoleApi,
   usePermissionApi,
+  useStatisticApi,
 };

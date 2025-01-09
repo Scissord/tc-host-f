@@ -13,6 +13,8 @@ import useRoles from './useRoles';
 import useAssignedRoles from './useAssignedRoles';
 import usePermissions from './usePermissions';
 import useAbilities from './useAbilities';
+import useUserStatistics from './useUserStatistics';
+import useWebmasterStatistics from './useWebmasterStatistics';
 
 export {
   useHeader,
@@ -30,4 +32,6 @@ export {
   useAssignedRoles,
   usePermissions,
   useAbilities,
+  useUserStatistics,
+  useWebmasterStatistics,
 };

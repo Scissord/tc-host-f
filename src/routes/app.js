@@ -1,6 +1,8 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 // statistic
-import Home from '@/pages/home/Home.vue';
+import UserStatistics from '@/pages/home/user/UserStatistics.vue';
+import WebmasterStatistics from '@/pages/home/webmaster/WebmasterStatistics.vue';
+import OperatorStatistics from '@/pages/home/operator/OperatorStatistics.vue';
 // orders
 import UserOrders from '@/pages/orders/user/UserOrders.vue';
 import WebmasterOrders from '@/pages/orders/webmaster/WebmasterOrders.vue';
@@ -28,7 +30,10 @@ const appRoutes = {
   path: '/',
   component: AppLayout,
   children: [
-    { path: '', name: 'Home', component: Home },
+    // Статистика
+    { path: '/user/statistics', name: 'UserStatistics', component: UserStatistics },
+    { path: '/webmaster/statistics', name: 'WebmasterStatistics', component: WebmasterStatistics },
+    { path: '/operator/statistics', name: 'OperatorStatistics', component: OperatorStatistics },
     // Заказы
     { path: 'user/orders', name: 'User Orders', component: UserOrders },
     { path: 'webmaster/orders', name: 'Webmaster Orders', component: WebmasterOrders },

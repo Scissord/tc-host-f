@@ -49,9 +49,8 @@ const selectOption = (option) => {
       emits('update:modelValue', [...currentValue, +optionValue]);
     }
   } else {
-    // Для одиночного выбора
     emits('update:modelValue', option[props.value || 'value'], option);
-    isOpen.value = false; // Закрыть меню
+    isOpen.value = false;
   }
 };
 
