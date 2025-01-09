@@ -16,7 +16,6 @@ const useWebmasterStatistics = () => {
     state.isDataLoaded = false;
     const data = await getWebmasterStatistic(state.range[0], state.range[1], state.webmaster_id);
     state.statistics = data.statistics;
-    console.log(state.statistics);
     state.isDataLoaded = true;
   };
 

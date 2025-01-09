@@ -1,6 +1,4 @@
 <script setup>
-import { watch } from 'vue';
-
 const props = defineProps({
   subStatus: {
     type: Number,
@@ -16,10 +14,6 @@ const props = defineProps({
     required: true
   }
 });
-
-watch(props.subStatuses, (newVal) => {
-  console.log(newVal);
-})
 </script>
 
 <template>

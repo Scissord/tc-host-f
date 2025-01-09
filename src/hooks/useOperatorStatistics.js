@@ -16,7 +16,6 @@ const useOperatorStatistics = () => {
     state.isDataLoaded = false;
     const data = await getOperatorStatistic(state.range[0], state.range[1], state.operator_id);
     state.statistics = data.statistics;
-    console.log(state.statistics);
     state.isDataLoaded = true;
   };
 

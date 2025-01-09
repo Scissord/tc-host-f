@@ -16,7 +16,6 @@ export const setup = () => {
   const notification = useNotificationStore();
   const { refresh } = useAuthApi();
 
-  // 1. Add accessToken to every request
   api.interceptors.request.use(
     (config) => {
       if (user.accessToken) {
@@ -29,13 +28,16 @@ export const setup = () => {
     }
   );
 
-  // 2. If errors
   api.interceptors.response.use(
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
 
-      // 3. if error 401 - token expired
+      // 1. 400 - mean default error
+      if (error.response.status === 400) {
+        notification.show(error.response?.data?.message || 'Что-то пошло не так!', 'error');
+      };
+      // 2. 401 - token expired
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
 
@@ -56,13 +58,17 @@ export const setup = () => {
           return Promise.reject(refreshError);
         };
       };
-
+      // 3. 403 - no abilities to action
       if (error.response.status === 403) {
         router.push('/');
-      }
+        notification.show(error.response?.data?.message || 'Что-то пошло не так!', 'error');
+      };
+      // 4. 500 - internal server
+      if (error.response.status === 500) {
+        notification.show('Ошибка на сервере', 'error');
+      };
 
       // Прочие ошибки
-      notification.show(error.response?.data?.message || 'Что-то пошло не так!', 'error');
       return Promise.reject(error);
     }
   );
