@@ -14,69 +14,71 @@ const useDepartments = () => {
 
   const { getSubStatuses } = useSubStatusApi();
 
-  const { 
+  const {
     getDepartments,
     createDepartment,
     updateDepartment,
     deleteDepartment
-  } = useDepartmentApi(); 
-  
+  } = useDepartmentApi();
+
   const handleAddDepartment = () => {
     modal.show({
       title: 'Добавление отдела',
-      children: h(AddDepartmentModal, { 
-        createDepartment, 
+      children: h(AddDepartmentModal, {
+        createDepartment,
         departments: state.departments,
         subStatuses: state.subStatuses,
       }),
     })
-  }; 
-  
+  };
+
   const handleEditDepartment = (id) => {
     const department = state.departments.find((d) => +d.id === +id)
-    if(department) {
+    if (department) {
       department.is_editable = !department.is_editable;
     };
   };
-  
+
   const handleSaveDepartment = async (id) => {
     const department = state.departments.find((d) => +d.id === +id)
-    if(department) {
+    if (department) {
       await updateDepartment(id, {
         title: department.title,
         sub_status_ids: department.sub_status_ids
-      }); 
+      });
     };
     department.is_editable = false;
   };
-  
+
   const handleDeleteDepartment = async (id) => {
-    const confirm = window.confirm('Вы уверены?'); 
-    if(confirm) {
+    const confirm = window.confirm('Вы уверены?');
+    if (confirm) {
       await deleteDepartment(id);
       state.departments = state.departments.filter((d) => +d.id !== +id);
     };
   };
-  
+
   const handleGetData = async () => {
     state.isDataLoaded = false;
     const subStatusesData = await getSubStatuses();
+
+    console.log(subStatusesData.subStatuses)
     state.subStatuses = subStatusesData.subStatuses;
     const departmentsData = await getDepartments();
     state.departments = departmentsData.departments.map(department => ({
       ...department,
       is_editable: false
     }));
-    state.isDataLoaded = true; 
+    state.isDataLoaded = true;
   };
-  
+
   return {
     state,
     handleAddDepartment,
     handleEditDepartment,
     handleSaveDepartment,
     handleDeleteDepartment,
-    handleGetData 
+    handleGetData
   };
 };
 

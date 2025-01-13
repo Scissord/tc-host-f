@@ -79,7 +79,7 @@ const router = useRouter();
             <Select
               v-else
               v-model="teams.sub_status_ids"
-              :options="state.subStatuses"
+              :options="subStatuses"
               value="id"
               label="name"
               multiple

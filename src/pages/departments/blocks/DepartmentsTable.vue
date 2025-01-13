@@ -90,7 +90,7 @@ const css = {
             <Select
               v-else
               v-model="department.sub_status_ids"
-              :options="state.subStatuses"
+              :options="subStatuses"
               value="id"
               label="name"
               multiple
