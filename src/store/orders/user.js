@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { 
-  useOrderApi, 
-  useSubStatusApi, 
-  useOrderColumnApi 
+import {
+  useOrderApi,
+  useSubStatusApi,
+  useOrderColumnApi
 } from '@api';
 import { socket } from "@/plugins/socket";
 
@@ -22,8 +22,8 @@ const useUserOrdersStore = defineStore('user_order', () => {
     page: 1,
     lastPage: null,
     pages: [],
-    subStatus: 1,
-    newSubStatus: 1,
+    subStatus: 0,
+    newSubStatus: 0,
     newSubStatusLength: 0,
     // arrays
     subStatuses: [],
@@ -35,7 +35,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
   const handleChangeStateAfterAddOrder = async () => {
     // checkboxes
     const allChecked = state.orders.every(order => order.is_checked);
-    if(!allChecked) {
+    if (!allChecked) {
       state.columns[0].is_checked = false;
       state.orders = state.orders.map((order) => ({
         ...order,
@@ -56,7 +56,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
     state.page = 1;
     state.subStatus = +val;
     state.newSubStatus = +val;
-    state.newSubStatusLength = state.subStatuses.find((ss) => +ss.id === +val)?.orders_count ?? 0 
+    state.newSubStatusLength = state.subStatuses.find((ss) => +ss.id === +val)?.orders_count ?? 0
     state.columns[0].is_checked = false;
     await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
   };
@@ -75,11 +75,11 @@ const useUserOrdersStore = defineStore('user_order', () => {
     await changeStatus(data);
     await handleGetOrders(state.limit, state.page, state.subStatus);
 
-    if(state.columns[0].is_checked === true) {
+    if (state.columns[0].is_checked === true) {
       state.columns[0].is_checked = false;
     };
 
-    if(ids.length === 0) {
+    if (ids.length === 0) {
       const currentStatus = state.subStatuses.find((oss) => +oss.id === +state.subStatus)
       const newStatus = state.subStatuses.find((oss) => +oss.id === +val)
       // new_status
@@ -97,7 +97,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
       const newLength = +currentStatus.orders_count - ids.length;
       currentStatus.orders_count = newLength;
       state.newSubStatusLength = newLength;
-    } 
+    }
 
     socket.emit("sendStatus", data);
   };
@@ -114,8 +114,8 @@ const useUserOrdersStore = defineStore('user_order', () => {
 
   const handleToggleOrder = async (val) => {
     const currentLength = state.orders.filter(order => order.is_checked === true).length
-    if(currentLength === 0) {
-      state.newSubStatusLength = state.subStatuses.find((ss) => +ss.id === +state.subStatus)?.orders_count ?? 0 
+    if (currentLength === 0) {
+      state.newSubStatusLength = state.subStatuses.find((ss) => +ss.id === +state.subStatus)?.orders_count ?? 0
       return;
     };
 
@@ -123,13 +123,13 @@ const useUserOrdersStore = defineStore('user_order', () => {
   };
 
   const handleToggleOrders = (val) => {
-    if(val) {
+    if (val) {
       state.newSubStatusLength = state.orders.filter(order => !order.is_disabled).length;
     } else {
       state.newSubStatusLength = state.subStatuses.find((ss) => +ss.id === +state.subStatus)?.orders_count ?? 0;
     }
     state.orders.forEach((order) => {
-      if(!order.is_disabled) {
+      if (!order.is_disabled) {
         order.is_checked = val;
       };
     });
@@ -137,11 +137,11 @@ const useUserOrdersStore = defineStore('user_order', () => {
 
   const handleBlockOrder = (order_id, name) => {
     const order = state.orders.find((order) => order.id === order_id);
-    
+
     if (order) {
       order.is_disabled = true;
       order.reserved_by = name;
-      if(order.is_checked) {
+      if (order.is_checked) {
         state.newSubStatusLength = state.newSubStatusLength - 1;
         order.is_checked = false;
       };
@@ -152,12 +152,12 @@ const useUserOrdersStore = defineStore('user_order', () => {
 
   const handleOpenOrder = (order_id, name) => {
     const order = state.orders.find((order) => order.id === order_id);
-    
+
     if (order) {
       order.is_disabled = false;
       order.reserved_by = name;
     };
-    
+
     state.orders = [...state.orders];
   };
 
@@ -184,7 +184,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
     state.newSubStatusLength = subStatusData.subStatuses[0].orders_count;
     state.subStatuses.splice(0, state.subStatuses.length, ...subStatusData.subStatuses);
   };
-  
+
   const handleGetOrderColumns = async () => {
     const orderColumnsData = await getOrderColumns();
     state.columns.splice(0, state.columns.length, ...orderColumnsData);
@@ -216,13 +216,13 @@ const useUserOrdersStore = defineStore('user_order', () => {
 
   const handleGetData = async () => {
     state.isDataLoaded = false;
-  
+
     await Promise.all([
-      handleGetSubStatuses(), 
-      handleGetOrderColumns(), 
+      handleGetSubStatuses(),
+      handleGetOrderColumns(),
       handleGetOrders(state.limit, state.page, state.subStatus, [])
     ]);
-  
+
     state.isDataLoaded = true;
   };
 
