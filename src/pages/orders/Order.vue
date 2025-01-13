@@ -24,11 +24,6 @@ onBeforeUnmount(() => {
     name: user.data.name
   });
 });
-
-const css = {
-  card: 'flex flex-col gap-3 border rounded-lg p-3',
-  title: 'font-bold'
-};
 </script> 
 
 <template>
@@ -122,6 +117,7 @@ const css = {
         />
       </div>
 
+      <!-- Город -->
       <div class="flex flex-col gap-2">
         <h1 class="text-sm font-semibold text-gray-600">Город:</h1>
         <p v-if="!order.state.order.is_editable" class="text-gray-700">
@@ -137,6 +133,7 @@ const css = {
         />
       </div>
 
+      <!-- Адресс -->
       <div class="flex flex-col gap-2">
         <h1 class="text-sm font-semibold text-gray-600">Адрес:</h1>
         <p v-if="!order.state.order.is_editable" class="text-gray-700">
@@ -152,6 +149,7 @@ const css = {
         />
       </div>
 
+      <!-- Почта -->
       <div class="flex flex-col gap-2">
         <h1 class="text-sm font-semibold text-gray-600">Почта:</h1>
         <p v-if="!order.state.order.is_editable" class="text-gray-700">
@@ -166,6 +164,72 @@ const css = {
           placeholder="..."
         />
       </div>
+
+      <!-- Пол -->
+      <div class="flex flex-col gap-2">
+        <h1 class="text-sm font-semibold text-gray-600">Пол:</h1>
+        <p v-if="!order.state.order.is_editable" class="text-gray-700">
+          {{ order.state.order.gender_id ?? '-' }}
+        </p>
+        <Select
+          v-else
+          v-model="order.state.order.gender_id"
+          :options="order.state.genders"
+          value="id"
+          label="name"
+          class="border rounded-md p-2 text-gray-700"
+        />
+      </div>
+
+      <!-- Способ оплаты -->
+      <div class="flex flex-col gap-2">
+        <h1 class="text-sm font-semibold text-gray-600">Способ оплаты:</h1>
+        <p v-if="!order.state.order.is_editable" class="text-gray-700">
+          {{ order.state.order.payment_method_id ?? '-' }}
+        </p>
+        <Select
+          v-else
+          v-model="order.state.order.payment_method_id"
+          :options="order.state.paymentMethods"
+          value="id"
+          label="name"
+          class="border rounded-md p-2 text-gray-700"
+        />
+      </div>
+
+      <!-- Способ оплаты -->
+      <div class="flex flex-col gap-2">
+        <h1 class="text-sm font-semibold text-gray-600">Способ доставки:</h1>
+        <p v-if="!order.state.order.is_editable" class="text-gray-700">
+          {{ order.state.order.delivery_method_id ?? '-' }}
+        </p>
+        <Select
+          v-else
+          v-model="order.state.order.delivery_method_id"
+          :options="order.state.deliveryMethods"
+          value="id"
+          label="name"
+          class="border rounded-md p-2 text-gray-700"
+        />
+      </div>
+
+      <!-- Причина отказа -->
+      <div class="flex flex-col gap-2">
+        <h1 class="text-sm font-semibold text-gray-600">Причина отказа:</h1>
+        <p v-if="!order.state.order.is_editable" class="text-gray-700">
+          {{ order.state.order.order_cancel_reason_id ?? '-' }}
+        </p>
+        <Select
+          v-else
+          v-model="order.state.order.order_cancel_reason_id"
+          :options="order.state.orderCancelReasons"
+          value="id"
+          label="name"
+          class="border rounded-md p-2 text-gray-700"
+        />
+      </div>
+
+      <!-- Дата создания -->
       <div class="flex flex-col gap-2">
         <h1 class="text-sm font-semibold text-gray-600">Дата создания:</h1>
         <p class="text-gray-700 break-words">
@@ -173,6 +237,7 @@ const css = {
         </p>
       </div>
 
+      <!-- Последнее обновление -->
       <div class="flex flex-col gap-2">
         <h1 class="text-sm font-semibold text-gray-600">Последнее обновление:</h1>
         <p class="text-gray-700 break-words">

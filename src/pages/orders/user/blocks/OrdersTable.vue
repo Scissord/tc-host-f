@@ -113,13 +113,13 @@ const css = {
             {{ order.gender ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ order.payment ?? '-' }}
+            {{ order.payment_method ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ order.delivery ?? '-' }}
+            {{ order.delivery_method ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ order.cancel_reason ?? '-' }}
+            {{ order.order_cancel_reason ?? '-' }}
           </td>
           <td :class='css.td'>{{ order.additional1 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional2 ?? '-' }}</td>

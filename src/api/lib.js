@@ -16,6 +16,10 @@ import useRoleApi from './useRoleApi';
 import useAssignedRoleApi from './useAssignedRoleApi';
 import usePermissionApi from './usePermissionApi';
 import useStatisticApi from './useStatisticApi';
+import useGenderApi from './useGenderApi';
+import usePaymentMethodApi from './usePaymentMethodApi';
+import useDeliveryMethodApi from './useDeliveryMethodApi';
+import useOrderCancelReasonApi from './useOrderCancelReasonApi';
 
 export {
   api,
@@ -37,4 +41,8 @@ export {
   useAssignedRoleApi,
   usePermissionApi,
   useStatisticApi,
+  useGenderApi,
+  usePaymentMethodApi,
+  useDeliveryMethodApi,
+  useOrderCancelReasonApi
 };
