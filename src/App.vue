@@ -57,14 +57,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div 
+  <!-- <div 
     :class="[
       'fixed top-2 right-2 text-white p-1 z-50',
       connection.isConnected ? 'bg-green-500' : 'bg-red-500'
     ]"
   >
     {{ connection.isConnected }}
-  </div>
+  </div> -->
   <router-view />
 </template>
 

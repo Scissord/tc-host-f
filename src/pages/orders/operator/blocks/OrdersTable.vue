@@ -118,6 +118,9 @@ const css = {
           <td :class='css.td'>
             {{ order.delivery ?? '-' }}
           </td>
+          <td :class='css.td'>
+            {{ order.cancel_reason ?? '-' }}
+          </td>
           <td :class='css.td'>{{ order.additional1 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional2 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional3 ?? '-' }}</td>
