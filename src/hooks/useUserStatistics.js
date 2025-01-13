@@ -54,7 +54,6 @@ const useUserStatistics = () => {
     state.isDataLoaded = false;
     const data = await fetchData(state.tab, state.range, state.group, state.webmaster_id, state.operator_id);
     state.statistics = data.statistics;
-    console.log(state.statistics);
     state.isDataLoaded = true;
   };
 

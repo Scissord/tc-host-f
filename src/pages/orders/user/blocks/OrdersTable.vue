@@ -109,6 +109,15 @@ const css = {
               {{ order.status.name ?? '-' }}
             </p>
           </td>
+          <td :class='css.td'>
+            {{ order.gender ?? '-' }}
+          </td>
+          <td :class='css.td'>
+            {{ order.payment ?? '-' }}
+          </td>
+          <td :class='css.td'>
+            {{ order.delivery ?? '-' }}
+          </td>
           <td :class='css.td'>{{ order.additional1 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional2 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional3 ?? '-' }}</td>
