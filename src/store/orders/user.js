@@ -72,6 +72,8 @@ const useUserOrdersStore = defineStore('user_order', () => {
       ids: ids
     };
 
+    socket.emit("sendStatus", data);
+
     await changeStatus(data);
     await handleGetOrders(state.limit, state.page, state.subStatus);
 
@@ -98,8 +100,6 @@ const useUserOrdersStore = defineStore('user_order', () => {
       currentStatus.orders_count = newLength;
       state.newSubStatusLength = newLength;
     }
-
-    socket.emit("sendStatus", data);
   };
 
   const handleChangePage = async (val) => {
@@ -163,7 +163,49 @@ const useUserOrdersStore = defineStore('user_order', () => {
 
   const bindEvents = () => {
     socket.on("receiveStatus", (data) => {
-      console.log(data);
+      // find old status
+      const oldStatus = state.subStatuses.find((oss) => +oss.id === +data.old_sub_status_id);
+      // find new status
+      const newStatus = state.subStatuses.find((oss) => +oss.id === +data.new_sub_status_id);
+
+      const newLength = data.ids.length === 0 ? data.total : data.ids.length;
+      // remove from old length
+      if (oldStatus) {
+        oldStatus.orders_count = +oldStatus.orders_count - newLength;
+      };
+
+      // add to new length
+      if (newStatus) {
+        newStatus.orders_count = +newStatus.orders_count + newLength;
+      };
+
+      // under table value
+      if (+data.old_sub_status_id === +state.newSubStatus) {
+        state.newSubStatusLength = +state.newSubStatusLength - newLength;
+      };
+
+      if (+data.new_sub_status_id === +state.newSubStatus) {
+        state.newSubStatusLength = +state.newSubStatusLength + newLength;
+      };
+
+      // if current page === oldStatus
+      if (+data.old_sub_status_id === +state.subStatus) {
+        if (!data.ids.length) {
+          state.orders = [];
+        } else {
+          state.orders = state.orders.filter((order) => !data.ids.includes(order.id));
+        };
+      };
+
+      // if current page === newStatus
+      if (+data.new_sub_status_id === +state.subStatus) {
+        state.orders = [...data.orders.map((order) => ({
+          ...order,
+          is_checked: false,
+          is_disabled: false,
+          reserved_by: null
+        })), ...state.orders];
+      };
     });
 
     socket.on("blockOrder", (data) => {
@@ -204,12 +246,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
   const handleGetOrders = async (limit, page, subStatus, filters) => {
     const ordersData = await getUserOrders(limit, page, subStatus, filters);
 
-    state.orders.splice(0, state.orders.length, ...ordersData.orders.map((order) => ({
-      ...order,
-      is_checked: false,
-      is_disabled: false,
-      reserved_by: null
-    })));
+    state.orders = ordersData.orders;
     state.pages.splice(0, state.pages.length, ...ordersData.pages);
     state.lastPage = ordersData.lastPage;
   };

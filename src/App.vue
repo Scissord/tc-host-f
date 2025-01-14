@@ -5,7 +5,6 @@ import { socket } from '@/plugins/socket';
 import { useUserStore, useConnectionStore } from '@store';
 import { 
   useUserOrdersStore,
-  useWebmasterOrdersStore,  
   useOperatorOrdersStore, 
   useOrderStore 
 } from '@store';
@@ -20,14 +19,12 @@ const user = useUserStore();
 const connection = useConnectionStore();
 
 const userOrders = useUserOrdersStore();
-const webmasterOrders = useWebmasterOrdersStore();
 const operatorOrders = useOperatorOrdersStore();
 const order = useOrderStore();
 
 socket.off();
 connection.bindEvents();
 userOrders.bindEvents();
-webmasterOrders.bindEvents();
 operatorOrders.bindEvents();
 order.bindEvents();
 

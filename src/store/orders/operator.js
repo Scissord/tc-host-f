@@ -66,11 +66,14 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
       .filter(order => order.is_checked)
       .map(order => order.id);
 
+
     const data = {
       old_sub_status_id: state.subStatus,
       new_sub_status_id: val,
       ids: ids
     };
+
+    socket.emit("sendStatus", data);
 
     await changeStatus(data);
     await handleGetOrders(state.limit, state.page, state.subStatus);
@@ -83,7 +86,9 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
       const currentStatus = state.operatorSubStatuses.find((oss) => +oss.id === +state.subStatus)
       const newStatus = state.operatorSubStatuses.find((oss) => +oss.id === +val)
       // new_status
-      newStatus.orders_count = +newStatus.orders_count + +currentStatus.orders_count;
+      if (newStatus) {
+        newStatus.orders_count = +newStatus.orders_count + +currentStatus.orders_count;
+      };
       // current_status
       const newLength = 0;
       currentStatus.orders_count = newLength;
@@ -92,14 +97,14 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
       const currentStatus = state.operatorSubStatuses.find((oss) => +oss.id === +state.subStatus);
       const newStatus = state.operatorSubStatuses.find((oss) => +oss.id === +val);
       // new_status
-      newStatus.orders_count = +newStatus.orders_count + ids.length;
+      if (newStatus !== null && newStatus !== undefined) {
+        newStatus.orders_count = +newStatus.orders_count + ids.length;
+      };
       // current_status
       const newLength = +currentStatus.orders_count - ids.length;
       currentStatus.orders_count = newLength;
       state.newSubStatusLength = newLength;
-    }
-
-    socket.emit("sendStatus", data);
+    };
   };
 
   const handleChangePage = async (val) => {
@@ -158,7 +163,49 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
 
   const bindEvents = () => {
     socket.on("receiveStatus", (data) => {
-      console.log(data);
+      // find old status
+      const oldStatus = state.operatorSubStatuses.find((oss) => +oss.id === +data.old_sub_status_id);
+      // find new status
+      const newStatus = state.operatorSubStatuses.find((oss) => +oss.id === +data.new_sub_status_id);
+
+      const newLength = data.ids.length === 0 ? data.total : data.ids.length;
+      // remove from old length
+      if (oldStatus) {
+        oldStatus.orders_count = +oldStatus.orders_count - newLength;
+      };
+
+      // add to new length
+      if (newStatus) {
+        newStatus.orders_count = +newStatus.orders_count + newLength;
+      };
+
+      // under table value
+      if (+data.old_sub_status_id === +state.newSubStatus) {
+        state.newSubStatusLength = +state.newSubStatusLength - newLength;
+      };
+
+      if (+data.new_sub_status_id === +state.newSubStatus) {
+        state.newSubStatusLength = +state.newSubStatusLength + newLength;
+      };
+
+      // if current page === oldStatus
+      if (+data.old_sub_status_id === +state.subStatus) {
+        if (!data.ids.length) {
+          state.orders = [];
+        } else {
+          state.orders = state.orders.filter((order) => !data.ids.includes(order.id));
+        };
+      };
+
+      // if current page === newStatus
+      if (+data.new_sub_status_id === +state.subStatus) {
+        state.orders = [...data.orders.map((order) => ({
+          ...order,
+          is_checked: false,
+          is_disabled: false,
+          reserved_by: null
+        })), ...state.orders];
+      };
     });
 
     socket.on("blockOrder", (data) => {
@@ -199,12 +246,7 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
   const handleGetOrders = async (limit, page, subStatus) => {
     const ordersData = await getOperatorOrders(limit, page, subStatus);
 
-    state.orders.splice(0, state.orders.length, ...ordersData.orders.map((order) => ({
-      ...order,
-      is_checked: false,
-      is_disabled: false,
-      reserved_by: null
-    })));
+    state.orders = ordersData.orders;
     state.pages.splice(0, state.pages.length, ...ordersData.pages);
     state.lastPage = ordersData.lastPage;
   };
@@ -212,9 +254,9 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
   const handleGetData = async () => {
     state.isDataLoaded = false;
 
-    await handleGetSubStatuses(),
-      await handleGetOrderColumns(),
-      await handleGetOrders(state.limit, state.page, state.subStatus, [])
+    await handleGetSubStatuses();
+    await handleGetOrderColumns();
+    await handleGetOrders(state.limit, state.page, state.subStatus, []);
 
     state.isDataLoaded = true;
   };

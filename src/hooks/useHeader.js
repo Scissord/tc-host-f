@@ -30,7 +30,9 @@ const useHeader = () => {
   };
 
   const handleLogout = async () => {
-    connection.disconnect();
+    setTimeout(() => {
+      connection.disconnect();
+    }, 2000);
     await logout();
   };
 

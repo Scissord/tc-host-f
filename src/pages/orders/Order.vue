@@ -9,11 +9,12 @@ const route = useRoute();
 const order_id = route.params.order_id;
 const user = useUserStore();
 const order = useOrderStore();
+const name = user.data.name;
 
 onMounted(async () => {
   socket.emit("sendEntryOrder", {
     order_id,
-    name: user.data.name
+    name
   });
   await order.handleGetData(order_id);
 });
@@ -21,7 +22,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   socket.emit("sendExitOrder", {
     order_id,
-    name: user.data.name
+    name
   });
 });
 </script> 
@@ -67,6 +68,14 @@ onBeforeUnmount(() => {
           class="border rounded-md p-2 text-gray-700"
           placeholder="..."
         />
+      </div>
+
+      <!-- ФИО -->
+      <div class="flex flex-col gap-2">
+        <h1 class="text-sm font-semibold text-gray-600">ФИО:</h1>
+        <p class="text-gray-700">
+          {{ order.state.order.phone ?? '-' }}
+        </p>
       </div>
 
       <!-- Оператор -->

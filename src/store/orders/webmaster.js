@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { 
-  useOrderApi, 
-  useOrderColumnApi 
+import {
+  useOrderApi,
+  useOrderColumnApi
 } from '@api';
 import { reactive } from 'vue';
 
@@ -26,10 +26,6 @@ const useWebmasterOrdersStore = defineStore('webmaster_order', () => {
     await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
   };
 
-  const bindEvents = () => {
-
-  };
-
   const handleGetOrderColumns = async () => {
     const orderColumnsData = await getOrderColumns();
     state.columns.splice(0, state.columns.length, ...orderColumnsData);
@@ -37,27 +33,30 @@ const useWebmasterOrdersStore = defineStore('webmaster_order', () => {
 
   const handleGetOrders = async (limit, page) => {
     const ordersData = await getWebmasterOrders(limit, page);
-
-    state.orders.splice(0, state.orders.length, ...ordersData.orders);
+    state.orders.splice(0, state.orders.length, ...ordersData.orders.map((order) => ({
+      ...order,
+      is_checked: false,
+      is_disabled: false,
+      reserved_by: ''
+    })));
     state.pages.splice(0, state.pages.length, ...ordersData.pages);
     state.lastPage = ordersData.lastPage;
   };
 
   const handleGetData = async () => {
     state.isDataLoaded = false;
-  
+
     await Promise.all([
-      handleGetOrderColumns(), 
+      handleGetOrderColumns(),
       handleGetOrders(state.limit, state.page)
     ]);
-  
+
     state.isDataLoaded = true;
   };
 
   return {
     state,
     handleChangePage,
-    bindEvents,
     handleGetData
   };
 });
