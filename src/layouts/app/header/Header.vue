@@ -151,7 +151,7 @@ const rootUrl = computed(() => {
             title="User Menu"
             class="flex items-center gap-2 cursor-pointer"
           >
-            <Icon icon="fa-solid fa-circle-user" />
+            <Icon :class="css.icon" icon="fa-solid fa-circle-user" />
             <span v-if="isSidebarExpanded">{{ user.data.login.length > 8 ? user.data.login.slice(0, 8) : user.data.login }}</span>
           </div>
           <div
