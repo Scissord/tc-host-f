@@ -19,13 +19,13 @@ const handleSignIn = async () => {
   if(status === 200) {
     switch(props.entity) {
       case 'user':
-        router.push('/user/orders');
+        router.push('/user/statistics');
         break;
       case 'webmaster':
-        router.push('/webmaster/orders');
+        router.push('/webmaster/statistics');
         break;
       case 'operator':
-        router.push('/operator/orders');
+        router.push('/operator/statistics');
         break; 
     }
   }
