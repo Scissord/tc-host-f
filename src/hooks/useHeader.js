@@ -108,7 +108,7 @@ const useHeader = () => {
       absolute left-0
     `,
     userMenuWrapper: `
-      relative
+      relative 
       flex flex-col items-start
     `,
     userMenu: `

@@ -14,14 +14,6 @@ defineProps({
     type: Function,
     required: true
   },
-  handleEditWebmaster: {
-    type: Function,
-    required: true
-  },
-  handleSaveWebmaster: {
-    type: Function,
-    required: true
-  },
   handleDeleteWebmaster: {
     type: Function,
     required: true
@@ -61,11 +53,6 @@ const css = {
               webmaster_id
             </th>
             <th
-              :class="[css.th, 'w-[200px]']" 
-            >
-              user_id
-            </th>
-            <th
               :class="[css.th, 'w-[200px]']"
             >
               Имя
@@ -83,18 +70,6 @@ const css = {
                 class="flex justify-center items-center space-x-2"
               >
                 <Icon 
-                  v-if="!webmaster.is_editable"
-                  :icon="['fas', 'pen-to-square']" 
-                  :class="css.icon"
-                  @click="handleEditWebmaster(webmaster.id)"
-                />
-                <Icon 
-                  v-else
-                  :icon="['fas', 'floppy-disk']" 
-                  :class="css.icon"
-                  @click="handleSaveWebmaster(webmaster.id)"
-                />
-                <Icon 
                   :icon="['fas', 'trash']" 
                   :class="css.icon"
                   @click="handleDeleteWebmaster(webmaster.id)"
@@ -102,16 +77,6 @@ const css = {
               </div>
             </td>
             <td :class="css.td">{{ webmaster.id ?? '-' }}</td>
-            <td :class="css.td">
-              <p v-if="!webmaster.is_editable">{{ webmaster.user_id ?? '-' }}</p>
-              <Select
-                v-else
-                v-model="webmaster.user_id"
-                :options="free_webmasters"
-                value="id"
-                label="name"
-              />
-            </td>
             <td :class="css.td">{{ webmaster.name ?? '-' }}</td>
           </tr>
         </tbody>

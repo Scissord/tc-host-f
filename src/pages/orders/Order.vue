@@ -50,39 +50,55 @@ onBeforeUnmount(() => {
     <div class="bg-white rounded-lg shadow-md p-6 space-y-4">
       <!-- ID -->
       <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">ID:</h1>
+        <h1 class="text-xs font-semibold text-black">ID:</h1>
         <p class="text-gray-700">{{ order.state.order.id ?? '-' }}</p>
       </div>
 
-      <!-- ФИО -->
+      <!-- ТЕЛЕФОН -->
       <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">ФИО:</h1>
-        <p v-if="!order.state.order.is_editable" class="text-gray-700">
-          {{ order.state.order.fio ?? '-' }}
-        </p>
-        <Input
-          v-else
-          id="fio"
-          type="text"
-          v-model="order.state.order.fio"
-          class="border rounded-md p-2 text-gray-700"
-          placeholder="..."
-        />
-      </div>
-
-      <!-- ФИО -->
-      <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">ФИО:</h1>
+        <h1 class="text-xs font-semibold text-black">Телефон:</h1>
         <p class="text-gray-700">
           {{ order.state.order.phone ?? '-' }}
         </p>
       </div>
 
+      <!-- Дата создания -->
+      <div class="flex flex-col gap-2">
+        <h1 class="text-xs font-semibold text-black">Дата создания:</h1>
+        <p class="text-gray-700 break-words">
+          {{ DateFormat(order.state.order.created_at, 'H:i d:m:Y') ?? '-' }}
+        </p>
+      </div>
+
+      <!-- Последнее обновление -->
+      <div class="flex flex-col gap-2">
+        <h1 class="text-xs font-semibold text-black">Последнее обновление:</h1>
+        <p class="text-gray-700 break-words">
+          {{ DateFormat(order.state.order.updated_at, 'H:i d:m:Y') ?? '-' }}
+        </p>
+      </div>
+
+      <!-- ТЕЛЕФОН -->
+      <div class="flex flex-col gap-2">
+        <h1 class="text-xs font-semibold text-black">Товары:</h1>
+        <div class="flex flex-col gap-1">
+          <div
+            v-for="product in order.state.order.items"
+            :key="product.id"
+            class="p-1 bg-blue-900 w-fit text-white rounded-lg text-xs"
+          >
+            <p>
+              {{ product.name ?? '-' }}, {{ product.quantity ?? '-' }} шт. за {{ product.price * product.quantity ?? '-' }}
+            </p>
+          </div>
+        </div>
+      </div>
+
       <!-- Оператор -->
       <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">Оператор:</h1>
+        <h1 class="text-xs font-semibold text-black">Оператор:</h1>
         <p v-if="!order.state.order.is_editable" class="text-gray-700">
-          {{ order.state.order.operator_id ?? '-' }}
+          {{ order.state.order.operator ?? '-' }}
         </p>
         <Select
           v-else
@@ -96,9 +112,9 @@ onBeforeUnmount(() => {
 
       <!-- Статус -->
       <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">Статус:</h1>
+        <h1 class="text-xs font-semibold text-black">Статус:</h1>
         <p v-if="!order.state.order.is_editable" class="text-gray-700">
-          {{ order.state.order.sub_status_id ?? '-' }}
+          {{ order?.state?.order?.status?.name ?? '-' }}
         </p>
         <Select
           v-else
@@ -110,27 +126,11 @@ onBeforeUnmount(() => {
         />
       </div>
 
-      <!-- Регион -->
-      <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">Регион:</h1>
-        <p v-if="!order.state.order.is_editable" class="text-gray-700">
-          {{ order.state.order.region ?? '-' }}
-        </p>
-        <Input
-          v-else
-          id="region"
-          type="text"
-          v-model="order.state.order.region"
-          class="border rounded-md p-2 text-gray-700"
-          placeholder="..."
-        />
-      </div>
-
       <!-- Город -->
       <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">Город:</h1>
+        <h1 class="text-xs font-semibold text-black">Город:</h1>
         <p v-if="!order.state.order.is_editable" class="text-gray-700">
-          {{ order.state.order.city_id ?? '-' }}
+          {{ order?.state?.order?.city?.name ?? '-' }}
         </p>
         <Select
           v-else
@@ -142,43 +142,11 @@ onBeforeUnmount(() => {
         />
       </div>
 
-      <!-- Адресс -->
-      <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">Адрес:</h1>
-        <p v-if="!order.state.order.is_editable" class="text-gray-700">
-          {{ order.state.order.address ?? '-' }}
-        </p>
-        <Input
-          v-else
-          id="address"
-          type="text"
-          v-model="order.state.order.address"
-          class="border rounded-md p-2 text-gray-700"
-          placeholder="..."
-        />
-      </div>
-
-      <!-- Почта -->
-      <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">Почта:</h1>
-        <p v-if="!order.state.order.is_editable" class="text-gray-700">
-          {{ order.state.order.postal_code ?? '-' }}
-        </p>
-        <Input
-          v-else
-          id="postal_code"
-          type="text"
-          v-model="order.state.order.postal_code"
-          class="border rounded-md p-2 text-gray-700"
-          placeholder="..."
-        />
-      </div>
-
       <!-- Пол -->
       <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">Пол:</h1>
+        <h1 class="text-xs font-semibold text-black">Пол:</h1>
         <p v-if="!order.state.order.is_editable" class="text-gray-700">
-          {{ order.state.order.gender_id ?? '-' }}
+          {{ order.state.order.gender ?? '-' }}
         </p>
         <Select
           v-else
@@ -192,9 +160,9 @@ onBeforeUnmount(() => {
 
       <!-- Способ оплаты -->
       <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">Способ оплаты:</h1>
+        <h1 class="text-xs font-semibold text-black">Способ оплаты:</h1>
         <p v-if="!order.state.order.is_editable" class="text-gray-700">
-          {{ order.state.order.payment_method_id ?? '-' }}
+          {{ order.state.order.payment_method ?? '-' }}
         </p>
         <Select
           v-else
@@ -208,9 +176,9 @@ onBeforeUnmount(() => {
 
       <!-- Способ оплаты -->
       <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">Способ доставки:</h1>
+        <h1 class="text-xs font-semibold text-black">Способ доставки:</h1>
         <p v-if="!order.state.order.is_editable" class="text-gray-700">
-          {{ order.state.order.delivery_method_id ?? '-' }}
+          {{ order.state.order.delivery_method ?? '-' }}
         </p>
         <Select
           v-else
@@ -224,9 +192,9 @@ onBeforeUnmount(() => {
 
       <!-- Причина отказа -->
       <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">Причина отказа:</h1>
+        <h1 class="text-xs font-semibold text-black">Причина отказа:</h1>
         <p v-if="!order.state.order.is_editable" class="text-gray-700">
-          {{ order.state.order.order_cancel_reason_id ?? '-' }}
+          {{ order.state.order.order_cancel_reason ?? '-' }}
         </p>
         <Select
           v-else
@@ -237,31 +205,96 @@ onBeforeUnmount(() => {
           class="border rounded-md p-2 text-gray-700"
         />
       </div>
-
-      <!-- Дата создания -->
-      <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">Дата создания:</h1>
-        <p class="text-gray-700 break-words">
-          {{ DateFormat(order.state.order.created_at, 'H:i d:m:Y') ?? '-' }}
-        </p>
-      </div>
-
-      <!-- Последнее обновление -->
-      <div class="flex flex-col gap-2">
-        <h1 class="text-sm font-semibold text-gray-600">Последнее обновление:</h1>
-        <p class="text-gray-700 break-words">
-          {{ DateFormat(order.state.order.updated_at, 'H:i d:m:Y') ?? '-' }}
-        </p>
-      </div>
     </div>
 
     <div class="bg-white rounded-lg shadow-md p-6 space-y-4 min-h-screen">
+      <div class="flex flex-col gap-2">
+        <!-- ФИО -->
+        <div class="flex flex-col gap-2">
+          <h1 class="text-xs font-semibold text-black">ФИО:</h1>
+          <p v-if="!order.state.order.is_editable" class="text-gray-700">
+            {{ order.state.order.fio ?? '-' }}
+          </p>
+          <Input
+            v-else
+            id="fio"
+            type="text"
+            v-model="order.state.order.fio"
+            class="border rounded-md p-2 text-gray-700"
+            placeholder="..."
+          />
+        </div>
+
+        <!-- Регион -->
+        <div class="flex flex-col gap-2">
+          <h1 class="text-xs font-semibold text-black">Регион:</h1>
+          <p v-if="!order.state.order.is_editable" class="text-gray-700">
+            {{ order.state.order.region ?? '-' }}
+          </p>
+          <Input
+            v-else
+            id="region"
+            type="text"
+            v-model="order.state.order.region"
+            class="border rounded-md p-2 text-gray-700"
+            placeholder="..."
+          />
+        </div>
+
+        <!-- Возвраст -->
+        <div class="flex flex-col gap-2">
+          <h1 class="text-xs font-semibold text-black">Возвраст:</h1>
+          <p v-if="!order.state.order.is_editable" class="text-gray-700">
+            {{ order.state.order.age ?? 0 }}
+          </p>
+          <Input
+            v-else
+            id="age"
+            type="text"
+            v-model="order.state.order.age"
+            class="border rounded-md p-2 text-gray-700"
+            placeholder="..."
+          />
+        </div>
+
+        <!-- Адресс -->
+        <div class="flex flex-col gap-2">
+          <h1 class="text-xs font-semibold text-black">Адрес:</h1>
+          <p v-if="!order.state.order.is_editable" class="text-gray-700">
+            {{ order.state.order.address ?? '-' }}
+          </p>
+          <Input
+            v-else
+            id="address"
+            type="text"
+            v-model="order.state.order.address"
+            class="border rounded-md p-2 text-gray-700"
+            placeholder="..."
+          />
+        </div>
+
+        <!-- Почта -->
+        <div class="flex flex-col gap-2">
+          <h1 class="text-xs font-semibold text-black">Почта:</h1>
+          <p v-if="!order.state.order.is_editable" class="text-gray-700">
+            {{ order.state.order.postal_code ?? '-' }}
+          </p>
+          <Input
+            v-else
+            id="postal_code"
+            type="text"
+            v-model="order.state.order.postal_code"
+            class="border rounded-md p-2 text-gray-700"
+            placeholder="..."
+          />
+        </div>
+      </div>
       <div
         v-for="i in 10"
         :key="`additional${i}`"
         class="flex flex-col gap-2"
       >
-        <h1 class="text-sm font-semibold text-gray-600">
+        <h1 class="text-xs font-semibold text-black">
           Дополнительное {{ i }}:
         </h1>
         <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">

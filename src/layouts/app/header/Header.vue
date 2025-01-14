@@ -122,7 +122,7 @@ const rootUrl = computed(() => {
     </nav>
 
     <div :class="[css.nav, isSidebarExpanded ? 'px-4 gap-4' : 'gap-7']">
-      <div 
+      <!-- <div 
         :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
       >
         <Icon icon="fa-solid fa-language"/>
@@ -137,9 +137,9 @@ const rootUrl = computed(() => {
           :icon="theme.theme === 'light' ? 'fa-solid fa-moon' : 'fa-solid fa-sun'"
         />
         <span v-if="isSidebarExpanded">
-          {{ theme.theme === 'light' ? 'Темный Режим' : 'Светлый Режим' }}
+          {{ theme.theme === 'light' ? 'Темная' : 'Светлая' }}
         </span>
-      </div>
+      </div> -->
 
       <div 
         v-if="user.isAuthenticated"
@@ -152,7 +152,7 @@ const rootUrl = computed(() => {
             class="flex items-center gap-2 cursor-pointer"
           >
             <Icon icon="fa-solid fa-circle-user" />
-            <span v-if="isSidebarExpanded">{{ user.data.login }}</span>
+            <span v-if="isSidebarExpanded">{{ user.data.login.length > 8 ? user.data.login.slice(0, 8) : user.data.login }}</span>
           </div>
           <div
             v-if="isUserMenuOpen"

@@ -33,8 +33,6 @@ const {
 
 const { 
   webmasterState,
-  handleEditWebmaster,
-  handleSaveWebmaster,
   handleDeleteWebmaster,
   handleWebmastersGetData 
 } = useWebmasters();
@@ -163,8 +161,6 @@ onMounted(async () => {
             :free_webmasters="webmasterState.free_webmasters"
             :webmasters="webmasterState.webmasters"
             :handleAddWebmaster="handleAddWebmaster"
-            :handleEditWebmaster="handleEditWebmaster"
-            :handleSaveWebmaster="handleSaveWebmaster"
             :handleDeleteWebmaster="handleDeleteWebmaster"
           />
         </div>

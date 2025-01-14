@@ -65,11 +65,6 @@ const css = {
             >
               operator_id
             </th>
-            <th
-              :class="[css.th, 'w-[200px]']" 
-            >
-              user_id
-            </th>
             <th 
               :class="[css.th, 'w-[200px]']" 
             >
@@ -112,16 +107,6 @@ const css = {
               </div>
             </td>
             <td :class="css.td">{{ operator.id ?? '-' }}</td>
-            <td :class="css.td">
-              <p v-if="!operator.is_editable">{{ operator.user_id ?? '-' }}</p>
-              <Select
-                v-else
-                v-model="operator.user_id"
-                :options="free_operators"
-                value="id"
-                label="name"
-              />
-            </td>
             <td :class="css.td">
               <p v-if="!operator.is_editable">{{ operator.team_id ?? '-' }}</p>
               <Select
