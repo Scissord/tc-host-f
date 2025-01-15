@@ -12,29 +12,29 @@ const useTeam = (team_id) => {
 
   const modal = useModalStore();
 
-  const { findTeam, addOperator } = useTeamApi(); 
+  const { findTeam, addOperator } = useTeamApi();
   const { getFreeOperators, updateOperator } = useOperatorApi();
-  
+
   const handleAddOperator = () => {
     modal.show({
       title: 'Добавление оператора',
-      children: h(AddOperatorModal, { 
-        addOperator, 
+      children: h(AddOperatorModal, {
+        addOperator,
         operators: state.operators,
         free_operators: state.free_operators,
         team_id
       }),
     })
-  }; 
-  
+  };
+
   const handleDeleteOperator = async (id) => {
-    const confirm = window.confirm('Вы уверены?'); 
-    if(confirm) {
+    const confirm = window.confirm('Вы уверены?');
+    if (confirm) {
       await updateOperator(id, { team_id: null });
       state.operators = state.operators.filter((o) => +o.id !== +id);
     };
   };
-  
+
   const handleGetData = async () => {
     state.isDataLoaded = false;
     const operatorData = await getFreeOperators()
@@ -44,14 +44,14 @@ const useTeam = (team_id) => {
       ...operator,
       is_editable: false
     }));
-    state.isDataLoaded = true; 
+    state.isDataLoaded = true;
   };
-  
+
   return {
     state,
     handleAddOperator,
     handleDeleteOperator,
-    handleGetData 
+    handleGetData
   };
 };
 

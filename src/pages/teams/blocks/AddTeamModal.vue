@@ -3,6 +3,7 @@ import { reactive } from 'vue';
 import { useModalStore, useNotificationStore } from '@store';
 
 const props = defineProps({
+  department_id: [String, Number],
   createTeam: {
     type: Function,
     required: true
@@ -25,6 +26,7 @@ const notification = useNotificationStore();
 const team = reactive({
   title: "",
   sub_status_ids: "",
+  department_id: props.department_id,
 });
 
 const handleCreateTeam = async () => {

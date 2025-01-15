@@ -78,6 +78,14 @@ onBeforeUnmount(() => {
         </p>
       </div>
 
+      <!-- Дата доставки -->
+      <div class="flex flex-col gap-2">
+        <h1 class="text-xs font-semibold text-black">Дата доставки:</h1>
+        <p class="text-gray-700 break-words">
+          {{ DateFormat(order.state.order.delivery_at, 'H:i d:m:Y') ?? '-' }}
+        </p>
+      </div>
+
       <!-- ТЕЛЕФОН -->
       <div class="flex flex-col gap-2">
         <h1 class="text-xs font-semibold text-black">Товары:</h1>

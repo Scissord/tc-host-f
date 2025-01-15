@@ -14,50 +14,51 @@ const useTeams = (department_id) => {
 
   const { getSubStatuses } = useSubStatusApi();
 
-  const { 
+  const {
     getTeamsByDepartment,
     createTeam,
     updateTeam,
     deleteTeam
-  } = useTeamApi(); 
-  
+  } = useTeamApi();
+
   const handleAddTeam = () => {
     modal.show({
       title: 'Добавление команды',
-      children: h(AddTeamModal, { 
-        createTeam, 
+      children: h(AddTeamModal, {
+        department_id,
+        createTeam,
         teams: state.teams,
         subStatuses: state.subStatuses,
       }),
     })
-  }; 
-  
+  };
+
   const handleEditTeam = (id) => {
     const team = state.teams.find((p) => +p.id === +id)
-    if(team) {
+    if (team) {
       team.is_editable = !team.is_editable;
     };
   };
-  
+
   const handleSaveTeam = async (id) => {
     const team = state.teams.find((t) => +t.id === +id)
-    if(team) {
+    if (team) {
       await updateTeam(id, {
         name: team.name,
         sub_status_ids: team.sub_status_ids,
-      }); 
+      });
     };
     team.is_editable = false;
   };
-  
+
   const handleDeleteTeam = async (id) => {
-    const confirm = window.confirm('Вы уверены?'); 
-    if(confirm) {
+    const confirm = window.confirm('Вы уверены?');
+    if (confirm) {
       await deleteTeam(id);
       state.teams = state.teams.filter((t) => +t.id !== +id);
     };
   };
-  
+
   const handleGetData = async () => {
     state.isDataLoaded = false;
     const subStatusesData = await getSubStatuses();
@@ -67,16 +68,16 @@ const useTeams = (department_id) => {
       ...team,
       is_editable: false
     }));
-    state.isDataLoaded = true; 
+    state.isDataLoaded = true;
   };
-  
+
   return {
     state,
     handleAddTeam,
     handleEditTeam,
     handleSaveTeam,
     handleDeleteTeam,
-    handleGetData 
+    handleGetData
   };
 };
 

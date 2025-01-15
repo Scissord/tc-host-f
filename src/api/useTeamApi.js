@@ -18,7 +18,7 @@ const useTeamApi = () => {
 
     return response.data;
   };
-  
+
   const getTeamsByDepartment = async (department_id) => {
     const response = await api({
       method: 'GET',
@@ -37,7 +37,7 @@ const useTeamApi = () => {
 
     return response.data;
   };
-  
+
   const updateTeam = async (id, data) => {
     const response = await api({
       method: 'PATCH',
