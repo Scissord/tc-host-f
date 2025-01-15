@@ -52,12 +52,12 @@ const css = {
       </h1>
       <div class="flex items-center gap-3"> 
         <Button 
-          text="Добавить, пользоветеля с учеткой"
+          text="Добавить, пользователя с учеткой"
           @click="handleAddOperator"
           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
         />
         <Button 
-          text="Добавить, пользоветеля и учетку"
+          text="Добавить, пользователя и учетку"
           @click="handleAddOperatorWithUser"
           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
         />
