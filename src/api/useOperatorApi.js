@@ -29,6 +29,15 @@ const useOperatorApi = () => {
     return response.data;
   };
 
+  const createOperatorWithUser = async (data) => {
+    const response = await api({
+      method: 'POST',
+      url: '/operators/with_user',
+      data
+    });
+
+    return response.data;
+  };
   const updateOperator = async (id, data) => {
     const response = await api({
       method: 'PATCH',
@@ -52,6 +61,7 @@ const useOperatorApi = () => {
     getOperators,
     getFreeOperators,
     createOperator,
+    createOperatorWithUser,
     updateOperator,
     deleteOperator,
   };

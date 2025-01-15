@@ -11,6 +11,7 @@ const useHeader = () => {
     get_departments: null,
     get_statuses: null,
     get_users: null,
+    create_operators: null,
   });
 
   const { logout } = useAuthApi();
@@ -53,6 +54,7 @@ const useHeader = () => {
     state.get_departments = abilities.get_departments;
     state.get_statuses = abilities.get_statuses;
     state.get_users = abilities.get_users;
+    state.create_operators = abilities.create_operators;
   };
 
   onMounted(async () => {

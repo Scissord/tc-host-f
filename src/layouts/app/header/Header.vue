@@ -119,6 +119,15 @@ const rootUrl = computed(() => {
         <Icon :class="css.icon" icon="fa-solid fa-lock" />
         <span v-if="isSidebarExpanded">Админ</span>
       </router-link>
+      <!-- Оператор создаёт других операторов  -->
+      <router-link
+        to="/create_operators"
+        v-if="user.data.abilities.includes(state.create_operators) && user.data.operator_id"
+        :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
+      >
+        <Icon :class="css.icon" icon="fa-solid fa-lock" />
+        <span v-if="isSidebarExpanded">Админ</span>
+      </router-link>
     </nav>
 
     <div :class="[css.nav, isSidebarExpanded ? 'px-4 gap-4' : 'gap-7']">
