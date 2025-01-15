@@ -22,7 +22,7 @@ const props = defineProps({
       v-for="sS in subStatuses"
       :key="sS.id"
       :class="[
-        'flex items-center gap-1 border p-1 rounded-sm select-none cursor-pointer transition duration-200 transform active:scale-90 transform-origin-center uppercase',
+        'flex items-center gap-1 border p-1 rounded-sm select-none cursor-pointer transition duration-200 transform active:scale-90 transform-origin-center',
         +sS.id === +subStatus ? 'bg-sky-400 text-white' : '',
       ]"
       :style="{ 
