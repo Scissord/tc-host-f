@@ -72,6 +72,12 @@ const css = {
             {{ statistic.statuses[1].percent }}
           </td>
           <td :class='css.td'>
+            {{ statistic.statuses[4].count }}
+          </td>
+          <td :class='css.td'>
+            {{ statistic.statuses[4].percent }}
+          </td>
+          <td :class='css.td'>
             {{ statistic.statuses[2].count }}
           </td>
           <td :class='css.td'>
@@ -84,28 +90,22 @@ const css = {
             {{ statistic.statuses[3].percent }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[4].count }}
-          </td>
-          <td :class='css.td'>
-            {{ statistic.statuses[4].percent }}
-          </td>
-          <td :class='css.td'>
             {{ statistic.statuses[5].count }}
           </td>
           <td :class='css.td'>
             {{ statistic.statuses[5].percent }}
           </td>
           <td :class='css.td'>
+            {{ statistic.statuses[0].count }}
+          </td>
+          <td :class='css.td'>
+            {{ statistic.statuses[0].percent }}
+          </td>
+          <td :class='css.td'>
             {{ statistic.statuses[6].count }}
           </td>
           <td :class='css.td'>
             {{ statistic.statuses[6].percent }}
-          </td>
-          <td :class='css.td'>
-            {{ statistic.statuses[7].count }}
-          </td>
-          <td :class='css.td'>
-            {{ statistic.statuses[7].percent }}
           </td>
         </tr>
       </tbody>
