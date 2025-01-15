@@ -49,7 +49,7 @@ const css = {
               <div
                 v-for="product in order.items"
                 :key="product.id"
-                class="p-1 bg-blue-900 w-fit text-white rounded-lg text-xs"
+                class="p-1 bg-gray-600 w-fit text-white rounded-lg text-xs"
               >
                 <p>
                   {{ product.name ?? '-' }}, {{ product.quantity ?? '-' }} шт. за {{ product.price * product.quantity ?? '-' }}

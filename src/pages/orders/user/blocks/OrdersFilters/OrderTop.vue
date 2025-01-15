@@ -50,6 +50,7 @@ const groupedFilters = computed(() => {
     <Button
       :icon="['fas', 'magnifying-glass']"
       text="Расширенный поиск"
+      class="bg-white text-black border font-bold"
       @click="isFiltersOpen = !isFiltersOpen"
     />
     <Paginate

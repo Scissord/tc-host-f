@@ -21,7 +21,7 @@ defineProps({
         @click="handleAddOperator"
         class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
       >
-        + Добавить Команду Отдела
+        + Добавить оператора
       </button>
     </div>
   </div>

@@ -31,7 +31,7 @@ const props = defineProps({
       @click="handleChangeSubStatus(sS.id)"
     >
       <p>{{ sS.name }}</p>
-      <p class="px-1 bg-gray-600 text-white">
+      <p class="px-1 bg-gray-400 text-white">
         {{ sS.orders_count }}
       </p>
     </div>

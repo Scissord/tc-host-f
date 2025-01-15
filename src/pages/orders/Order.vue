@@ -85,7 +85,7 @@ onBeforeUnmount(() => {
           <div
             v-for="product in order.state.order.items"
             :key="product.id"
-            class="p-1 bg-blue-900 w-fit text-white rounded-lg text-xs"
+            class="p-1 bg-gray-600 w-fit text-white rounded-lg text-xs"
           >
             <p>
               {{ product.name ?? '-' }}, {{ product.quantity ?? '-' }} шт. за {{ product.price * product.quantity ?? '-' }}
@@ -97,17 +97,19 @@ onBeforeUnmount(() => {
       <!-- Оператор -->
       <div class="flex flex-col gap-2">
         <h1 class="text-xs font-semibold text-black">Оператор:</h1>
-        <p v-if="!order.state.order.is_editable" class="text-gray-700">
+        <p 
+          class="text-gray-700"
+        >
           {{ order.state.order.operator ?? '-' }}
         </p>
-        <Select
+        <!-- <Select
           v-else
           v-model="order.state.order.operator_id"
           :options="order.state.operators"
           value="id"
           label="name"
           class="border rounded-md p-2 text-gray-700"
-        />
+        /> -->
       </div>
 
       <!-- Статус -->

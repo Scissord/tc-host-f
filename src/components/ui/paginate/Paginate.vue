@@ -28,7 +28,7 @@ defineProps({
       <p
         v-for="p in pages"
         :key="p"
-        :class="['select-none cursor-pointer transition duration-300 ease border-blue-900', +page === +p ? 'border-b' : '']"
+        :class="['select-none cursor-pointer transition duration-300 ease border-gray-600', +page === +p ? 'border-b' : '']"
         @click="handleChangePage(p)"
       >
         {{ p }}

@@ -12,8 +12,7 @@ const {
   handleAddOperator, 
   handleDeleteOperator, 
   handleGetData 
-  } =
-  useTeam(team_id);
+} = useTeam(team_id);
 
 onMounted(async () => {
   await handleGetData();
