@@ -75,6 +75,7 @@ const css = {
           <td :class='css.td'>{{ DateFormat(order.shipped_at, 'H:i d.m.Y') ?? '-' }}</td>
           <td :class='css.td'>{{ DateFormat(order.cancelled_at, 'H:i d.m.Y') ?? '-' }}</td>
           <td :class='css.td'>{{ DateFormat(order.buyout_at, 'H:i d.m.Y') ?? '-' }}</td>
+          <td :class='css.td'>{{ DateFormat(order.delivery_at, 'H:i d.m.Y') ?? '-' }}</td>
           <td :class='css.td'>{{ order.comment ?? '-' }}</td>
           <td :class='css.td'>
             <p v-if="order.items.length > 0">
@@ -124,7 +125,6 @@ const css = {
           <td :class='css.td'>{{ order.additional8 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional9 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional10 ?? '-' }}</td>
-          <td :class='css.td'>{{ DateFormat(order.delivery_at, 'H:i d.m.Y') ?? '-' }}</td>
         </tr>
       </tbody>
     </table>
