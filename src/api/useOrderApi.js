@@ -1,7 +1,7 @@
 import { api } from '@api';
 
 const useOrderApi = () => {
-  const getUserOrders = async (limit = 20, page = 1, subStatus = 1, filters = []) => {
+  const getUserOrders = async (limit = 20, page = 1, subStatus = 1, filters = [], sort_by = null, order_by = null, start = null, end = null) => {
     let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&sub_status=${subStatus}`;
 
     if (filters.length > 0) {
@@ -13,6 +13,14 @@ const useOrderApi = () => {
       if (queryParams !== "") {
         queries += `&${queryParams}`;
       }
+    };
+
+    if (sort_by && order_by) {
+      queries += `&sort_by=${encodeURIComponent(sort_by)}&order_by=${encodeURIComponent(order_by)}`;
+    };
+
+    if (start && end) {
+      queries += `&start=${encodeURIComponent(start.toISOString().slice(0, 10))}&end=${encodeURIComponent(end.toISOString().slice(0, 10))}`;
     };
 
     const response = await api({
@@ -34,7 +42,7 @@ const useOrderApi = () => {
     return response.data;
   };
 
-  const getOperatorOrders = async (limit = 20, page = 1, subStatus = 1, filters = []) => {
+  const getOperatorOrders = async (limit = 20, page = 1, subStatus = 1, filters = [], sort_by = null, order_by = null, start = null, end = null) => {
     let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&sub_status=${subStatus}`;
 
     if (filters.length > 0) {
@@ -46,6 +54,14 @@ const useOrderApi = () => {
       if (queryParams !== "") {
         queries += `&${queryParams}`;
       }
+    };
+
+    if (sort_by && order_by) {
+      queries += `&sort_by=${encodeURIComponent(sort_by)}&order_by=${encodeURIComponent(order_by)}`;
+    };
+
+    if (start && end) {
+      queries += `&start=${encodeURIComponent(start.toISOString().slice(0, 10))}&end=${encodeURIComponent(end.toISOString().slice(0, 10))}`;
     };
 
     const response = await api({

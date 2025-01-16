@@ -30,6 +30,7 @@ onBeforeUnmount(() => {
 <template>
   <!-- Page Container -->
   <div
+    v-if="order.state.isDataLoaded"
     class="min-h-screen grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6 bg-gray-100 text-gray-800 ml-[5vw]"
   >
     <!-- Floating Action Buttons -->
@@ -320,6 +321,9 @@ onBeforeUnmount(() => {
         />
       </div>
     </div>
+  </div>
+  <div v-else class="min-h-screen flex items-center justify-center">
+    <Loader/>
   </div>
 </template>
 

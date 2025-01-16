@@ -1,5 +1,6 @@
 <script setup>
 import { DateFormat } from "@utils";
+import { formatRange } from '@utils';
 
 const props = defineProps({
   orders: {
@@ -11,6 +12,14 @@ const props = defineProps({
     type: Array,
     required: true,
     default: []
+  },
+  handleChangeDateSort: {
+    type: Function,
+    required: true,
+  },
+  handleChangeSelectSort: {
+    type: Function,
+    required: true,
   },
   handleToggleDoubles: {
     type: Function,
@@ -27,8 +36,13 @@ const props = defineProps({
   handleEntryOrder: {
     type: Function,
     required: true,
-  }
-})
+  },
+});
+
+const idOptions = [
+  { value: 1, label: 'С конца', field: 'id', sort: 'desc' },
+  { value: 2, label: 'С начала', field: 'id', sort: 'asc' },
+];
 
 const css = {
   th: 'text-left border border-slate-200 p-1 whitespace-nowrap',
@@ -37,7 +51,7 @@ const css = {
 </script>
 
 <template>
-  <div class="w-full overflow-x-auto">
+  <div class="w-full min-h-[50vh] overflow-x-auto">
     <table class="w-full border-collapse border border-slate-200">
       <thead>
         <tr>
@@ -56,6 +70,63 @@ const css = {
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <td :class='css.td'></td>
+          <td :class='css.td'>
+            <Select
+              v-model="columns[1].sort"
+              @update:modelValue="(val, obj) => handleChangeSelectSort(obj.field, obj.sort)"
+              :options="idOptions"
+            />
+          </td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'>
+            <DatePicker
+              v-model="columns[12].sort"
+              class="w-[250px] text-sm z-20"
+              locale="ru"
+              :format="formatRange"
+              @update:model-value="(date) => handleChangeDateSort(date)"
+              auto-apply
+              range
+            />
+          </td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+          <td :class='css.td'></td>
+        </tr>
         <tr
           v-for="order in orders"
           :key="order.id"
@@ -127,6 +198,7 @@ const css = {
           <td :class='css.td'>{{ DateFormat(order.shipped_at, 'H:i d.m.Y') ?? '-' }}</td>
           <td :class='css.td'>{{ DateFormat(order.cancelled_at, 'H:i d.m.Y') ?? '-' }}</td>
           <td :class='css.td'>{{ DateFormat(order.buyout_at, 'H:i d.m.Y') ?? '-' }}</td>
+          <td :class='css.td'>{{ DateFormat(order.delivery_at, 'H:i d.m.Y') ?? '-' }}</td>
           <td :class='css.td'>{{ order.comment ?? '-' }}</td>
           <td :class='css.td'>
             <p v-if="order.items.length > 0">
@@ -176,7 +248,6 @@ const css = {
           <td :class='css.td'>{{ order.additional8 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional9 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional10 ?? '-' }}</td>
-          <td :class='css.td'>{{ DateFormat(order.delivery_at, 'H:i d.m.Y') ?? '-' }}</td>
         </tr>
       </tbody>
     </table>

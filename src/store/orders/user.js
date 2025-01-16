@@ -30,6 +30,8 @@ const useUserOrdersStore = defineStore('user_order', () => {
     columns: [],
     filters: [],
     orders: [],
+    sort_by: [],
+    range: [],
   });
 
   const handleChangeStateAfterAddOrder = async () => {
@@ -115,12 +117,31 @@ const useUserOrdersStore = defineStore('user_order', () => {
 
   const handleChangePage = async (val) => {
     state.page = val;
-    await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
+    await handleGetOrders(state.limit, state.page, state.subStatus, state.filters, state.sort_by[0], state.sort_by[1], state.range[0], state.range[1]);
   };
 
   const handleApplyFilters = async () => {
     state.page = 1;
     await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
+  };
+
+  const handleChangeSelectSort = async (field, order_by) => {
+    state.range = []
+    state.sort_by[0] = field;
+    state.sort_by[1] = order_by;
+    await handleGetOrders(state.limit, state.page, state.subStatus, [], field, order_by)
+  };
+
+  const handleChangeDateSort = async (range) => {
+    state.sort_by = [];
+    if (!range) {
+      state.range = [];
+      await handleGetOrders(state.limit, state.page, state.subStatus, [])
+    } else {
+      state.range[0] = range[0];
+      state.range[1] = range[1];
+      await handleGetOrders(state.limit, state.page, state.subStatus, [], null, null, range[0], range[1])
+    };
   };
 
   const handleToggleDoubles = async (order_id) => {
@@ -245,7 +266,10 @@ const useUserOrdersStore = defineStore('user_order', () => {
 
   const handleGetOrderColumns = async () => {
     const orderColumnsData = await getOrderColumns();
-    state.columns.splice(0, state.columns.length, ...orderColumnsData);
+    state.columns.splice(0, state.columns.length, ...orderColumnsData.map((column) => ({
+      ...column,
+      sort: null,
+    })));
     state.columns.unshift({
       id: 0,
       label: "",
@@ -255,12 +279,12 @@ const useUserOrdersStore = defineStore('user_order', () => {
     });
     state.filters.splice(0, state.filters.length, ...orderColumnsData.map((column) => ({
       ...column,
-      value: null
+      value: null,
     })));
   };
 
-  const handleGetOrders = async (limit, page, subStatus, filters) => {
-    const ordersData = await getUserOrders(limit, page, subStatus, filters);
+  const handleGetOrders = async (limit, page, subStatus, filters, sort_by, order_by, start, end) => {
+    const ordersData = await getUserOrders(limit, page, subStatus, filters, sort_by, order_by, start, end);
 
     state.orders = ordersData.orders;
     state.pages.splice(0, state.pages.length, ...ordersData.pages);
@@ -286,6 +310,8 @@ const useUserOrdersStore = defineStore('user_order', () => {
     handleChangePage,
     handleApplyFilters,
     bindEvents,
+    handleChangeSelectSort,
+    handleChangeDateSort,
     handleEntryOrder,
     handleToggleDoubles,
     handleToggleOrder,
