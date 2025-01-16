@@ -1,6 +1,4 @@
 <script setup>
-import { DateFormat } from "@utils";
-
 const props = defineProps({
   statistics: {
     type: Array,

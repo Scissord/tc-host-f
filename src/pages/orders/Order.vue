@@ -66,7 +66,7 @@ onBeforeUnmount(() => {
       <div class="flex flex-col gap-2">
         <h1 class="text-xs font-semibold text-black">Дата создания:</h1>
         <p class="text-gray-700 break-words">
-          {{ DateFormat(order.state.order.created_at, 'H:i d:m:Y') ?? '-' }}
+          {{ DateFormat(order.state.order.created_at, 'H:i d.m.Y') ?? '-' }}
         </p>
       </div>
 
@@ -74,7 +74,7 @@ onBeforeUnmount(() => {
       <div class="flex flex-col gap-2">
         <h1 class="text-xs font-semibold text-black">Последнее обновление:</h1>
         <p class="text-gray-700 break-words">
-          {{ DateFormat(order.state.order.updated_at, 'H:i d:m:Y') ?? '-' }}
+          {{ DateFormat(order.state.order.updated_at, 'H:i d.m.Y') ?? '-' }}
         </p>
       </div>
 
@@ -82,7 +82,7 @@ onBeforeUnmount(() => {
       <div class="flex flex-col gap-2">
         <h1 class="text-xs font-semibold text-black">Дата доставки:</h1>
         <p class="text-gray-700 break-words">
-          {{ DateFormat(order.state.order.delivery_at, 'H:i d:m:Y') ?? '-' }}
+          {{ DateFormat(order.state.order.delivery_at, 'H:i d.m.Y') ?? '-' }}
         </p>
       </div>
 

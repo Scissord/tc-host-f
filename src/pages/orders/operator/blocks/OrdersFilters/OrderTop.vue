@@ -81,11 +81,11 @@ const groupedFilters = computed(() => {
         />
       </div>
     </div>
-
-    <Button
-      :icon="['fas', 'check']"
-      text="Применить"
-      @click="handleApplyFilters"
-    />
   </div>
+  <Button
+    v-if="isFiltersOpen"
+    :icon="['fas', 'check']"
+    text="Применить"
+    @click="handleApplyFilters"
+  />
 </template>

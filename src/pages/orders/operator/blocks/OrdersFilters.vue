@@ -36,6 +36,15 @@ defineProps({
     type: Function,
     required: true
   },
+  filters: {
+    type: Array,
+    required: true,
+    default: null,
+  },
+  handleApplyFilters: {
+    type: Function,
+    required: true
+  },
 });
 </script>
 
@@ -45,10 +54,12 @@ defineProps({
     :subStatuses="subStatuses"
     :handleChangeSubStatus="handleChangeSubStatus"
   />
-  <Paginate
+  <OrderTop
     :page="page"
     :pages="pages"
     :lastPage="lastPage"
     :handleChangePage="handleChangePage"
+    :filters="filters"
+    :handleApplyFilters="handleApplyFilters"
   />
 </template>

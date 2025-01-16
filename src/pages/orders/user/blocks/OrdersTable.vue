@@ -12,6 +12,10 @@ const props = defineProps({
     required: true,
     default: []
   },
+  handleToggleDoubles: {
+    type: Function,
+    required: true
+  },
   handleToggleOrder: {
     type: Function,
     required: true
@@ -70,14 +74,36 @@ const css = {
             <p v-else>{{ order?.reserved_by ?? '' }}</p>
           </td>
           <td :class='css.td'>
-            <p 
-              class="text-blue-900 font-semibold cursor-pointer hover:underline"
-              @click="() => handleEntryOrder(order.id)"
+            <div class="flex items-center gap-1">
+              <p 
+                class="text-blue-900 font-semibold cursor-pointer select-none hover:underline"
+                @click="() => handleEntryOrder(order.id)"
+              >
+                {{ order.id ?? "-" }}
+              </p>
+              <p 
+                v-if="order.doubles.length > 0"
+                class="text-blue-900 font-semibold cursor-pointer select-none hover:underline"
+                @click="() => handleToggleDoubles(order.id)"
+              >
+                ({{ order.doubles.length }})
+              </p>
+            </div>
+            <div 
+              v-if="order.is_doubles_open"
+              class="flex flex-col gap-1"
             >
-              {{ order.id ?? "-" }}
-            </p>
+              <h1>Дубли:</h1>
+              <p 
+                v-for="double in order.doubles"
+                class="text-blue-900 font-semibold cursor-pointer select-none hover:underline"
+                @click="() => handleEntryOrder(double)"
+              >
+                {{ double }}
+              </p>
+            </div>
           </td>
-          <td :class='css.td'>{{ order.fio ?? "-" }}</td>
+          <td :class='css.td'>{{ order.operator ?? '-' }}</td>
           <td
             :class='css.td'
           >
@@ -88,11 +114,33 @@ const css = {
                 class="p-1 bg-gray-600 w-fit text-white rounded-lg text-xs"
               >
                 <p>
-                  {{ product.name ?? '-' }}, {{ product.quantity ?? '-' }} шт. за {{ product.price * product.quantity ?? '-' }}
+                  {{ product.name ?? '-' }}, {{ product.quantity ?? '-' }} шт. за {{ product.price ?? '-' }}
                 </p>
               </div>
             </div>
           </td>
+          <td :class='css.td'>{{ order.webmaster ?? '-' }}</td>
+          <td :class='css.td'>{{ order.additional1 ?? '-' }}</td>
+          <td :class='css.td'>{{ DateFormat(order.updated_at, 'H:i d.m.Y') ?? '-' }}</td>
+          <td :class='css.td'>{{ DateFormat(order.created_at, 'H:i d.m.Y') ?? '-' }}</td>
+          <td :class='css.td'>{{ DateFormat(order.approved_at, 'H:i d.m.Y') ?? '-' }}</td>
+          <td :class='css.td'>{{ DateFormat(order.shipped_at, 'H:i d.m.Y') ?? '-' }}</td>
+          <td :class='css.td'>{{ DateFormat(order.cancelled_at, 'H:i d.m.Y') ?? '-' }}</td>
+          <td :class='css.td'>{{ DateFormat(order.buyout_at, 'H:i d.m.Y') ?? '-' }}</td>
+          <td :class='css.td'>{{ order.comment ?? '-' }}</td>
+          <td :class='css.td'>
+            <p v-if="order.items.length > 0">
+              {{ order.items[0].price }}
+            </p>
+          </td>
+          <td :class='css.td'>{{ order.total_sum ?? '-' }}</td>
+          <td :class='css.td'>{{ DateFormat(order.logis_recall_at, 'H:i d.m.Y') ?? '-' }}</td>
+          <td :class="css.td">
+            <p v-if="order.items.length > 0">
+              {{ order.items.reduce((total, item) => total + item.quantity, 0) }}
+            </p>
+          </td>
+          <td :class='css.td'>{{ order.fio ?? '-' }}</td>
           <td :class='css.td'>{{ order.phone ?? '-' }}</td>
           <td :class='css.td'>{{ order.region ?? '-' }}</td>
           <td :class='css.td'>
@@ -100,10 +148,8 @@ const css = {
           </td>
           <td :class='css.td'>{{ order.address ?? '-' }}</td>
           <td :class='css.td'>{{ order.postal_code ?? '-' }}</td>
-          <td :class='css.td'>{{ order.comment ?? '-' }}</td>
+          <td :class='css.td'>{{ order.age ?? '-' }}</td>
           <td :class='css.td'>{{ order.utm_term ?? '-' }}</td>
-          <td :class='css.td'>{{ order.webmaster ?? '-' }}</td>
-          <td :class='css.td'>{{ order.operator ?? '-' }}</td>
           <td :class='css.td'>
             <p v-if="order.status">
               {{ order.status.name ?? '-' }}
@@ -121,7 +167,6 @@ const css = {
           <td :class='css.td'>
             {{ order.order_cancel_reason ?? '-' }}
           </td>
-          <td :class='css.td'>{{ order.additional1 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional2 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional3 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional4 ?? '-' }}</td>
@@ -131,8 +176,7 @@ const css = {
           <td :class='css.td'>{{ order.additional8 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional9 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional10 ?? '-' }}</td>
-          <td :class='css.td'>{{ DateFormat(order.updated_at, 'H:i d:m:Y') ?? '-' }}</td>
-          <td :class='css.td'>{{ DateFormat(order.created_at, 'H:i d:m:Y') ?? '-' }}</td>
+          <td :class='css.td'>{{ DateFormat(order.delivery_at, 'H:i d.m.Y') ?? '-' }}</td>
         </tr>
       </tbody>
     </table>

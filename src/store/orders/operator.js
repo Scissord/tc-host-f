@@ -30,6 +30,7 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     subStatuses: [],
     columns: [],
     orders: [],
+    filters: [],
   });
 
   const handleChangeStateAfterAddOrder = async () => {
@@ -58,7 +59,7 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     state.newSubStatus = +val;
     state.newSubStatusLength = state.operatorSubStatuses.find((oss) => +oss.id === +val)?.orders_count ?? 0
     state.columns[0].is_checked = false;
-    await handleGetOrders(state.limit, state.page, state.subStatus);
+    await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
   };
 
   const handleChangeOrdersSubStatus = async (val) => {
@@ -66,6 +67,16 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
       .filter(order => order.is_checked)
       .map(order => order.id);
 
+    const old_status = state.subStatuses.find((ss) => +ss.id === state.subStatus)
+    const new_status = state.subStatuses.find((ss) => +ss.id === +val)
+
+    const message = ids.length === 0
+      ? `Вы уверены, что хотите перенести все заказы из ${old_status.name} в ${new_status.name}?`
+      : `Вы уверены, что хотите перенести ${ids.length} заказов из ${old_status.name} в ${new_status.name}?`;
+
+    const confirm = window.confirm(message);
+
+    if (!confirm) return;
 
     const data = {
       old_sub_status_id: state.subStatus,
@@ -76,7 +87,7 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     socket.emit("sendStatus", data);
 
     await changeStatus(data);
-    await handleGetOrders(state.limit, state.page, state.subStatus);
+    await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
 
     if (state.columns[0].is_checked === true) {
       state.columns[0].is_checked = false;
@@ -109,7 +120,17 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
 
   const handleChangePage = async (val) => {
     state.page = val;
-    await handleGetOrders(state.limit, state.page, state.subStatus);
+    await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
+  };
+
+  const handleApplyFilters = async () => {
+    state.page = 1;
+    await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
+  };
+
+  const handleToggleDoubles = async (order_id) => {
+    const order = state.orders.find((o) => +o.id === +order_id);
+    order.is_doubles_open = !order.is_doubles_open;
   };
 
   const handleToggleOrder = async (val) => {
@@ -241,10 +262,14 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
       name: "is_checked",
       is_checked: false,
     });
+    state.filters.splice(0, state.filters.length, ...orderColumnsData.map((column) => ({
+      ...column,
+      value: null
+    })));
   };
 
-  const handleGetOrders = async (limit, page, subStatus) => {
-    const ordersData = await getOperatorOrders(limit, page, subStatus);
+  const handleGetOrders = async (limit, page, subStatus, filters) => {
+    const ordersData = await getOperatorOrders(limit, page, subStatus, filters);
 
     state.orders = ordersData.orders;
     state.pages.splice(0, state.pages.length, ...ordersData.pages);
@@ -266,8 +291,10 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     handleChangeStateAfterAddOrder,
     handleChangeSubStatus,
     handleChangePage,
+    handleApplyFilters,
     bindEvents,
     handleEntryOrder,
+    handleToggleDoubles,
     handleToggleOrder,
     handleToggleOrders,
     handleChangeOrdersSubStatus,

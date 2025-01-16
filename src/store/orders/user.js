@@ -44,7 +44,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
     }
 
     // in header
-    const currentStatus = state.subStatuses.find((oss) => +oss.id === +state.subStatus)
+    const currentStatus = state.subStatuses.find((ss) => +ss.id === +state.subStatus)
     const newLength = +currentStatus.orders_count + 1;
     // statuses
     currentStatus.orders_count = newLength;
@@ -66,6 +66,17 @@ const useUserOrdersStore = defineStore('user_order', () => {
       .filter(order => order.is_checked)
       .map(order => order.id);
 
+    const old_status = state.subStatuses.find((ss) => +ss.id === state.subStatus)
+    const new_status = state.subStatuses.find((ss) => +ss.id === +val)
+
+    const message = ids.length === 0
+      ? `Вы уверены, что хотите перенести все заказы из ${old_status.name} в ${new_status.name}?`
+      : `Вы уверены, что хотите перенести ${ids.length} заказов из ${old_status.name} в ${new_status.name}?`;
+
+    const confirm = window.confirm(message);
+
+    if (!confirm) return;
+
     const data = {
       old_sub_status_id: state.subStatus,
       new_sub_status_id: val,
@@ -82,8 +93,8 @@ const useUserOrdersStore = defineStore('user_order', () => {
     };
 
     if (ids.length === 0) {
-      const currentStatus = state.subStatuses.find((oss) => +oss.id === +state.subStatus)
-      const newStatus = state.subStatuses.find((oss) => +oss.id === +val)
+      const currentStatus = state.subStatuses.find((ss) => +ss.id === +state.subStatus)
+      const newStatus = state.subStatuses.find((ss) => +ss.id === +val)
       // new_status
       newStatus.orders_count = +newStatus.orders_count + +currentStatus.orders_count;
       // current_status
@@ -91,8 +102,8 @@ const useUserOrdersStore = defineStore('user_order', () => {
       currentStatus.orders_count = newLength;
       state.newSubStatusLength = newLength;
     } else {
-      const currentStatus = state.subStatuses.find((oss) => +oss.id === +state.subStatus);
-      const newStatus = state.subStatuses.find((oss) => +oss.id === +val);
+      const currentStatus = state.subStatuses.find((ss) => +ss.id === +state.subStatus);
+      const newStatus = state.subStatuses.find((ss) => +ss.id === +val);
       // new_status
       newStatus.orders_count = +newStatus.orders_count + ids.length;
       // current_status
@@ -110,6 +121,11 @@ const useUserOrdersStore = defineStore('user_order', () => {
   const handleApplyFilters = async () => {
     state.page = 1;
     await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
+  };
+
+  const handleToggleDoubles = async (order_id) => {
+    const order = state.orders.find((o) => +o.id === +order_id);
+    order.is_doubles_open = !order.is_doubles_open;
   };
 
   const handleToggleOrder = async (val) => {
@@ -164,9 +180,9 @@ const useUserOrdersStore = defineStore('user_order', () => {
   const bindEvents = () => {
     socket.on("receiveStatus", (data) => {
       // find old status
-      const oldStatus = state.subStatuses.find((oss) => +oss.id === +data.old_sub_status_id);
+      const oldStatus = state.subStatuses.find((ss) => +ss.id === +data.old_sub_status_id);
       // find new status
-      const newStatus = state.subStatuses.find((oss) => +oss.id === +data.new_sub_status_id);
+      const newStatus = state.subStatuses.find((ss) => +ss.id === +data.new_sub_status_id);
 
       const newLength = data.ids.length === 0 ? data.total : data.ids.length;
       // remove from old length
@@ -271,6 +287,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
     handleApplyFilters,
     bindEvents,
     handleEntryOrder,
+    handleToggleDoubles,
     handleToggleOrder,
     handleToggleOrders,
     handleChangeOrdersSubStatus,

@@ -34,8 +34,19 @@ const useOrderApi = () => {
     return response.data;
   };
 
-  const getOperatorOrders = async (limit = 20, page = 1, subStatus = 1) => {
-    const queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&sub_status=${subStatus}`;
+  const getOperatorOrders = async (limit = 20, page = 1, subStatus = 1, filters = []) => {
+    let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&sub_status=${subStatus}`;
+
+    if (filters.length > 0) {
+      const filteredFilters = filters.filter(filter => filter.value !== null && filter.value !== "" && filter.value !== undefined);
+      const queryParams = filteredFilters
+        .map(item => `${encodeURIComponent(item.name)}=${encodeURIComponent(item.value)}`)
+        .join('&');
+
+      if (queryParams !== "") {
+        queries += `&${queryParams}`;
+      }
+    };
 
     const response = await api({
       method: 'GET',
