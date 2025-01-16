@@ -3,6 +3,7 @@ import { onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 import { useOrderStore, useUserStore } from '@store';
 import { DateFormat } from "@utils";
+import { formatRange } from '@utils';
 import { socket } from "@/plugins/socket";
 
 const route = useRoute();
@@ -82,9 +83,16 @@ onBeforeUnmount(() => {
       <!-- Дата доставки -->
       <div class="flex flex-col gap-2">
         <h1 class="text-xs font-semibold text-black">Дата доставки:</h1>
-        <p class="text-gray-700 break-words">
+        <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
           {{ DateFormat(order.state.order.delivery_at, 'H:i d.m.Y') ?? '-' }}
         </p>
+        <DatePicker
+          v-else
+          v-model="order.state.order.delivery_at"
+          class="w-[250px] text-sm z-20"
+          locale="ru"
+          auto-apply
+        />
       </div>
 
       <!-- ТЕЛЕФОН -->
@@ -295,6 +303,22 @@ onBeforeUnmount(() => {
             id="postal_code"
             type="text"
             v-model="order.state.order.postal_code"
+            class="border rounded-md p-2 text-gray-700"
+            placeholder="..."
+          />
+        </div>
+
+        <!-- Сумма -->
+        <div class="flex flex-col gap-2">
+          <h1 class="text-xs font-semibold text-black">Сумма:</h1>
+          <p v-if="!order.state.order.is_editable" class="text-gray-700">
+            {{ order.state.order.total_sum ?? '-' }}
+          </p>
+          <Input
+            v-else
+            id="total_sum"
+            type="text"
+            v-model="order.state.order.total_sum"
             class="border rounded-md p-2 text-gray-700"
             placeholder="..."
           />
