@@ -4,7 +4,8 @@ import { useRouter } from 'vue-router';
 import {
   useOrderApi,
   useSubStatusApi,
-  useOrderColumnApi
+  useOrderColumnApi,
+  useKetApi,
 } from '@api';
 import { socket } from "@/plugins/socket";
 
@@ -14,6 +15,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
   const { getUserOrders, changeStatus } = useOrderApi();
   const { getSubStatuses } = useSubStatusApi();
   const { getOrderColumns } = useOrderColumnApi();
+  const { sendKet } = useKetApi();
 
   const state = reactive({
     // primitive
@@ -254,6 +256,24 @@ const useUserOrdersStore = defineStore('user_order', () => {
     });
   };
 
+  const handleSendKet = async () => {
+    const ids = state.orders
+      .filter(order => order.is_checked)
+      .map(order => order.id);
+
+    if (!ids.length) {
+      window.alert('Выберите заказы для выгрузки!');
+      return;
+    };
+
+    const confirm = window.confirm(`Вы уверены, что хотите отправить ${ids.length} заказов в ketkz?`);
+    if (!confirm) return;
+
+    await sendKet({
+      order_ids: ids,
+    });
+  };
+
   const handleEntryOrder = (order_id) => {
     router.push(`/orders/${order_id}`)
   };
@@ -310,6 +330,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
     handleChangePage,
     handleApplyFilters,
     bindEvents,
+    handleSendKet,
     handleChangeSelectSort,
     handleChangeDateSort,
     handleEntryOrder,

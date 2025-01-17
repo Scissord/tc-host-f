@@ -33,6 +33,8 @@ const handleCreateOrder = async () => {
   };  
   const data = await props.createOrder(order);
   
+  data.order.items = Array.isArray(data.order.items) ? data.order.items : [],
+  data.order.doubles = [];
   data.order.is_checked = false;
   data.order.is_disabled = false;
   data.order.reserved_by = null;

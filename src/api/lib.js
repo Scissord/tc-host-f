@@ -20,6 +20,7 @@ import useGenderApi from './useGenderApi';
 import usePaymentMethodApi from './usePaymentMethodApi';
 import useDeliveryMethodApi from './useDeliveryMethodApi';
 import useOrderCancelReasonApi from './useOrderCancelReasonApi';
+import useKetApi from './useKetApi';
 
 export {
   api,
@@ -44,5 +45,6 @@ export {
   useGenderApi,
   usePaymentMethodApi,
   useDeliveryMethodApi,
-  useOrderCancelReasonApi
+  useOrderCancelReasonApi,
+  useKetApi,
 };

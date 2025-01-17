@@ -59,9 +59,11 @@ onMounted(async () => {
           :handleEntryOrder="orders.handleEntryOrder"
         />
         <OrdersUnderTable
+          :subStatus="orders.state.subStatus"
           :newSubStatus="orders.state.newSubStatus"
           :newSubStatusLength="orders.state.newSubStatusLength"
           :subStatuses="orders.state.subStatuses"
+          :handleSendKet="orders.handleSendKet"
           :handleChangeOrdersSubStatus="orders.handleChangeOrdersSubStatus"
         />
       </div>

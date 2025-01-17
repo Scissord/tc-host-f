@@ -24,6 +24,10 @@ import SubStatuses from '@/pages/statuses/SubStatuses.vue';
 import Admin from '@/pages/admin/Admin.vue';
 // create_operators
 import CreateOperators from '@/pages/create_operators/CreateOperators.vue';
+// logs
+import OrderLogs from '@/pages/logs/order/OrderLog.vue';
+import OperatorLogs from '@/pages/logs/operator/OperatorLogs.vue';
+import WebmasterLogs from '@/pages/logs/webmaster/WebmasterLogs.vue';
 // script
 // import Script from '@/pages/script/Script.vue';
 // import EditScript from '@/pages/edit_script/EditScript.vue';
@@ -59,6 +63,10 @@ const appRoutes = {
     { path: 'admin', name: 'Admin', component: Admin },
     // Оператор создаёт других операторов
     { path: 'create_operators', name: 'CreateOperators', component: CreateOperators },
+    // Логи
+    { path: 'logs/order/:order_id', name: 'OrderLogs', component: OrderLogs },
+    { path: 'logs/operator/:operator_id', name: 'OperatorLogs', component: OperatorLogs },
+    { path: 'logs/webmaster/:webmaster_id', name: 'WebmasterLogs', component: WebmasterLogs },
     // Скрипт для продажников
     // { path: 'script/:order_id/:good_id', name: 'Script', component: Script },
     // { path: 'edit_script', name: 'EditScript', component: EditScript },
