@@ -103,7 +103,7 @@ onBeforeUnmount(() => {
             :key="item.id"
           >
             <p v-if="!order.state.order.is_editable" class="p-1 bg-gray-600 w-fit text-white rounded-lg text-xs">
-              {{ item.name ?? '-' }}, {{ item.quantity ?? '-' }} шт. за {{ item.price ?? '-' }}
+              {{ item.name ?? '-' }}, {{ item.quantity ?? '-' }} шт. за {{ String(item.price).slice(0, -3) ?? '-' }}
             </p>
             <div v-else class="flex flex-col gap-2 border border-slate-200 p-2 rounded-lg text-sm">
               <div class="flex items-center justify-between">
@@ -127,6 +127,7 @@ onBeforeUnmount(() => {
                 :id="item.id + 'quantity'"
                 type="text"
                 v-model="item.quantity"
+                @update:modelValue="order.handleUpdateTotal()"
                 class="border rounded-md p-2 text-gray-700 w-full"
                 placeholder="..."
               />
@@ -135,6 +136,7 @@ onBeforeUnmount(() => {
                 :id="item.id + 'price'"
                 type="text"
                 v-model="item.price"
+                @update:modelValue="order.handleUpdateTotal()"
                 class="border rounded-md p-2 text-gray-700 w-full"
                 placeholder="..."
               />

@@ -98,6 +98,18 @@ const useOrderStore = defineStore('order', () => {
     });
   };
 
+  const handleUpdateTotal = () => {
+    const newTotal = state.order.items.reduce((acc, item) => {
+      const quantity = Number(item.quantity) || 0;
+      const price = Number(item.price) || 0;
+
+      const tmp = quantity * price;
+      return acc + tmp;
+    }, 0);
+
+    state.order.total_sum = newTotal;
+  };
+
   const handleGetOrder = async (order_id) => {
     const orderData = await getOrder(order_id);
     state.order = orderData.order;
@@ -148,6 +160,7 @@ const useOrderStore = defineStore('order', () => {
     state,
     handleDeleteProduct,
     handleAddProduct,
+    handleUpdateTotal,
     bindEvents,
     toggleOrder,
     saveOrder,
