@@ -58,6 +58,7 @@ const useOrderStore = defineStore('order', () => {
         postal_code: state.order.postal_code,
         comment: state.order.comment,
         age: state.order.age,
+        operator_id: state.order.operator_id,
         sub_status_id: state.order.sub_status_id,
         gender_id: state.order.gender_id,
         payment_method_id: state.order.payment_method_id,

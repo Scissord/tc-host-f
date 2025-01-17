@@ -163,14 +163,14 @@ onBeforeUnmount(() => {
         >
           {{ order.state.order.operator ?? '-' }}
         </p>
-        <!-- <Select
-          v-else
+        <Select
+          v-if="order.state.order.is_editable && user.data.abilities.includes(64)"
           v-model="order.state.order.operator_id"
           :options="order.state.operators"
           value="id"
           label="name"
           class="border rounded-md p-2 text-gray-700"
-        /> -->
+        />
       </div>
 
       <!-- Статус -->
