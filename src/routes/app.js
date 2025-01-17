@@ -28,6 +28,7 @@ import CreateOperators from '@/pages/create_operators/CreateOperators.vue';
 import OrderLogs from '@/pages/logs/order/OrderLog.vue';
 import OperatorLogs from '@/pages/logs/operator/OperatorLogs.vue';
 import WebmasterLogs from '@/pages/logs/webmaster/WebmasterLogs.vue';
+import test from '@/pages/test/test.vue'
 // script
 // import Script from '@/pages/script/Script.vue';
 // import EditScript from '@/pages/edit_script/EditScript.vue';
@@ -61,6 +62,8 @@ const appRoutes = {
     { path: 'statuses/:status_id', name: 'SubStatuses', component: SubStatuses },
     // Админка
     { path: 'admin', name: 'Admin', component: Admin },
+    //test
+    { path: 'test', name: 'test', component: test },
     // Оператор создаёт других операторов
     { path: 'create_operators', name: 'CreateOperators', component: CreateOperators },
     // Логи
