@@ -21,6 +21,7 @@ import usePaymentMethodApi from './usePaymentMethodApi';
 import useDeliveryMethodApi from './useDeliveryMethodApi';
 import useOrderCancelReasonApi from './useOrderCancelReasonApi';
 import useKetApi from './useKetApi';
+import useOrderItemApi from './useOrderItemApi';
 
 export {
   api,
@@ -47,4 +48,5 @@ export {
   useDeliveryMethodApi,
   useOrderCancelReasonApi,
   useKetApi,
+  useOrderItemApi,
 };

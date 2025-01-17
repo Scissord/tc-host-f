@@ -3,7 +3,6 @@ import { onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 import { useOrderStore, useUserStore } from '@store';
 import { DateFormat } from "@utils";
-import { formatRange } from '@utils';
 import { socket } from "@/plugins/socket";
 
 const route = useRoute();
@@ -98,15 +97,58 @@ onBeforeUnmount(() => {
       <!-- ТЕЛЕФОН -->
       <div class="flex flex-col gap-2">
         <h1 class="text-xs font-semibold text-black">Товары:</h1>
-        <div class="flex flex-col gap-1">
-          <div
-            v-for="product in order.state.order.items"
-            :key="product.id"
-            class="p-1 bg-gray-600 w-fit text-white rounded-lg text-xs"
+        <div class="flex flex-col gap-3">
+          <div 
+            v-for="(item, index) in order.state.order.items" 
+            :key="item.id"
           >
-            <p>
-              {{ product.name ?? '-' }}, {{ product.quantity ?? '-' }} шт. за {{ product.price * product.quantity ?? '-' }}
+            <p v-if="!order.state.order.is_editable" class="p-1 bg-gray-600 w-fit text-white rounded-lg text-xs">
+              {{ item.name ?? '-' }}, {{ item.quantity ?? '-' }} шт. за {{ item.price ?? '-' }}
             </p>
+            <div v-else class="flex flex-col gap-2 border border-slate-200 p-2 rounded-lg text-sm">
+              <div class="flex items-center justify-between">
+                <p>Товар №{{ index + 1 }}</p>
+                <Icon 
+                  icon="fa-solid fa-trash"
+                  class="cursor-pointer text-sm text-red-500 hover:opacity-60 transition-all duration-300 ease-in-out"
+                  @click="order.handleDeleteProduct(item.id)"
+                />
+              </div>
+              <p>Продукт:</p>
+              <Select
+                v-model="item.product_id"
+                :options="order.state.products"
+                value="id"
+                label="name"
+                class="border rounded-md p-2 text-gray-700 w-full"
+              />
+              <p>Кол-во:</p>
+              <Input
+                :id="item.id + 'quantity'"
+                type="text"
+                v-model="item.quantity"
+                class="border rounded-md p-2 text-gray-700 w-full"
+                placeholder="..."
+              />
+              <p>Цена:</p>
+              <Input
+                :id="item.id + 'price'"
+                type="text"
+                v-model="item.price"
+                class="border rounded-md p-2 text-gray-700 w-full"
+                placeholder="..."
+              />
+            </div>
+          </div>
+          <div 
+            v-if="order.state.order.is_editable"
+            class="cursor-pointer mt-2 flex items-center justify-center p-2 bg-black hover:opacity-60 rounded-lg transition-all duration-300 ease-in-out"
+            @click="order.handleAddProduct()"
+          >
+            <Icon 
+              icon="fa-solid fa-plus"
+              class="text-lg text-white"
+            />
           </div>
         </div>
       </div>
