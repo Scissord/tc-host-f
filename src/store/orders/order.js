@@ -57,7 +57,7 @@ const useOrderStore = defineStore('order', () => {
       payment_method_id: state.order.payment_method_id,
       delivery_method_id: state.order.delivery_method_id,
       order_cancel_reason_id: state.order.order_cancel_reason_id,
-      delivery_at: typeof state.order.delivery_at === "string" ? state.order.delivery_at : state.order.delivery_at.toISOString(),
+      delivery_at: typeof state.order.delivery_at === "string" ? state.order.delivery_at : state.order?.delivery_at?.toISOString() ?? null,
       total_sum: state.order.total_sum,
       additional1: state.order.additional1,
       additional2: state.order.additional2,
