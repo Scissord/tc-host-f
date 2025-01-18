@@ -45,51 +45,206 @@ const idOptions = [
 ];
 
 const css = {
-  th: 'text-left border border-slate-200 p-1 whitespace-nowrap',
-  td: 'border border-slate-200 p-1 whitespace-nowrap'
+  th: 'text-left p-4 whitespace-nowrap',
+  td: 'p-4 whitespace-nowrap',
+  first_row: 'p-2'
 };
 </script>
 
 <template>
-  <div class="w-full overflow-x-auto min-h-[50vh]">
-    <table class="w-full border-collapse border border-slate-200">
-      <thead>
+  <div class="w-full overflow-x-auto min-h-[50vh] bg-gray-50 p-4 rounded-lg">
+    <table class="w-full border border-slate-200 table-auto text-xs font-medium">
+      <thead class="bg-gray-100 text-gray-600 uppercase text-sm font-semibold">
         <tr>
           <th 
-            v-for="column in columns" 
-            :key="column.id" 
             :class='css.th'
           >
             <Checkbox 
-              v-if="column.id === 0" 
-              v-model="column.is_checked"
+              v-model="columns[0].is_checked"
               @update:modelValue="handleToggleOrders"
             />          
-            <p v-else>{{ column.label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[1].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[2].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[3].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[6].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[7].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[8].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[9].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[10].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[11].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[12].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[13].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[14].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[15].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[16].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[17].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[18].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[19].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[20].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[21].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[22].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[23].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[24].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[26].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[27].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[28].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[29].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[30].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[31].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[33].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[34].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[36].label }}</p>
+          </th>
+          <th 
+            :class='css.th'
+          >
+            <p>{{ columns[37].label }}</p>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td :class='css.td'></td>
-          <td :class='css.td'>
+        <tr class="border-b border-slate-200 bg-white">
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'>
             <Select
               v-model="columns[1].sort"
               @update:modelValue="(val, obj) => handleChangeSelectSort(obj.field, obj.sort)"
               :options="idOptions"
             />
           </td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'>
             <DatePicker
               v-model="columns[12].sort"
               class="w-[250px] text-sm z-20"
@@ -100,39 +255,37 @@ const css = {
               range
             />
           </td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'>
+          </td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+        
         </tr>
         <tr
           v-for="order in orders"
           :key="order.id"
           :class="[
-            'transition duration-300 ease',
-            order.is_checked ? 'bg-blue-100' : 'bg-white',
+            'border-b transition duration-300 ease',
+            order.is_checked ? 'bg-blue-100' : 'bg-white hover:bg-gray-50',
             order.is_disabled ? 'pointer-events-none opacity-50' : ''
           ]"
         >
@@ -190,8 +343,6 @@ const css = {
               </div>
             </div>
           </td>
-          <td :class='css.td'>{{ order.webmaster ?? '-' }}</td>
-          <td :class='css.td'>{{ order.additional1 ?? '-' }}</td>
           <td :class='css.td'>{{ DateFormat(order.updated_at, 'H:i d.m.Y') ?? '-' }}</td>
           <td :class='css.td'>{{ DateFormat(order.created_at, 'H:i d.m.Y') ?? '-' }}</td>
           <td :class='css.td'>{{ DateFormat(order.approved_at, 'H:i d.m.Y') ?? '-' }}</td>
@@ -221,7 +372,6 @@ const css = {
           <td :class='css.td'>{{ order.address ?? '-' }}</td>
           <td :class='css.td'>{{ order.postal_code ?? '-' }}</td>
           <td :class='css.td'>{{ order.age ?? '-' }}</td>
-          <td :class='css.td'>{{ order.utm_term ?? '-' }}</td>
           <td :class='css.td'>
             <p v-if="order.status">
               {{ order.status.name ?? '-' }}
@@ -240,14 +390,10 @@ const css = {
             {{ order.order_cancel_reason ?? '-' }}
           </td>
           <td :class='css.td'>{{ order.additional2 ?? '-' }}</td>
-          <td :class='css.td'>{{ order.additional3 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional4 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional5 ?? '-' }}</td>
-          <td :class='css.td'>{{ order.additional6 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional7 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional8 ?? '-' }}</td>
-          <td :class='css.td'>{{ order.additional9 ?? '-' }}</td>
-          <td :class='css.td'>{{ order.additional10 ?? '-' }}</td>
         </tr>
       </tbody>
     </table>

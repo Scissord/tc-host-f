@@ -17,23 +17,23 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="flex flex-wrap items-center gap-2">
+  <div class="flex flex-wrap items-center gap-2 bg-gray-50 p-4 rounded-lg">
     <div
       v-for="sS in subStatuses"
       :key="sS.id"
       :class="[
-        'flex items-center gap-1 border p-1 rounded-sm select-none cursor-pointer transition duration-200 transform active:scale-90 transform-origin-center',
-        +sS.id === +subStatus ? 'bg-sky-400 text-white' : '',
+        'flex items-center gap-2 px-2 py-1 rounded-full text-[10px] font-medium cursor-pointer',
+        +sS.id === +subStatus ? 'bg-sky-400' : '',
       ]"
       :style="{ 
         backgroundColor: +sS.id !== +subStatus ? `${sS.color}` : '',
       }"
       @click="handleChangeSubStatus(sS.id)"
     >
-      <p>{{ sS.name }}</p>
-      <p class="px-1 bg-gray-400 text-white">
+      <span>{{ sS.name }}</span>
+      <span class="bg-white px-2 py-0.5 rounded-full text-[8px] font-bold">
         {{ sS.orders_count }}
-      </p>
+      </span>
     </div>
   </div>
 </template>

@@ -63,6 +63,10 @@ onMounted(async () => {
           :handleEntryOrder="orders.handleEntryOrder"
         />
         <OrdersUnderTable
+          :page="orders.state.page"
+          :pages="orders.state.pages"
+          :lastPage="orders.state.lastPage"
+          :handleChangePage="orders.handleChangePage"
           :newSubStatus="orders.state.newSubStatus"
           :newSubStatusLength="orders.state.newSubStatusLength"
           :subStatuses="orders.state.subStatuses"

@@ -218,7 +218,7 @@ const isRowSelected = (id) => selectedRows.value.includes(id);
 </script>
 
 <template>
-  <div class="flex justify-center items-center bg-gray-100">
+  <div class="flex justify-center items-center bg-gray-100 ml-[15vw]">
     <div class="bg-white shadow-lg rounded-lg p-6 w-[110rem]">
       <!-- Search and Controls -->
       <!-- <div class="flex justify-between items-center mb-4">

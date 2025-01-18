@@ -45,51 +45,52 @@ const idOptions = [
 ];
 
 const css = {
-  th: 'text-left border border-slate-200 p-1 whitespace-nowrap',
-  td: 'border border-slate-200 p-1 whitespace-nowrap'
+  th: 'text-left p-4 whitespace-nowrap',
+  td: 'p-4 whitespace-nowrap',
+  first_row: 'p-2'
 };
 </script>
 
 <template>
-  <div class="w-full min-h-[50vh] overflow-x-auto">
-    <table class="w-full border-collapse border border-slate-200">
-      <thead>
+  <div class="w-full min-h-[50vh] overflow-x-auto bg-gray-50 p-4 rounded-lg">
+    <table class="w-full border border-slate-200 table-auto text-xs font-medium">
+      <thead class="bg-gray-100 text-gray-600 uppercase text-sm font-semibold">
         <tr>
           <th 
             v-for="column in columns" 
             :key="column.id" 
-            :class='css.th'
+            :class='css.th '
           >
             <Checkbox 
               v-if="column.id === 0" 
               v-model="column.is_checked"
               @update:modelValue="handleToggleOrders"
             />          
-            <p v-else>{{ column.label }}</p>
+            <p v-else class="text-[10px]">{{ column.label }}</p>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td :class='css.td'></td>
-          <td :class='css.td'>
+        <tr class="border-b border-slate-200 bg-white">
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'>
             <Select
               v-model="columns[1].sort"
               @update:modelValue="(val, obj) => handleChangeSelectSort(obj.field, obj.sort)"
               :options="idOptions"
             />
           </td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'>
             <DatePicker
               v-model="columns[12].sort"
               class="w-[250px] text-sm z-20"
@@ -100,39 +101,40 @@ const css = {
               range
             />
           </td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
-          <td :class='css.td'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
+          <td :class='css.first_row'></td>
         </tr>
         <tr
           v-for="order in orders"
           :key="order.id"
           :class="[
-            'transition duration-300 ease',
-            order.is_checked ? 'bg-blue-100' : 'bg-white',
+            'border-b transition duration-300 ease',
+            order.is_checked ? 'bg-blue-100' : 'bg-white hover:bg-gray-50',
             order.is_disabled ? 'pointer-events-none opacity-50' : ''
           ]"
         >

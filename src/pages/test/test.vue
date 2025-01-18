@@ -168,7 +168,7 @@ export default {
 
 <template>
   <div
-    class="p-6 bg-gray-50 flex flex-col items-center transition-all duration-300 ease-in-out ml-[5vw]"
+    class="p-6 bg-gray-50 flex flex-col items-center transition-all duration-300 ease-in-out ml-[15vw]"
   >
     <!-- Header Section -->
     <div class="w-full max-w-4xl border-b-2 pb-4 mb-4">
@@ -189,7 +189,7 @@ export default {
     </div> -->
   </div>
   <div
-    class="min-h-screen p-6 bg-gray-50 flex flex-col items-center transition-all duration-300 ease-in-out ml-[5vw]"
+    class="min-h-screen p-6 bg-gray-50 flex flex-col items-center transition-all duration-300 ease-in-out ml-[15vw]"
   >
     <div class=" bg-gray-50">
       <TagBlock />

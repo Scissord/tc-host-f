@@ -19,11 +19,30 @@ defineProps({
     required: true,
     default: 0
   },
+  page: {
+    type: Number,
+    required: true,
+    default: 1,
+  },
+  pages: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  lastPage: {
+    type: [Number, null],
+    required: true,
+    default: null,
+  },
+  handleChangePage: {
+    type: Function,
+    required: true
+  },
 })
 </script>
 
 <template>
-  <div>
+  <div class="flex items-center justify-between">
     <Select
       class="w-[200px]"
       :modelValue="newSubStatus"
@@ -32,6 +51,13 @@ defineProps({
       :length="newSubStatusLength" 
       value="id"
       label="name"
+    />
+
+    <Paginate
+      :page="page"
+      :pages="pages"
+      :lastPage="lastPage"
+      :handleChangePage="handleChangePage"
     />
   </div>
 </template>
