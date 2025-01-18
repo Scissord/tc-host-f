@@ -61,6 +61,14 @@ onBeforeUnmount(() => {
         <p class="text-gray-700">
           {{ order.state.order.phone ?? '-' }}
         </p>
+        <Input
+          v-if="order.state.order.is_editable && +user.data.id === 1"
+          id="phone"
+          type="text"
+          v-model="order.state.order.phone"
+          class="border rounded-md p-2 text-gray-700 w-full"
+          placeholder="..."
+        />
       </div>
 
       <!-- Дата создания -->
