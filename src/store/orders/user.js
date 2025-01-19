@@ -284,6 +284,10 @@ const useUserOrdersStore = defineStore('user_order', () => {
     // make socket to push to every one;
   };
 
+  const handleHistoryClick = (order_id) => {
+    router.push(`/logs/order/${order_id}`);
+  };
+
   const handleGetSubStatuses = async () => {
     const subStatusData = await getSubStatuses();
     state.newSubStatusLength = subStatusData.subStatuses[0].orders_count;
@@ -337,6 +341,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
     handleApplyFilters,
     bindEvents,
     handleSendKet,
+    handleHistoryClick,
     handleChangeSelectSort,
     handleChangeDateSort,
     handleEntryOrder,

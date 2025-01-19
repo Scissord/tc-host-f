@@ -40,6 +40,10 @@ const props = defineProps({
     type: Function,
     required: true,
   },
+  handleHistoryClick: {
+    type: Function,
+    required: true,
+  },
 });
 
 const idOptions = [
@@ -166,6 +170,11 @@ const css = {
               >
                 ({{ order.doubles.length }})
               </p>
+              <Icon 
+                icon="fa-solid fa-clock-rotate-left" 
+                class="cursor-pointer hover:text-gray-600"
+                @click="() => handleHistoryClick(order.id)"
+              />
             </div>
             <div 
               v-if="order.is_doubles_open"
