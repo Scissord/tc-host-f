@@ -61,7 +61,7 @@ const useAuthApi = () => {
         withCredentials: true,
       });
 
-      if(response.data.newAccessToken) user.setAccessToken(response.data.newAccessToken);
+      if (response.data.newAccessToken) user.setAccessToken(response.data.newAccessToken);
 
       return response.data;
     } catch (err) {

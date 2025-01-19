@@ -263,6 +263,12 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     router.push(`/orders/${order_id}`)
   };
 
+  const handleMiddleClick = (order_id) => {
+    window.open(`/orders/${order_id}`, '_blank');
+
+    // make socket to push to every one;
+  };
+
   const handleGetSubStatuses = async () => {
     const subStatusData = await getSubStatuses();
     state.subStatuses.splice(0, state.subStatuses.length, ...subStatusData.subStatuses);
@@ -317,6 +323,7 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     handleChangePage,
     handleApplyFilters,
     bindEvents,
+    handleMiddleClick,
     handleChangeSelectSort,
     handleChangeDateSort,
     handleEntryOrder,

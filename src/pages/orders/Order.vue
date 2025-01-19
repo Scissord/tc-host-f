@@ -17,6 +17,7 @@ onMounted(async () => {
     name
   });
   await order.handleGetData(order_id);
+  window.addEventListener("beforeunload", handleBeforeUnload);
 });
 
 onBeforeUnmount(() => {
@@ -24,7 +25,18 @@ onBeforeUnmount(() => {
     order_id,
     name
   });
+  window.removeEventListener("beforeunload", handleBeforeUnload);
 });
+
+function handleBeforeUnload(event) {
+  socket.emit("sendExitOrder", {
+    order_id,
+    name
+  });
+  
+  event.preventDefault();
+  event.returnValue = '';
+};
 </script> 
 
 <template>

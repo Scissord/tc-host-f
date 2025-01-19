@@ -37,6 +37,10 @@ const props = defineProps({
     type: Function,
     required: true,
   },
+  handleMiddleClick: {
+    type: Function,
+    required: true,
+  },
 });
 
 const idOptions = [
@@ -149,15 +153,17 @@ const css = {
           <td :class='css.td'>
             <div class="flex items-center gap-1">
               <p 
-                class="text-blue-900 font-semibold cursor-pointer select-none hover:underline"
-                @click="() => handleEntryOrder(order.id)"
+                class="text-blue-900 font-semibold cursor-pointer hover:underline"
+                @click.left="() => handleEntryOrder(order.id)"
+                @click.middle.prevent="() => handleMiddleClick(order.id)"
+                @mousedown="(e) => e.preventDefault()"
               >
                 {{ order.id ?? "-" }}
               </p>
               <p 
                 v-if="order.doubles.length > 0"
-                class="text-blue-900 font-semibold cursor-pointer select-none hover:underline"
-                @click="() => handleToggleDoubles(order.id)"
+                class="text-blue-900 font-semibold cursor-pointer hover:underline"
+                @click="handleToggleDoubles(order.id)"
               >
                 ({{ order.doubles.length }})
               </p>

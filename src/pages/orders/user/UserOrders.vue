@@ -57,6 +57,7 @@ onMounted(async () => {
           :handleToggleOrder="orders.handleToggleOrder"
           :handleToggleOrders="orders.handleToggleOrders"
           :handleEntryOrder="orders.handleEntryOrder"
+          :handleMiddleClick="orders.handleMiddleClick"
         />
         <OrdersUnderTable
           :page="orders.state.page"

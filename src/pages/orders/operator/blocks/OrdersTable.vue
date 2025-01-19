@@ -36,7 +36,11 @@ const props = defineProps({
   handleEntryOrder: {
     type: Function,
     required: true,
-  }
+  },
+  handleMiddleClick: {
+    type: Function,
+    required: true,
+  },
 });
 
 const idOptions = [
@@ -54,7 +58,7 @@ const css = {
 <template>
   <div class="w-full overflow-x-auto min-h-[50vh] bg-gray-50 p-4 rounded-lg">
     <table class="w-full border border-slate-200 table-auto text-xs font-medium">
-      <thead class="bg-gray-100 text-gray-600 uppercase text-sm font-semibold">
+      <thead class="bg-gray-100 text-gray-600 uppercase text-[10px] font-semibold">
         <tr>
           <th 
             :class='css.th'
@@ -85,7 +89,8 @@ const css = {
             <p>{{ columns[6].label }}</p>
           </th>
           <th 
-            :class='css.th'
+            :class="[css.th, 'cursor-pointer hover:underline']"
+            @click="handleChangeSelectSort('o.updated_at', 'asc')"
           >
             <p>{{ columns[7].label }}</p>
           </th>
@@ -110,7 +115,8 @@ const css = {
             <p>{{ columns[11].label }}</p>
           </th>
           <th 
-            :class='css.th'
+            :class="[css.th, 'cursor-pointer hover:underline']"
+            @click="handleChangeSelectSort('o.delivery_at', 'asc')"
           >
             <p>{{ columns[12].label }}</p>
           </th>
@@ -165,7 +171,8 @@ const css = {
             <p>{{ columns[22].label }}</p>
           </th>
           <th 
-            :class='css.th'
+            :class="[css.th, 'cursor-pointer hover:underline']"
+            @click="handleChangeSelectSort('o.postal_code', 'asc')"
           >
             <p>{{ columns[23].label }}</p>
           </th>
@@ -289,7 +296,7 @@ const css = {
             order.is_disabled ? 'pointer-events-none opacity-50' : ''
           ]"
         >
-          <td :class='css.td'>
+          <td :class="[css.td, 'sticky left-0 bg-white']">
             <Checkbox 
               v-if="!order.is_disabled"
               v-model="order.is_checked"
@@ -297,11 +304,13 @@ const css = {
             />
             <p v-else>{{ order?.reserved_by ?? '' }}</p>
           </td>
-          <td :class='css.td'>
+          <td :class="[css.td, 'sticky left-[50px] bg-white']">
             <div class="flex items-center gap-1">
               <p 
-                class="text-blue-900 font-semibold cursor-pointer select-none hover:underline"
-                @click="() => handleEntryOrder(order.id)"
+                class="text-blue-900 font-semibold cursor-pointer hover:underline"
+                @click.left="() => handleEntryOrder(order.id)"
+                @click.middle.prevent="() => handleMiddleClick(order.id)"
+                @mousedown="(e) => e.preventDefault()"
               >
                 {{ order.id ?? "-" }}
               </p>
