@@ -142,7 +142,7 @@ const css = {
             order.is_disabled ? 'pointer-events-none opacity-50' : ''
           ]"
         >
-          <td :class='css.td'>
+          <td :class="[css.td, 'sticky left-0 bg-white']">
             <Checkbox 
               v-if="!order.is_disabled"
               v-model="order.is_checked"
@@ -150,7 +150,7 @@ const css = {
             />
             <p v-else>{{ order?.reserved_by ?? '' }}</p>
           </td>
-          <td :class='css.td'>
+          <td :class="[css.td, 'sticky left-[50px] bg-white']">
             <div class="flex items-center gap-1">
               <p 
                 class="text-blue-900 font-semibold cursor-pointer hover:underline"
