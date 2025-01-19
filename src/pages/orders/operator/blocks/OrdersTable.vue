@@ -351,8 +351,8 @@ const css = {
               </div>
             </div>
           </td>
-          <td :class='css.td'>{{ order.updated_at ?? '-' }}</td>
           <td :class='css.td'>{{ order.created_at ?? '-' }}</td>
+          <td :class='css.td'>{{ order.updated_at ?? '-' }}</td>
           <td :class='css.td'>{{ order.approved_at ?? '-' }}</td>
           <td :class='css.td'>{{ order.shipped_at ?? '-' }}</td>
           <td :class='css.td'>{{ order.cancelled_at ?? '-' }}</td>

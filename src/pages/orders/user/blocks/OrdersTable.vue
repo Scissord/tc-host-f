@@ -199,8 +199,8 @@ const css = {
           </td>
           <td :class='css.td'>{{ order.webmaster ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional1 ?? '-' }}</td>
-          <td :class='css.td'>{{ order.updated_at ?? '-' }}</td>
           <td :class='css.td'>{{ order.created_at ?? '-' }}</td>
+          <td :class='css.td'>{{ order.updated_at ?? '-' }}</td>
           <td :class='css.td'>{{ order.approved_at ?? '-' }}</td>
           <td :class='css.td'>{{ order.shipped_at ?? '-' }}</td>
           <td :class='css.td'>{{ order.cancelled_at ?? '-' }}</td>
