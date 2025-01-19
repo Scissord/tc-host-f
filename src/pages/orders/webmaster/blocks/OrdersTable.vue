@@ -1,6 +1,4 @@
 <script setup>
-import { DateFormat } from "@utils";
-
 const props = defineProps({
   orders: {
     type: Array,
@@ -69,13 +67,13 @@ const css = {
           </td>
           <td :class='css.td'>{{ order.webmaster ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional1 ?? '-' }}</td>
-          <td :class='css.td'>{{ DateFormat(order.updated_at, 'H:i d.m.Y') ?? '-' }}</td>
-          <td :class='css.td'>{{ DateFormat(order.created_at, 'H:i d.m.Y') ?? '-' }}</td>
-          <td :class='css.td'>{{ DateFormat(order.approved_at, 'H:i d.m.Y') ?? '-' }}</td>
-          <td :class='css.td'>{{ DateFormat(order.shipped_at, 'H:i d.m.Y') ?? '-' }}</td>
-          <td :class='css.td'>{{ DateFormat(order.cancelled_at, 'H:i d.m.Y') ?? '-' }}</td>
-          <td :class='css.td'>{{ DateFormat(order.buyout_at, 'H:i d.m.Y') ?? '-' }}</td>
-          <td :class='css.td'>{{ DateFormat(order.delivery_at, 'H:i d.m.Y') ?? '-' }}</td>
+          <td :class='css.td'>{{ order.updated_at ?? '-' }}</td>
+          <td :class='css.td'>{{ order.created_at ?? '-' }}</td>
+          <td :class='css.td'>{{ order.approved_at ?? '-' }}</td>
+          <td :class='css.td'>{{ order.shipped_at ?? '-' }}</td>
+          <td :class='css.td'>{{ order.cancelled_at ?? '-' }}</td>
+          <td :class='css.td'>{{ order.buyout_at ?? '-' }}</td>
+          <td :class='css.td'>{{ order.delivery_at ?? '-' }}</td>
           <td :class='css.td'>{{ order.comment ?? '-' }}</td>
           <td :class='css.td'>
             <p v-if="order.items.length > 0">
@@ -83,7 +81,7 @@ const css = {
             </p>
           </td>
           <td :class='css.td'>{{ order.total_sum ?? '-' }}</td>
-          <td :class='css.td'>{{ DateFormat(order.logis_recall_at, 'H:i d.m.Y') ?? '-' }}</td>
+          <td :class='css.td'>{{ order.logis_recall_at ?? '-' }}</td>
           <td :class="css.td">
             <p v-if="order.items.length > 0">
               {{ order.items.reduce((total, item) => total + item.quantity, 0) }}
