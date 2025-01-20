@@ -82,12 +82,12 @@ const useOrderStore = defineStore('order', () => {
     };
 
     if (state.order.delivery_at !== null) {
-      const date = new Date(state.order.delivery_at).toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' });
+      const date = new Date(state.order.delivery_at)
       orderData.delivery_at = date;
     };
 
     if (state.order.logist_recall_at !== null) {
-      const date = new Date(state.order.logist_recall_at).toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' });
+      const date = new Date(state.order.logist_recall_at)
       orderData.logist_recall_at = date;
     };
 
