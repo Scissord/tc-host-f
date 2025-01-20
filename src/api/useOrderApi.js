@@ -51,8 +51,6 @@ const useOrderApi = () => {
       const value = filter.value;
       if (value === null) continue;
 
-      console.log(value);
-
       data[filter.name] = value;
     };
 

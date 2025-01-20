@@ -9,13 +9,16 @@ const useOperatorStatistics = () => {
   const state = reactive({
     isDataLoaded: false,
     statistics: [],
+    by_date: false,
+    range: [],
     operator_id: user.data.operator_id,
   });
 
   const handleGetData = async () => {
     state.isDataLoaded = false;
-    const data = await getOperatorStatistic(state.range[0], state.range[1], state.operator_id);
-    state.statistics = data.statistics;
+    const data = await getOperatorStatistic(state.range[0], state.range[1], state.operator_id, state.by_date);
+    state.statistics = data.result[user.data.operator_id];
+    console.log(state.statistics);
     state.isDataLoaded = true;
   };
 

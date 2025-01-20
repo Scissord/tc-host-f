@@ -35,8 +35,9 @@ const useStatisticApi = () => {
     return response.data;
   };
 
-  const getOperatorStatistic = async (start, end, operator_id) => {
+  const getOperatorStatistic = async (start, end, operator_id, by_date) => {
     const params = new URLSearchParams({
+      by_date,
       start: start.toISOString().slice(0, 10),
       end: end.toISOString().slice(0, 10),
     });

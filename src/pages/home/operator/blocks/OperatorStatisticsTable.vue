@@ -1,9 +1,11 @@
 <script setup>
+import { DateFormat } from '@utils';
+
 const props = defineProps({
   statistics: {
-    type: Array,
+    type: Object,
     required: true,
-    default: []
+    default: {}
   },
 })
 
@@ -55,55 +57,56 @@ const css = {
           :key="statistic.day"
         >
           <td :class='css.td'>
-            {{ statistic.label }}
+            {{ DateFormat(statistic?.date, 'd.m.Y') ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.total }}
+            {{ statistic?.totalOrders ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[1].count }}
+            {{ statistic?.acceptedOrders ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[1].percent }}
+            {{ statistic?.approvedPercentage ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[1].percent }}
+            {{ statistic?.approvedPercentage ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[4].count }}
+            {{ statistic?.cancelledOrders ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[4].percent }}
+            {{ statistic?.cancelledPercentage ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[2].count }}
+            {{ statistic?.shippedOrders ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[2].percent }}
+            {{ statistic?.shippedPercentage ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[3].count }}
+            {{ statistic?.buyoutOrders ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[3].percent }}
+            {{ statistic?.buyoutPercentage ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[5].count }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[5].percent }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[0].count }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[0].percent }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[6].count }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[6].percent }}
+          </td>
+          <td :class='css.td'>
+            {{ statistic?.avgTotalSum ?? '-' }}
+          </td>
+          <td :class='css.td'>
+          </td>
+          <td :class='css.td'>
           </td>
         </tr>
       </tbody>
