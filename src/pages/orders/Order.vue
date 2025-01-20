@@ -3,6 +3,7 @@ import { onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useOrderStore, useUserStore } from '@store';
 import { socket } from "@/plugins/socket";
+import { DateFormat } from '@utils';
 
 const router = useRouter();
 const route = useRoute();
@@ -133,9 +134,9 @@ const customPosition = (el) => ({ top: 10, left: 0 });
         <div class="flex flex-col gap-2">
           <h1 class="text-xs font-semibold text-black">Дата доставки:</h1>
           <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
-            {{ order.state.order.delivery_at ?? '-' }}
+            {{ DateFormat(order?.state?.order?.delivery_at, 'd:m:Y H:i') ?? '-' }}
           </p>
-          <!-- <DatePicker
+          <DatePicker
             v-else
             v-model="order.state.order.delivery_at"
             class="w-[250px] text-sm z-100"
@@ -144,22 +145,16 @@ const customPosition = (el) => ({ top: 10, left: 0 });
             :format="format"
             :alt-position="customPosition"
             :enable-time-picker="false"
-          /> -->
-          <input
-            v-else
-            type="date"
-            v-model="order.state.order.delivery_at"
-            class="w-[250px] text-sm"
-          >
+          />
         </div>
 
         <!-- Дата перезвона -->
         <div class="flex flex-col gap-2">
           <h1 class="text-xs font-semibold text-black">Дата перезвона:</h1>
           <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
-            {{ order.state.order.logist_recall_at ?? '-' }}
+            {{ DateFormat(order?.state?.order?.logist_recall_at, 'd:m:Y H:i') ?? '-' }}
           </p>
-          <!-- <DatePicker
+          <DatePicker
             v-else
             v-model="order.state.order.logist_recall_at"
             class="w-[250px] text-sm z-90"
@@ -167,13 +162,7 @@ const customPosition = (el) => ({ top: 10, left: 0 });
             auto-apply
             :format="format"
             :alt-position="customPosition"
-          /> -->
-          <input
-            v-else
-            type="date"
-            v-model="order.state.order.logist_recall_at"
-            class="w-[250px] text-sm"
-          >
+          />
         </div>
 
         <!-- Дата аппрува -->
