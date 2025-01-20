@@ -68,8 +68,6 @@ const useOrderStore = defineStore('order', () => {
       payment_method_id: state.order.payment_method_id,
       delivery_method_id: state.order.delivery_method_id,
       order_cancel_reason_id: state.order.order_cancel_reason_id,
-      delivery_at: typeof state.order.delivery_at === "string" ? state.order.delivery_at : state.order?.delivery_at?.toLocaleString('ru-RU', { timeZone: 'Asia/Dhaka' }) ?? null,
-      logist_recall_at: typeof state.order.logist_recall_at === "string" ? state.order.logist_recall_at : state.order?.logist_recall_at?.toLocaleString('ru-RU', { timeZone: 'Asia/Dhaka' }) ?? null,
       total_sum: state.order.total_sum,
       additional1: state.order.additional1,
       additional2: state.order.additional2,
@@ -81,6 +79,14 @@ const useOrderStore = defineStore('order', () => {
       additional8: state.order.additional8,
       additional9: state.order.additional9,
       additional10: state.order.additional10,
+    };
+
+    if (state.order.delivery_at !== null) {
+      orderData.delivery_at = typeof state.order.delivery_at === "string" ? state.order.delivery_at : state.order?.delivery_at?.toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' }) ?? null;
+    };
+
+    if (state.order.logist_recall_at !== null) {
+      orderData.logist_recall_at = typeof state.order.logist_recall_at === "string" ? state.order.logist_recall_at : state.order?.logist_recall_at?.toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' }) ?? null;
     };
 
     if (+user.data.id === 1) {

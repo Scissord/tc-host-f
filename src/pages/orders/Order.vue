@@ -129,7 +129,7 @@ const customPosition = (el) => ({ top: 10, left: 0 });
         <div class="flex flex-col gap-2">
           <h1 class="text-xs font-semibold text-black">Дата доставки:</h1>
           <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
-            {{ order.state.order.delivery_at ? order.state.order.delivery_at.slice(0, 10) : order.state.order.delivery_at ?? '-' }}
+            {{ order.state.order.delivery_at ?? '-' }}
           </p>
           <DatePicker
             v-else
