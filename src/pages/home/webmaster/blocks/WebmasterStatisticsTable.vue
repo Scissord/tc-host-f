@@ -1,9 +1,13 @@
 <script setup>
 const props = defineProps({
   statistics: {
-    type: Array,
+    type: Object,
     required: true,
-    default: []
+    default: () => ({
+      webmaster_name: '',
+      total_count: 0,
+      statuses: [],
+    }),
   },
 })
 
@@ -50,66 +54,60 @@ const css = {
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="statistic in statistics"
-          :key="statistic.day"
-        >
+        <tr>
           <td :class='css.td'>
-            {{ statistic.label }}
+            {{ statistics?.webmaster_name }}
           </td>
           <td :class='css.td'>
-            {{ statistic.total }}
+            {{ statistics?.total_count }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[1].count }}
+            {{ +statistics?.statuses[2]?.count + +statistics?.statuses[3]?.count + +statistics?.statuses[5]?.count ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[1].percent }}
+            {{ (((+statistics?.statuses[2]?.count + +statistics?.statuses[3]?.count + +statistics?.statuses[5]?.count) * 100) / +statistics?.total_count).toFixed(2) ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[1].percent }}
+            {{ (((+statistics?.statuses[2]?.count + +statistics?.statuses[3]?.count + +statistics?.statuses[5]?.count) * 100) / +statistics?.total_count).toFixed(2) ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[4].count }}
+            {{ statistics?.statuses[4]?.count ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[4].percent }}
+            {{ statistics?.statuses[4]?.percent ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[2].count }}
+            {{ statistics?.statuses[2]?.count ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[2].percent }}
+            {{ statistics?.statuses[2]?.percent ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[3].count }}
+            {{ statistics?.statuses[3]?.count ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[3].percent }}
+            {{ statistics?.statuses[3]?.percent ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[5].count }}
+            {{ statistics?.statuses[5]?.count ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[5].percent }}
+            {{ statistics?.statuses[5]?.percent ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[0].count }}
+            {{ statistics?.statuses[0]?.count ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[0].percent }}
+            {{ statistics?.statuses[0]?.percent ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[6].count }}
+            {{ statistics?.statuses[6]?.count ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistic.statuses[6].percent }}
+            {{ statistics?.statuses[6]?.percent ?? '-' }}
           </td>
         </tr>
       </tbody>
     </table>
-  </div>
-  <div class="flex items-center justify-center" v-if="statistics.length === 0">
-    <p class="font-bold text-2xl">Статистика не найдена</p>
   </div>
 </template>

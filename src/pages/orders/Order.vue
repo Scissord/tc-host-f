@@ -486,29 +486,168 @@ const customPosition = (el) => ({ top: 10, left: 0 });
               placeholder="..."
             />
           </div>
-        </div>
-        <div
-          v-for="i in 10"
-          :key="`additional${i}`"
-          class="flex flex-col gap-2"
-        >
-          <h1 class="text-xs font-semibold text-black">
-            Дополнительное {{ i }}:
-          </h1>
-          <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
-            {{ order.state.order[`additional${i}`] ?? '-' }}
-          </p>
-          <Input
-            v-else
-            :id="`additional${i}`"
-            v-model="order.state.order[`additional${i}`]"
-            type="text"
-            class="border rounded-md p-2 text-gray-700"
-            placeholder="..."
-          />
+
+          <!-- Домен -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Домен:</h1>
+            <p v-if="!order.state.order.is_editable" class="text-gray-700">
+              {{ order.state.order.additional1 ?? '-' }}
+            </p>
+            <Input
+              v-else
+              id="additional1"
+              type="text"
+              v-model="order.state.order.additional1"
+              class="border rounded-md p-2 text-gray-700"
+              placeholder="..."
+            />
+          </div>
+
+          <!-- Затраченное время -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Затраченное время:</h1>
+            <p v-if="!order.state.order.is_editable" class="text-gray-700">
+              {{ order.state.order.additional2 ?? '-' }}
+            </p>
+            <Input
+              v-else
+              id="additional2"
+              type="text"
+              v-model="order.state.order.additional2"
+              class="border rounded-md p-2 text-gray-700"
+              placeholder="..."
+            />
+          </div>
+
+          <!-- Внешний вебмастер -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Внешний вебмастер:</h1>
+            <p v-if="!order.state.order.is_editable" class="text-gray-700">
+              {{ order.state.order.additional3 ?? '-' }}
+            </p>
+            <Input
+              v-else
+              id="additional3"
+              type="text"
+              v-model="order.state.order.additional3"
+              class="border rounded-md p-2 text-gray-700"
+              placeholder="..."
+            />
+          </div>
+
+          <!-- Трек код -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Трек код:</h1>
+            <p v-if="!order.state.order.is_editable" class="text-gray-700">
+              {{ order.state.order.additional4 ?? '-' }}
+            </p>
+            <Input
+              v-else
+              id="additional4"
+              type="text"
+              v-model="order.state.order.additional4"
+              class="border rounded-md p-2 text-gray-700"
+              placeholder="..."
+            />
+          </div>
+
+          <!-- Дата возврата -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Дата возврата:</h1>
+            <p v-if="!order.state.order.is_editable" class="text-gray-700">
+              {{ order.state.order.additional5 ?? '-' }}
+            </p>
+            <Input
+              v-else
+              id="additional5"
+              type="text"
+              v-model="order.state.order.additional5"
+              class="border rounded-md p-2 text-gray-700"
+              placeholder="..."
+            />
+          </div>
+
+          <!-- Pixel -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Pixel:</h1>
+            <p v-if="!order.state.order.is_editable" class="text-gray-700">
+              {{ order.state.order.additional6 ?? '-' }}
+            </p>
+            <Input
+              v-else
+              id="additional6"
+              type="text"
+              v-model="order.state.order.additional6"
+              class="border rounded-md p-2 text-gray-700"
+              placeholder="..."
+            />
+          </div>
+
+          <!-- Причина возврата -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Причина возврата:</h1>
+            <p v-if="!order.state.order.is_editable" class="text-gray-700">
+              {{ order.state.order.additional7 ?? '-' }}
+            </p>
+            <Input
+              v-else
+              id="additional7"
+              type="text"
+              v-model="order.state.order.additional7"
+              class="border rounded-md p-2 text-gray-700"
+              placeholder="..."
+            />
+          </div>
+
+          <!-- Язык -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Язык:</h1>
+            <p v-if="!order.state.order.is_editable" class="text-gray-700">
+              {{ order.state.order.additional8 ?? '-' }}
+            </p>
+            <Input
+              v-else
+              id="additional8"
+              type="text"
+              v-model="order.state.order.additional8"
+              class="border rounded-md p-2 text-gray-700"
+              placeholder="..."
+            />
+          </div>
+
+          <!-- HOLD -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">HOLD:</h1>
+            <p v-if="!order.state.order.is_editable" class="text-gray-700">
+              {{ order.state.order.additional9 ?? '-' }}
+            </p>
+            <Input
+              v-else
+              id="additional9"
+              type="text"
+              v-model="order.state.order.additional9"
+              class="border rounded-md p-2 text-gray-700"
+              placeholder="..."
+            />
+          </div>
+
+          <!-- ID дизайнера -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">ID дизайнера:</h1>
+            <p v-if="!order.state.order.is_editable" class="text-gray-700">
+              {{ order.state.order.additional10 ?? '-' }}
+            </p>
+            <Input
+              v-else
+              id="additional10"
+              type="text"
+              v-model="order.state.order.additional10"
+              class="border rounded-md p-2 text-gray-700"
+              placeholder="..."
+            />
+          </div>
         </div>
       </div>
-
     </div>
   </div>
   <div v-else class="min-h-screen flex items-center justify-center">
