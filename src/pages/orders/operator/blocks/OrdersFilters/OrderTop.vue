@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { formatRange } from '@utils';
 
 const props = defineProps({
   page: {
@@ -69,10 +70,6 @@ const props = defineProps({
 
 const isFiltersOpen = ref(false);
 const customPosition = (el) => ({ top: 10, left: 0 });
-
-const format = (data) => {
-  return new Date(data).toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' });
-};
 </script>
 
 <template>
@@ -147,7 +144,8 @@ const format = (data) => {
           class="w-full text-xs"
           locale="ru"
           auto-apply
-          :format="format"
+          range
+          :format="formatRange"
           :alt-position="customPosition"
           :enable-time-picker="true"
         />
@@ -162,7 +160,8 @@ const format = (data) => {
           class="w-full text-xs"
           locale="ru"
           auto-apply
-          :format="format"
+          range
+          :format="formatRange"
           :alt-position="customPosition"
           :enable-time-picker="true"
         />
@@ -181,7 +180,8 @@ const format = (data) => {
           class="w-full text-xs"
           locale="ru"
           auto-apply
-          :format="format"
+          range
+          :format="formatRange"
           :alt-position="customPosition"
           :enable-time-picker="true"
         />
@@ -196,7 +196,8 @@ const format = (data) => {
           class="w-full text-xs"
           locale="ru"
           auto-apply
-          :format="format"
+          range
+          :format="formatRange"
           :alt-position="customPosition"
           :enable-time-picker="true"
         />
@@ -211,7 +212,8 @@ const format = (data) => {
           class="w-full text-xs"
           locale="ru"
           auto-apply
-          :format="format"
+          range
+          :format="formatRange"
           :alt-position="customPosition"
           :enable-time-picker="true"
         />
@@ -226,7 +228,8 @@ const format = (data) => {
           class="w-full text-xs"
           locale="ru"
           auto-apply
-          :format="format"
+          range
+          :format="formatRange"
           :alt-position="customPosition"
           :enable-time-picker="true"
         />
@@ -240,7 +243,8 @@ const format = (data) => {
           class="w-full text-xs"
           locale="ru"
           auto-apply
-          :format="format"
+          range
+          :format="formatRange"
           :alt-position="customPosition"
           :enable-time-picker="true"
         />
@@ -298,7 +302,8 @@ const format = (data) => {
           class="w-full text-xs"
           locale="ru"
           auto-apply
-          :format="format"
+          range
+          :format="formatRange"
           :alt-position="customPosition"
           :enable-time-picker="true"
         />
