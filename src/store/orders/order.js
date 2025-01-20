@@ -82,11 +82,13 @@ const useOrderStore = defineStore('order', () => {
     };
 
     if (state.order.delivery_at !== null) {
-      orderData.delivery_at = typeof state.order.delivery_at === "string" ? state.order.delivery_at : state.order?.delivery_at?.toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' }) ?? null;
+      const date = new Date(state.order.delivery_at).toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' });
+      orderData.delivery_at = date;
     };
 
     if (state.order.logist_recall_at !== null) {
-      orderData.logist_recall_at = typeof state.order.logist_recall_at === "string" ? state.order.logist_recall_at : state.order?.logist_recall_at?.toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' }) ?? null;
+      const date = new Date(state.order.delivery_at).toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' });
+      orderData.logist_recall_at = date;
     };
 
     if (+user.data.id === 1) {

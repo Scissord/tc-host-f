@@ -11,6 +11,10 @@ const user = useUserStore();
 const order = useOrderStore();
 const name = user.data.name;
 
+const format = (data) => {
+  return new Date(data).toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' });
+};
+
 onMounted(async () => {
   socket.emit("sendEntryOrder", {
     order_id,
@@ -137,6 +141,7 @@ const customPosition = (el) => ({ top: 10, left: 0 });
             class="w-[250px] text-sm z-100"
             locale="ru"
             auto-apply
+            :format="format"
             :alt-position="customPosition"
             :enable-time-picker="false"
           />
@@ -154,6 +159,7 @@ const customPosition = (el) => ({ top: 10, left: 0 });
             class="w-[250px] text-sm z-90"
             locale="ru"
             auto-apply
+            :format="format"
             :alt-position="customPosition"
           />
         </div>
