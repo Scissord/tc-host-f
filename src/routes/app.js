@@ -29,6 +29,7 @@ import OrderLogs from '@/pages/logs/order/OrderLog.vue';
 import OperatorLogs from '@/pages/logs/operator/OperatorLogs.vue';
 import WebmasterLogs from '@/pages/logs/webmaster/WebmasterLogs.vue';
 import test from '@/pages/test/test.vue'
+import test2 from '@/pages/test2/test2.vue'
 // script
 // import Script from '@/pages/script/Script.vue';
 // import EditScript from '@/pages/edit_script/EditScript.vue';

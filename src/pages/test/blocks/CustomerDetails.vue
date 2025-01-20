@@ -1,5 +1,5 @@
 <script setup>
-// No interactivity yet; this file focuses on layout and mock data
+const totalAmount = 2 * 1650; // 2 products at 1650 тг each
 </script>
 
 <style scoped>
@@ -10,19 +10,36 @@
   <div class="space-y-4">
     <!-- Card 1: Customer Profile -->
     <div
-      class="bg-white rounded-lg mt-4 shadow p-4 hover:shadow-lg hover:scale-105 transition-all duration-300"
+      class="bg-white rounded-lg shadow p-4 hover:shadow-lg hover:scale-105 transition-all duration-300"
     >
-      <div class="flex items-center gap-4">
-        <img
-          src="https://via.placeholder.com/50"
-          alt="Customer Icon"
-          class="rounded-full w-12 h-12"
-        />
-        <div>
-          <p class="text-lg font-bold text-gray-700">MANBALANCE</p>
-          <p class="text-sm text-gray-500">Customer ID: #58909</p>
+      <div class="flex justify-between items-center">
+        <!-- Left Column: Operator Name Dropdown -->
+        <div class="flex items-center gap-4">
+          <img
+            src="https://via.placeholder.com/50"
+            alt="Customer Icon"
+            class="rounded-full w-12 h-12"
+          />
+          <div>
+            <label
+              for="operator"
+              class="block text-sm font-bold text-gray-700 mb-1"
+              >Operator:</label
+            >
+            <select
+              id="operator"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+            >
+              <option value="K.Osken_Paris">K.Osken_Paris</option>
+              <option value="A.Dilnoza_Tokyo">A.Dilnoza_Tokyo</option>
+              <option value="J.Smith_London">J.Smith_London</option>
+            </select>
+          </div>
         </div>
+
+        <!-- Right Column: Price (Removed) -->
       </div>
+
       <div class="mt-4">
         <p class="text-sm font-semibold text-gray-700 mb-2">12 Дубли</p>
         <div class="flex flex-wrap gap-2">
@@ -34,9 +51,6 @@
             #{{ n }} Дубли
           </span>
         </div>
-      </div>
-      <div class="mt-4 text-right">
-        <a href="#" class="text-blue-500 text-sm hover:underline">Edit</a>
       </div>
     </div>
 
@@ -58,23 +72,68 @@
         <p class="font-semibold text-gray-700">Домен:</p>
         <p class="text-gray-500">204120 wa</p>
       </div>
-      <div class="mt-4 text-right">
-        <a href="#" class="text-blue-500 text-sm hover:underline">Edit</a>
-      </div>
     </div>
 
     <!-- Card 3: Billing Information -->
     <div
       class="bg-white rounded-lg shadow p-4 hover:shadow-lg hover:scale-105 transition-all duration-300"
     >
-      <div class="text-sm">
-        <p class="font-semibold text-gray-700">Billing Address:</p>
-        <p class="text-gray-500 mb-2">45 Roker Terrace, Latheronwheel, UK</p>
-        <p class="font-semibold text-gray-700">Last 4 digits of card:</p>
-        <p class="text-gray-500">****4291</p>
+      <!-- Dropdown Input -->
+      <div>
+        <label for="product-name" class="text-sm font-semibold text-gray-700"
+          >Введите название товара:</label
+        >
+        <select
+          id="product-name"
+          class="w-full px-3 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+        >
+          <option value="LibidoFortis">LibidoFortis</option>
+          <option value="ProductB">Product B</option>
+          <option value="ProductC">Product C</option>
+        </select>
       </div>
-      <div class="mt-4 text-right">
-        <a href="#" class="text-blue-500 text-sm hover:underline">Edit</a>
+
+      <!-- Already in Order Section -->
+      <div class="mt-4">
+        <p class="text-sm font-semibold text-gray-700">Уже в заказе:</p>
+        <div class="flex items-center gap-4 mt-2">
+          <!-- Checkbox -->
+          <input
+            type="checkbox"
+            id="libidoFortis"
+            class="form-checkbox h-5 w-5 text-blue-600"
+            checked
+          />
+          <label for="libidoFortis" class="text-gray-700 text-sm"
+            >LibidoFortis</label
+          >
+          <!-- Quantity Input -->
+          <input
+            type="number"
+            value="2"
+            class="w-16 px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+          />
+          <!-- Price Display -->
+          <input
+            type="text"
+            value="1440"
+            class="w-20 px-2 py-1 border border-gray-300 rounded-md text-right bg-gray-100"
+            readonly
+          />
+        </div>
+      </div>
+
+      <!-- Total Price Section -->
+      <div class="mt-4 border-t pt-4">
+        <p class="text-sm font-semibold text-gray-700">
+          Итого на сумму (было 1440):
+        </p>
+        <input
+          type="text"
+          value="1440"
+          class="w-full px-3 py-2 mt-2 border border-gray-300 rounded-md bg-gray-100"
+          readonly
+        />
       </div>
     </div>
   </div>

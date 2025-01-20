@@ -38,8 +38,16 @@ const getIconColor = (status) => {
 };
 </script>
 
+<style scoped>
+/* Optional: Customize hover effect */
+.bg-white:hover {
+  transform: scale(1.03);
+  transition: transform 0.2s ease-in-out;
+}
+</style>
+
 <template>
-  <div class="w-full bg-white p-6 rounded-lg shadow-md">
+  <div class="w-full bg-white p-6 rounded-lg shadow-md mt-4">
     <h2 class="text-lg font-bold text-gray-700 mb-4">Shipping Activity</h2>
     <div class="relative">
       <div
