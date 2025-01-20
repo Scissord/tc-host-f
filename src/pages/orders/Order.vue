@@ -135,7 +135,7 @@ const customPosition = (el) => ({ top: 10, left: 0 });
           <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
             {{ order.state.order.delivery_at ?? '-' }}
           </p>
-          <DatePicker
+          <!-- <DatePicker
             v-else
             v-model="order.state.order.delivery_at"
             class="w-[250px] text-sm z-100"
@@ -144,7 +144,13 @@ const customPosition = (el) => ({ top: 10, left: 0 });
             :format="format"
             :alt-position="customPosition"
             :enable-time-picker="false"
-          />
+          /> -->
+          <input
+            v-else
+            type="date"
+            v-model="order.state.order.delivery_at"
+            class="w-[250px] text-sm"
+          >
         </div>
 
         <!-- Дата перезвона -->
@@ -153,7 +159,7 @@ const customPosition = (el) => ({ top: 10, left: 0 });
           <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
             {{ order.state.order.logist_recall_at ?? '-' }}
           </p>
-          <DatePicker
+          <!-- <DatePicker
             v-else
             v-model="order.state.order.logist_recall_at"
             class="w-[250px] text-sm z-90"
@@ -161,7 +167,13 @@ const customPosition = (el) => ({ top: 10, left: 0 });
             auto-apply
             :format="format"
             :alt-position="customPosition"
-          />
+          /> -->
+          <input
+            v-else
+            type="date"
+            v-model="order.state.order.logist_recall_at"
+            class="w-[250px] text-sm"
+          >
         </div>
 
         <!-- Дата аппрува -->
