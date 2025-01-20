@@ -20,7 +20,7 @@ const openCreateOrderModal = async () => {
       changeState: orders.handleChangeStateAfterAddOrder,
       orders: orders.state.orders, 
     }),
-  })
+  });
 };
 
 onMounted(async () => {

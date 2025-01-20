@@ -9,13 +9,14 @@ const useWebmasterStatistics = () => {
   const state = reactive({
     isDataLoaded: false,
     statistics: [],
+    range: [],
     webmaster_id: user.data.webmaster_id,
   });
 
   const handleGetData = async () => {
     state.isDataLoaded = false;
     const data = await getWebmasterStatistic(state.range[0], state.range[1], state.webmaster_id);
-    state.statistics = data.statistics;
+    state.statistics = data.result[user.data.webmaster_id];
     state.isDataLoaded = true;
   };
 
