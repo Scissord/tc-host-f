@@ -45,15 +45,13 @@ const useOrderApi = () => {
   const getOperatorOrders = async (limit = 20, page = 1, subStatus = 1, filters = [], sort_by = null, order_by = null, start = null, end = null) => {
     let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&sub_status=${subStatus}`;
 
-    if (filters.length > 0) {
-      const filteredFilters = filters.filter(filter => filter.value !== null && filter.value !== "" && filter.value !== undefined);
-      const queryParams = filteredFilters
-        .map(item => `${encodeURIComponent(item.name)}=${encodeURIComponent(item.value)}`)
-        .join('&');
+    const data = {};
 
-      if (queryParams !== "") {
-        queries += `&${queryParams}`;
-      }
+    for (const filter of filters) {
+      const value = filter.value;
+      if (value === null) continue;
+
+      data[filter.name] = value;
     };
 
     if (sort_by && order_by) {
@@ -61,12 +59,13 @@ const useOrderApi = () => {
     };
 
     if (start && end) {
-      queries += `&start=${encodeURIComponent(start.toISOString().slice(0, 10))}&end=${encodeURIComponent(end.toISOString().slice(0, 10))}`;
+      queries += `&start=${new Date(start)}&end=${new Date(end)}`;
     };
 
     const response = await api({
-      method: 'GET',
+      method: 'POST',
       url: `/orders/operator${queries}`,
+      data: data,
     });
 
     return response.data;

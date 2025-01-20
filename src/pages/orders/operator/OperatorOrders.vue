@@ -50,6 +50,13 @@ onMounted(async () => {
           :lastPage="orders.state.lastPage"
           :handleChangePage="orders.handleChangePage"
           :filters="orders.state.filters"
+          :operators="orders.state.operators"
+          :products="orders.state.products"
+          :cities="orders.state.cities"
+          :defaultSubStatuses="orders.state.subStatuses"
+          :paymentMethods="orders.state.paymentMethods"
+          :deliveryMethods="orders.state.deliveryMethods"
+          :orderCancelReasons="orders.state.orderCancelReasons"
           :handleApplyFilters="orders.handleApplyFilters"
         />
         <OrdersTable

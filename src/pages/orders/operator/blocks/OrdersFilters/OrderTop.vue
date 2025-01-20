@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps({
   page: {
@@ -17,6 +17,41 @@ const props = defineProps({
     required: true,
     default: null,
   },
+  operators: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  products: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  cities: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  subStatuses: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  paymentMethods: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  deliveryMethods: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  orderCancelReasons: {
+    type: Array,
+    required: true,
+    default: []
+  },
   handleChangePage: {
     type: Function,
     required: true
@@ -33,6 +68,11 @@ const props = defineProps({
 });
 
 const isFiltersOpen = ref(false);
+const customPosition = (el) => ({ top: 10, left: 0 });
+
+const format = (data) => {
+  return new Date(data).toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' });
+};
 </script>
 
 <template>
@@ -67,122 +107,149 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Операторы -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[1].label }}</p>
-        <Input
-          :id="filters[1].id"
-          type="text"
-          v-model="filters[1].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+        <MultiSelect 
+          v-model="filters[1].value" 
+          display="chip" 
+          :options="operators" 
+          optionLabel="name" 
+          filter 
+          placeholder="Выберите"
+          class="w-full" 
         />
       </div>
+      <!-- Товары -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[2].label }}</p>
-        <Input
-          :id="filters[2].id"
-          type="text"
-          v-model="filters[2].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+        <MultiSelect 
+          v-model="filters[2].value" 
+          display="chip" 
+          :options="products" 
+          optionLabel="name" 
+          filter 
+          placeholder="Выберите"
+          class="w-full" 
         />
       </div>
+      <!-- Дата -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[5].label }}</p>
-        <Input
-          :id="filters[5].id"
-          type="text"
+        <DatePicker
           v-model="filters[5].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+          class="w-full text-xs"
+          locale="ru"
+          auto-apply
+          :format="format"
+          :alt-position="customPosition"
+          :enable-time-picker="true"
         />
       </div>
+      <!-- Последнее изменение -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[6].label }}</p>
-        <Input
-          :id="filters[6].id"
-          type="text"
+        <DatePicker
           v-model="filters[6].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+          class="w-full text-xs"
+          locale="ru"
+          auto-apply
+          :format="format"
+          :alt-position="customPosition"
+          :enable-time-picker="true"
         />
       </div>
     </div>
     <div
       class="flex flex-col gap-3 border p-2 rounded-lg"
     >
+      <!-- Дата апрува -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[7].label }}</p>
-        <Input
-          :id="filters[7].id"
-          type="text"
+        <DatePicker
           v-model="filters[7].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+          class="w-full text-xs"
+          locale="ru"
+          auto-apply
+          :format="format"
+          :alt-position="customPosition"
+          :enable-time-picker="true"
         />
       </div>
+      <!-- Дата отправки -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[8].label }}</p>
-        <Input
-          :id="filters[8].id"
-          type="text"
+        <DatePicker
           v-model="filters[8].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+          class="w-full text-xs"
+          locale="ru"
+          auto-apply
+          :format="format"
+          :alt-position="customPosition"
+          :enable-time-picker="true"
         />
       </div>
+      <!-- Дата отмены -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[9].label }}</p>
-        <Input
-          :id="filters[9].id"
-          type="text"
+        <DatePicker
           v-model="filters[9].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+          class="w-full text-xs"
+          locale="ru"
+          auto-apply
+          :format="format"
+          :alt-position="customPosition"
+          :enable-time-picker="true"
         />
       </div>
+      <!-- Дата выкупа -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[10].label }}</p>
-        <Input
-          :id="filters[10].id"
-          type="text"
+        <DatePicker
           v-model="filters[10].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+          class="w-full text-xs"
+          locale="ru"
+          auto-apply
+          :format="format"
+          :alt-position="customPosition"
+          :enable-time-picker="true"
         />
       </div>
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[11].label }}</p>
-        <Input
-          :id="filters[11].id"
-          type="text"
+        <DatePicker
           v-model="filters[11].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+          class="w-full text-xs"
+          locale="ru"
+          auto-apply
+          :format="format"
+          :alt-position="customPosition"
+          :enable-time-picker="true"
         />
       </div>
     </div>
     <div
       class="flex flex-col gap-3 border p-2 rounded-lg"
     >
+      <!-- Коммент -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -195,6 +262,7 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Цена -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -207,6 +275,7 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Итого -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -219,18 +288,22 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Время перезвона -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[15].label }}</p>
-        <Input
-          :id="filters[15].id"
-          type="text"
+        <DatePicker
           v-model="filters[15].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+          class="w-full text-xs"
+          locale="ru"
+          auto-apply
+          :format="format"
+          :alt-position="customPosition"
+          :enable-time-picker="true"
         />
       </div>
+      <!-- Колличество -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -247,6 +320,7 @@ const isFiltersOpen = ref(false);
     <div
       class="flex flex-col gap-3 border p-2 rounded-lg"
     >
+      <!-- ФИО -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -259,6 +333,7 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Телефон -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -271,6 +346,7 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Регион -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -283,18 +359,22 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Город -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[20].label }}</p>
-        <Input
-          :id="filters[20].id"
-          type="text"
-          v-model="filters[20].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+        <MultiSelect 
+          v-model="filters[20].value" 
+          display="chip" 
+          :options="cities" 
+          optionLabel="name" 
+          filter 
+          placeholder="Выберите"
+          class="w-full" 
         />
       </div>
+      <!-- Адрес -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -311,6 +391,7 @@ const isFiltersOpen = ref(false);
     <div
       class="flex flex-col gap-3 border p-2 rounded-lg"
     >
+      <!-- Почтовый индекс -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -323,6 +404,7 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Возраст -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -335,18 +417,22 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Статусы -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[25].label }}</p>
-        <Input
-          :id="filters[25].id"
-          type="text"
-          v-model="filters[25].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+        <MultiSelect 
+          v-model="filters[25].value" 
+          display="chip" 
+          :options="subStatuses" 
+          optionLabel="name" 
+          filter 
+          placeholder="Выберите"
+          class="w-full" 
         />
       </div>
+      <!-- Пол -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -359,46 +445,56 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Способ оплаты -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[27].label }}</p>
-        <Input
-          :id="filters[27].id"
-          type="text"
-          v-model="filters[27].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+        <MultiSelect 
+          v-model="filters[27].value" 
+          display="chip" 
+          :options="paymentMethods" 
+          optionLabel="name" 
+          filter 
+          placeholder="Выберите"
+          class="w-full" 
         />
       </div>
     </div>
     <div
       class="flex flex-col gap-3 border p-2 rounded-lg"
     >
+      <!-- Способ доставки -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[28].label }}</p>
-        <Input
-          :id="filters[28].id"
-          type="text"
-          v-model="filters[28].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+        <MultiSelect 
+          v-model="filters[28].value" 
+          display="chip" 
+          :options="deliveryMethods" 
+          optionLabel="name" 
+          filter 
+          placeholder="Выберите"
+          class="w-full" 
         />
       </div>
+      <!-- Причины отмены заказа -->
       <div 
         class="flex flex-col gap-1"
       >
         <p class="font-bold">{{ filters[29].label }}</p>
-        <Input
-          :id="filters[29].id"
-          type="text"
-          v-model="filters[29].value"
-          placeholder="..."
-          class="p-1 pl-2 text-xs"
+        <MultiSelect 
+          v-model="filters[29].value" 
+          display="chip" 
+          :options="orderCancelReasons" 
+          optionLabel="name" 
+          filter 
+          placeholder="Выберите"
+          class="w-full" 
         />
       </div>
+      <!-- Трек код -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -411,6 +507,7 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Дата возврата -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -423,6 +520,7 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Причина возврата -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -435,6 +533,7 @@ const isFiltersOpen = ref(false);
           class="p-1 pl-2 text-xs"
         />
       </div>
+      <!-- Язык -->
       <div 
         class="flex flex-col gap-1"
       >

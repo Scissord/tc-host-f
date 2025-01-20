@@ -4,7 +4,13 @@ import { useRouter } from 'vue-router';
 import {
   useOrderApi,
   useSubStatusApi,
-  useOrderColumnApi
+  useOrderColumnApi,
+  useOperatorApi,
+  useProductApi,
+  useCityApi,
+  usePaymentMethodApi,
+  useDeliveryMethodApi,
+  useOrderCancelReasonApi
 } from '@api';
 import { socket } from "@/plugins/socket";
 
@@ -14,6 +20,12 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
   const { getOperatorOrders, changeStatus } = useOrderApi();
   const { getSubStatuses, getOperatorSubStatuses } = useSubStatusApi();
   const { getOrderColumns } = useOrderColumnApi();
+  const { getOperators } = useOperatorApi();
+  const { getProducts } = useProductApi();
+  const { getCities } = useCityApi();
+  const { getPaymentMethods } = usePaymentMethodApi();
+  const { getDeliveryMethods } = useDeliveryMethodApi();
+  const { getOrderCancelReasons } = useOrderCancelReasonApi();
 
   const state = reactive({
     // primitive
@@ -30,6 +42,12 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     subStatuses: [],
     columns: [],
     orders: [],
+    operators: [],
+    products: [],
+    cities: [],
+    paymentMethods: [],
+    deliveryMethods: [],
+    orderCancelReasons: [],
     filters: [],
     sort_by: [],
     range: [],
@@ -269,6 +287,11 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     // make socket to push to every one;
   };
 
+  const handleGetOperators = async () => {
+    const data = await getOperators();
+    state.operators = data.operators;
+  };
+
   const handleGetSubStatuses = async () => {
     const subStatusData = await getSubStatuses();
     state.subStatuses.splice(0, state.subStatuses.length, ...subStatusData.subStatuses);
@@ -298,6 +321,16 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     })));
   };
 
+  const handleGetProducts = async () => {
+    const productData = await getProducts();
+    state.products = productData.products;
+  };
+
+  const handleGetCities = async () => {
+    const cityData = await getCities();
+    state.cities = cityData.cities;
+  };
+
   const handleGetOrders = async (limit, page, subStatus, filters, sort_by, order_by, start, end) => {
     const ordersData = await getOperatorOrders(limit, page, subStatus, filters, sort_by, order_by, start, end);
 
@@ -306,12 +339,33 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     state.lastPage = ordersData.lastPage;
   };
 
+  const handleGetPaymentMethods = async () => {
+    const paymentData = await getPaymentMethods();
+    state.paymentMethods = paymentData.paymentMethods;
+  };
+
+  const handleGetDeliveryMethods = async () => {
+    const deliveryData = await getDeliveryMethods();
+    state.deliveryMethods = deliveryData.deliveryMethods;
+  };
+
+  const handleGetOrderCancelReasons = async () => {
+    const orderCancelReasonData = await getOrderCancelReasons();
+    state.orderCancelReasons = orderCancelReasonData.orderCancelReasons;
+  };
+
   const handleGetData = async () => {
     state.isDataLoaded = false;
 
     await handleGetSubStatuses();
     await handleGetOrderColumns();
     await handleGetOrders(state.limit, state.page, state.subStatus, []);
+    await handleGetOperators();
+    await handleGetProducts();
+    await handleGetCities();
+    await handleGetPaymentMethods();
+    await handleGetDeliveryMethods();
+    await handleGetOrderCancelReasons();
 
     state.isDataLoaded = true;
   };
