@@ -3,6 +3,7 @@ import { onMounted, onBeforeUnmount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useOrderStore, useUserStore } from '@store';
 import { socket } from "@/plugins/socket";
+import { DateFormat } from '@utils';
 
 const router = useRouter();
 const route = useRoute();
@@ -10,6 +11,10 @@ const order_id = route.params.order_id;
 const user = useUserStore();
 const order = useOrderStore();
 const name = user.data.name;
+
+const format = (data) => {
+  return new Date(data).toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' });
+};
 
 onMounted(async () => {
   socket.emit("sendEntryOrder", {
@@ -129,7 +134,7 @@ const customPosition = (el) => ({ top: 10, left: 0 });
         <div class="flex flex-col gap-2">
           <h1 class="text-xs font-semibold text-black">Дата доставки:</h1>
           <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
-            {{ order.state.order.delivery_at ? order.state.order.delivery_at.slice(0, 10) : order.state.order.delivery_at ?? '-' }}
+            {{ DateFormat(order?.state?.order?.delivery_at, 'd:m:Y H:i') ?? '-' }}
           </p>
           <DatePicker
             v-else
@@ -137,6 +142,7 @@ const customPosition = (el) => ({ top: 10, left: 0 });
             class="w-[250px] text-sm z-100"
             locale="ru"
             auto-apply
+            :format="format"
             :alt-position="customPosition"
             :enable-time-picker="false"
           />
@@ -146,7 +152,7 @@ const customPosition = (el) => ({ top: 10, left: 0 });
         <div class="flex flex-col gap-2">
           <h1 class="text-xs font-semibold text-black">Дата перезвона:</h1>
           <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
-            {{ order.state.order.logist_recall_at ?? '-' }}
+            {{ DateFormat(order?.state?.order?.logist_recall_at, 'd:m:Y H:i') ?? '-' }}
           </p>
           <DatePicker
             v-else
@@ -154,6 +160,7 @@ const customPosition = (el) => ({ top: 10, left: 0 });
             class="w-[250px] text-sm z-90"
             locale="ru"
             auto-apply
+            :format="format"
             :alt-position="customPosition"
           />
         </div>
