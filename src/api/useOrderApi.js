@@ -43,15 +43,25 @@ const useOrderApi = () => {
   };
 
   const getOperatorOrders = async (limit = 20, page = 1, subStatus = 1, filters = [], sort_by = null, order_by = null, start = null, end = null) => {
-    let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&sub_status=${subStatus}`;
+    let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}`;
 
     const data = {};
 
     for (const filter of filters) {
       const value = filter.value;
-      if (value === null) continue;
+      if (
+        value === null ||
+        value === "" ||
+        value === undefined ||
+        (Array.isArray(value) && !value.length) ||
+        (typeof value === 'object' && Object.keys(value).length === 0)
+      ) continue;
 
       data[filter.name] = value;
+    };
+
+    if (!Object.keys(data).length) {
+      queries += `&sub_status=${subStatus}`
     };
 
     if (sort_by && order_by) {

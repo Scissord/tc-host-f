@@ -70,6 +70,34 @@ const props = defineProps({
 
 const isFiltersOpen = ref(false);
 const customPosition = (el) => ({ top: 10, left: 0 });
+const updateRange = (range, index) => {
+  if (range && range.length === 2) {
+    const [start, end] = range;
+
+    const formatDateWithoutTimezone = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    };
+
+    const adjustedStart = new Date(start);
+    adjustedStart.setHours(0, 0, 0, 0);
+
+    const adjustedEnd = new Date(end);
+    adjustedEnd.setHours(23, 59, 59, 999);
+
+    props.filters[index].value = [
+      formatDateWithoutTimezone(adjustedStart),
+      formatDateWithoutTimezone(adjustedEnd),
+    ];
+  } else {
+    props.filters[index].value = null;
+  };
+};
 </script>
 
 <template>
@@ -147,7 +175,8 @@ const customPosition = (el) => ({ top: 10, left: 0 });
           range
           :format="formatRange"
           :alt-position="customPosition"
-          :enable-time-picker="true"
+          :enable-time-picker="false"
+          @update:model-value="(date) => updateRange(date, 5)"
         />
       </div>
       <!-- Последнее изменение -->
@@ -163,7 +192,8 @@ const customPosition = (el) => ({ top: 10, left: 0 });
           range
           :format="formatRange"
           :alt-position="customPosition"
-          :enable-time-picker="true"
+          :enable-time-picker="false"
+          @update:model-value="(date) => updateRange(date, 6)"
         />
       </div>
     </div>
@@ -183,7 +213,8 @@ const customPosition = (el) => ({ top: 10, left: 0 });
           range
           :format="formatRange"
           :alt-position="customPosition"
-          :enable-time-picker="true"
+          :enable-time-picker="false"
+          @update:model-value="(date) => updateRange(date, 7)"
         />
       </div>
       <!-- Дата отправки -->
@@ -199,7 +230,8 @@ const customPosition = (el) => ({ top: 10, left: 0 });
           range
           :format="formatRange"
           :alt-position="customPosition"
-          :enable-time-picker="true"
+          :enable-time-picker="false"
+          @update:model-value="(date) => updateRange(date, 8)"
         />
       </div>
       <!-- Дата отмены -->
@@ -215,7 +247,8 @@ const customPosition = (el) => ({ top: 10, left: 0 });
           range
           :format="formatRange"
           :alt-position="customPosition"
-          :enable-time-picker="true"
+          :enable-time-picker="false"
+          @update:model-value="(date) => updateRange(date, 9)"
         />
       </div>
       <!-- Дата выкупа -->
@@ -231,9 +264,11 @@ const customPosition = (el) => ({ top: 10, left: 0 });
           range
           :format="formatRange"
           :alt-position="customPosition"
-          :enable-time-picker="true"
+          :enable-time-picker="false"
+          @update:model-value="(date) => updateRange(date, 10)"
         />
       </div>
+      <!-- Дата доставки -->
       <div 
         class="flex flex-col gap-1"
       >
@@ -246,7 +281,8 @@ const customPosition = (el) => ({ top: 10, left: 0 });
           range
           :format="formatRange"
           :alt-position="customPosition"
-          :enable-time-picker="true"
+          :enable-time-picker="false"
+          @update:model-value="(date) => updateRange(date, 11)"
         />
       </div>
     </div>
@@ -305,7 +341,8 @@ const customPosition = (el) => ({ top: 10, left: 0 });
           range
           :format="formatRange"
           :alt-position="customPosition"
-          :enable-time-picker="true"
+          :enable-time-picker="false"
+          @update:model-value="(date) => updateRange(date, 15)"
         />
       </div>
       <!-- Колличество -->

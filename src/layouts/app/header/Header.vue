@@ -29,7 +29,6 @@ const rootUrl = computed(() => {
 });
 </script>
 
-
 <template>
   <header v-if='user.isAuthenticated' 
     :class="css.header"
@@ -50,7 +49,7 @@ const rootUrl = computed(() => {
       <!-- Заказы (все)  -->
       <router-link
         to="/user/orders"
-        v-if="user.data.abilities.includes(state.get_orders)"
+        v-if="!user.data.operator_id && !user.data.webmaster_id"
         :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
       >
         <Icon :class="css.icon" icon="fa-solid fa-cart-shopping" />
@@ -68,7 +67,7 @@ const rootUrl = computed(() => {
       <!-- Заказы оператор  -->
       <router-link
         to="/operator/orders"
-        v-if="user.data.operator_id && !user.data.abilities.includes(state.get_orders)"
+        v-if="user.data.operator_id"
         :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
       >
         <Icon :class="css.icon" icon="fa-solid fa-cart-shopping" />
@@ -83,7 +82,7 @@ const rootUrl = computed(() => {
         <Icon :class="css.icon" icon="fa-solid fa-box" />
         <span v-if="isSidebarExpanded">Офферы</span>
       </router-link>
-      <!-- Офферы  -->
+      <!-- Города  -->
       <router-link
         to="/cities"
         v-if="user.data.abilities.includes(state.get_cities)"
