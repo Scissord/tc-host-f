@@ -52,8 +52,8 @@ const useUserStatistics = () => {
 
   const handleGetData = async () => {
     state.isDataLoaded = false;
-    const data = await fetchData(state.tab, state.range, state.group, state.webmaster_id, state.operator_id);
-    state.statistics = data.statistics;
+    // const data = await fetchData(state.tab, state.range, state.group, state.webmaster_id, state.operator_id);
+    // state.statistics = data.statistics;
     state.isDataLoaded = true;
   };
 

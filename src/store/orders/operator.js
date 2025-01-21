@@ -196,7 +196,7 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
   };
 
   const handleBlockOrder = (order_id, name) => {
-    const order = state.orders.find((order) => order.id === order_id);
+    const order = state.orders.find((order) => +order.id === +order_id);
 
     if (order) {
       order.is_disabled = true;
@@ -211,7 +211,7 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
   };
 
   const handleOpenOrder = (order_id, name) => {
-    const order = state.orders.find((order) => order.id === order_id);
+    const order = state.orders.find((order) => +order.id === +order_id);
 
     if (order) {
       order.is_disabled = false;
