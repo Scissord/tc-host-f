@@ -16,8 +16,8 @@ const useWebmasterStatistics = () => {
 
   const handleGetData = async () => {
     state.isDataLoaded = false;
-    const data = await getWebmasterStatistic(state.range[0], state.range[1], state.webmaster_id, state.by_date);
-    state.statistics = data.result[user.data.webmaster_id];
+    const data = await getWebmasterStatistic(state.range[0], state.range[1], state.webmaster_id);
+    state.statistics = data.result[0];
     state.isDataLoaded = true;
   };
 

@@ -32,11 +32,11 @@ onMounted(async () => {
         range
       />
 
-      <Checkbox
+      <!-- <Checkbox
         v-model="state.by_date"
         @update:modelValue="() => handleGetData()"
       />
-      <p>По дате</p>
+      <p>По дате</p> -->
     </div>
 
     <div class="min-h-screen">
