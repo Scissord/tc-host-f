@@ -18,7 +18,7 @@ import { socket } from "@/plugins/socket";
 const useOperatorOrdersStore = defineStore('operator_order', () => {
   const router = useRouter();
 
-  const { getOperatorOrders, changeStatus } = useOrderApi();
+  const { getOperatorOrders, changeStatus, unloadingOrders } = useOrderApi();
   const { getSubStatuses, getOperatorSubStatuses } = useSubStatusApi();
   const { getOrderColumns } = useOrderColumnApi();
   const { getOperators } = useOperatorApi();

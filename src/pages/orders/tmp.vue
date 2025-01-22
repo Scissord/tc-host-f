@@ -197,11 +197,11 @@ const activeSection = ref("Информация");
             </FloatLabel>
             <FloatLabel variant="on">
               <InputText 
-                id="postal_index"
-                inputId="on_postal_index" 
-                v-model="order.state.order.postal_index"
+                id="postal_code"
+                inputId="on_postal_code" 
+                v-model="order.state.order.postal_code"
               />
-              <label for="on_postal_index">Индекс</label>
+              <label for="on_postal_code">Индекс</label>
             </FloatLabel>
             <FloatLabel class="w-full md:w-64" variant="on">
               <PrimeSelect 

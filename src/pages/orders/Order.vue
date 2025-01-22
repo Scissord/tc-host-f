@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useOrderStore, useUserStore } from '@store';
 import { socket } from "@/plugins/socket";
 import { DateFormat } from '@utils';
+import Header from './order/Header.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -52,6 +53,10 @@ const handleDoublePress = (double) => {
 };
 
 const customPosition = (el) => ({ top: 10, left: 0 });
+
+const isProductInOrder = (productId) => {
+  return order.state.order.items.some(item => +item.product_id === +productId);
+};
 </script> 
 
 <template>
@@ -60,591 +65,297 @@ const customPosition = (el) => ({ top: 10, left: 0 });
     v-if="order.state.isDataLoaded"
     class="min-h-screen p-6 bg-gray-100 text-gray-800 ml-[5vw]"
   >
-    <!-- Floating Action Buttons -->
-    <Icon
-      v-if="!order.state.order.is_editable"
-      :icon="['fas', 'pen-to-square']"
-      class="text-3xl fixed bottom-5 right-5 cursor-pointer bg-blue-500 text-white p-3 rounded-full shadow-md hover:bg-blue-600 transition-all"
-      @click="order.toggleOrder()"
+    <Header 
+      :order_id="order_id"
     />
-    <Icon
-      v-else
-      :icon="['fas', 'floppy-disk']"
-      class="text-3xl fixed bottom-5 right-5 cursor-pointer bg-green-500 text-white p-3 rounded-full shadow-md hover:bg-green-600 transition-all"
-      @click="order.saveOrder()"
-    />
+    
+    <div class="flex items center gap-3 mt-3 min-h-screen">
+      <div class="w-2/3 bg-white rounded-lg p-6 h-full">
+        <h1 class="text-lg font-semibold text-gray-800">Детали заказа</h1>
+        <div class="flex gap-3 mt-3 h-full">
+          <div class="w-1/2 flex flex-col gap-3 h-full">
+            <FloatLabel variant="on">
+              <InputText 
+                id="fio"
+                inputId="on_fio" 
+                v-model="order.state.order.fio"
+              />
+              <label for="on_fio">ФИО</label>
+            </FloatLabel>
+            <FloatLabel variant="on">
+              <InputText 
+                id="age"
+                inputId="on_age" 
+                v-model="order.state.order.age"
+              />
+              <label for="on_age">Возраст</label>
+            </FloatLabel>
+            <FloatLabel class="w-full md:w-64" variant="on">
+              <PrimeSelect 
+                inputId="on_gender" 
+                v-model="order.state.order.gender"
+                :options="order.state.genders"
+                optionLabel="name" 
+                class="w-full" 
+              />
+              <label for="on_gender">Пол</label>
+            </FloatLabel>
+            <FloatLabel class="w-full md:w-64" variant="on">
+              <PrimeSelect 
+                inputId="on_delivery_method" 
+                v-model="order.state.order.delivery_method"
+                :options="order.state.deliveryMethods"
+                optionLabel="name" 
+                class="w-full" 
+              />
+              <label for="on_delivery_method">Способ доставки</label>
+            </FloatLabel>
+            <FloatLabel variant="on">
+              <InputText 
+                id="address"
+                inputId="on_address" 
+                class="w-[500px]"
+                v-model="order.state.order.address"
+              />
+              <label for="on_address">Адрес</label>
+            </FloatLabel>
+            <FloatLabel class="w-full md:w-64" variant="on">
+              <PrimeSelect 
+                inputId="on_city" 
+                v-model="order.state.order.city"
+                :options="order.state.cities"
+                optionLabel="name" 
+                class="w-full" 
+              />
+              <label for="on_city">Город</label>
+            </FloatLabel>
+            <FloatLabel variant="on">
+              <InputText 
+                id="region"
+                inputId="on_region" 
+                class="w-[500px]"
+                v-model="order.state.order.region"
+              />
+              <label for="on_region">Регион</label>
+            </FloatLabel>
+            <FloatLabel variant="on">
+              <InputText 
+                id="postal_code"
+                inputId="on_postal_code" 
+                v-model="order.state.order.postal_code"
+              />
+              <label for="on_postal_code">Индекс</label>
+            </FloatLabel>
+            <FloatLabel class="w-full md:w-64" variant="on">
+              <PrimeSelect 
+                inputId="on_payment_method" 
+                v-model="order.state.order.payment_method"
+                :options="order.state.paymentMethods"
+                optionLabel="name" 
+                class="w-full" 
+              />
+              <label for="on_payment_method">Способ оплаты</label>
+            </FloatLabel>
+            <FloatLabel variant="on">
+              <InputText 
+                id="additional4"
+                inputId="on_additional4" 
+                v-model="order.state.order.additional4"
+              />
+              <label for="on_additional4">Трек код</label>
+            </FloatLabel>
+            <FloatLabel variant="on">
+              <InputText 
+                id="comment"
+                inputId="on_comment"
+                class="w-[500px]" 
+                v-model="order.state.order.comment"
+              />
+              <label for="on_comment">Комментарий</label>
+            </FloatLabel>
+          </div>
+          <div class="w-1/2 flex flex-col gap-3 h-full">
+            <!-- Дата доставки -->
+            <div class="flex flex-col gap-2">
+              <h1 class="text-xs font-semibold text-black">Дата доставки:</h1>
+              <DatePicker
+                v-model="order.state.order.delivery_at"
+                class="w-[250px] text-sm z-100"
+                locale="ru"
+                auto-apply
+                :format="format"
+                :alt-position="customPosition"
+                :enable-time-picker="false"
+              />
+            </div>
+            <!-- Дата перезвона -->
+            <div class="flex flex-col gap-2">
+              <h1 class="text-xs font-semibold text-black">Дата перезвона:</h1>
+              <DatePicker
+                v-model="order.state.order.logist_recall_at"
+                class="w-[250px] text-sm z-100"
+                locale="ru"
+                auto-apply
+                :format="format"
+                :alt-position="customPosition"
+                :enable-time-picker="false"
+              />
+            </div>
 
-    <div v-if="order?.state?.order?.doubles.length > 0" class="bg-white p-6 rounded-lg">
-      <h1>Дубли: {{ order?.state?.order?.doubles.length }} </h1>
-      <div class="flex items-center gap-3 mt-2">
-        <p 
-          v-for="(double, index) in order?.state?.order?.doubles"
-          :key="index"
-          class="text-blue-900 cursor-pointer hover:underline"
-          @click.left="() => handleDoublePress(double)"
-        >
-          {{ double }}
-        </p>
+            <!-- Телефон -->
+            <FloatLabel v-if="+user.data.id === 1" variant="on" class="mt-2">
+              <InputText 
+                id="phone"
+                inputId="on_phone"
+                class="w-64" 
+                v-model="order.state.order.phone"
+              />
+              <label for="on_phone">Телефон</label>
+            </FloatLabel>
+          </div>
+                      
+        </div>
+
       </div>
-    </div>
+      <div class="w-1/3 gap-3 flex flex-col">
+        <div class="bg-white rounded-lg p-6">
+          <FloatLabel 
+            class="w-full md:w-64 mt-2" 
+            variant="on"
+          >
+            <PrimeSelect 
+              inputId="on_operator" 
+              v-model="order.state.order.operator"
+              :options="order.state.operators"
+              optionLabel="name" 
+              class="w-full"
+              :disabled="!user.data.abilities.includes(64)"
+            />
+            <label for="on_operator">Оператор</label>
+          </FloatLabel>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
-   
-      <!-- Card for Each Section -->
-      <div class="bg-white rounded-lg shadow-md p-6 space-y-4">
-        <!-- ID -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">ID:</h1>
-          <p class="text-gray-700">{{ order.state.order.id ?? '-' }}</p>
-        </div>
-
-        <!-- ТЕЛЕФОН -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Телефон:</h1>
-          <p class="text-gray-700">
-            {{ order.state.order.phone ?? '-' }}
-          </p>
-          <Input
-            v-if="order.state.order.is_editable && +user.data.id === 1"
-            id="phone"
-            type="text"
-            v-model="order.state.order.phone"
-            class="border rounded-md p-2 text-gray-700 w-full"
-            placeholder="..."
-          />
-        </div>
-
-        <!-- Дата создания -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Дата создания:</h1>
-          <p class="text-gray-700 break-words">
-            {{ order.state.order.created_at ?? '-' }}
-          </p>
-        </div>
-
-        <!-- Последнее обновление -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Последнее обновление:</h1>
-          <p class="text-gray-700 break-words">
-            {{ order.state.order.updated_at ?? '-' }}
-          </p>
-        </div>
-
-        <!-- Дата доставки -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Дата доставки:</h1>
-          <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
-            {{ DateFormat(order?.state?.order?.delivery_at, 'd:m:Y H:i') ?? '-' }}
-          </p>
-          <DatePicker
-            v-else
-            v-model="order.state.order.delivery_at"
-            class="w-[250px] text-sm z-100"
-            locale="ru"
-            auto-apply
-            :format="format"
-            :alt-position="customPosition"
-            :enable-time-picker="false"
-          />
-        </div>
-
-        <!-- Дата перезвона -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Дата перезвона:</h1>
-          <p v-if="!order.state.order.is_editable" class="text-gray-700 break-words">
-            {{ DateFormat(order?.state?.order?.logist_recall_at, 'd:m:Y H:i') ?? '-' }}
-          </p>
-          <DatePicker
-            v-else
-            v-model="order.state.order.logist_recall_at"
-            class="w-[250px] text-sm z-90"
-            locale="ru"
-            auto-apply
-            :format="format"
-            :alt-position="customPosition"
-          />
-        </div>
-
-        <!-- Дата аппрува -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Дата аппрува:</h1>
-          <p class="text-gray-700 break-words">
-            {{ order.state.order.approved_at ?? '-' }}
-          </p>
-        </div>
-
-        <!-- Дата отмены -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Дата отмены:</h1>
-          <p class="text-gray-700 break-words">
-            {{ order.state.order.cancelled_at ?? '-' }}
-          </p>
-        </div>
-
-        <!-- Дата отгрузки -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Дата отгрузки:</h1>
-          <p class="text-gray-700 break-words">
-            {{ order.state.order.shipped_at ?? '-' }}
-          </p>
-        </div>
-
-        <!-- Дата выкупа -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Дата выкупа:</h1>
-          <p class="text-gray-700 break-words">
-            {{ order.state.order.buyout_at ?? '-' }}
-          </p>
-        </div>
-
-        <!-- ТЕЛЕФОН -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Товары:</h1>
-          <div class="flex flex-col gap-3">
-            <div 
-              v-for="(item, index) in order.state.order.items" 
-              :key="item.id"
-            >
-              <p v-if="!order.state.order.is_editable" class="p-1 bg-gray-600 w-fit text-white rounded-lg text-xs">
-                {{ item.name ?? '-' }}, {{ item.quantity ?? '-' }} шт. за {{ String(item.price).slice(0, -3) ?? '-' }}
+          <div v-if="order?.state?.order?.doubles.length > 0" class="mt-3">
+            <h1 class="font-bold text-sm">Дубли: {{ order?.state?.order?.doubles.length }} </h1>
+            <div class="flex items-center gap-2 mt-2">
+              <p 
+                v-for="(double, index) in order?.state?.order?.doubles"
+                :key="index"
+                class="bg-blue-300 px-2 py-1 text-xs text-white cursor-pointer rounded-lg"
+                @click.left="() => handleDoublePress(double)"
+              >
+                {{ double }}
               </p>
-              <div v-else class="flex flex-col gap-2 border border-slate-200 p-2 rounded-lg text-sm">
-                <div class="flex items-center justify-between">
-                  <p>Товар №{{ index + 1 }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg p-6 grid grid-cols-3 gap-3">
+          <!-- Дата создания -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Дата создания:</h1>
+            <p class="text-gray-700 break-words">
+              {{ order.state.order.created_at ?? '-' }}
+            </p>
+          </div>
+
+          <!-- Последнее обновление -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Последнее обновление:</h1>
+            <p class="text-gray-700 break-words">
+              {{ order.state.order.updated_at ?? '-' }}
+            </p>
+          </div>
+
+          <!-- Дата апрува -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Дата апрува:</h1>
+            <p class="text-gray-700 break-words">
+              {{ order.state.order.approved_at ?? '-' }}
+            </p>
+          </div>
+
+          <!-- Дата отмены -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Дата отмены:</h1>
+            <p class="text-gray-700 break-words">
+              {{ order.state.order.cancelled_at ?? '-' }}
+            </p>
+          </div>
+
+          <!-- Дата отгрузки -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Дата отгрузки:</h1>
+            <p class="text-gray-700 break-words">
+              {{ order.state.order.shipped_at ?? '-' }}
+            </p>
+          </div>
+
+          <!-- Дата выкупа -->
+          <div class="flex flex-col gap-2">
+            <h1 class="text-xs font-semibold text-black">Дата выкупа:</h1>
+            <p class="text-gray-700 break-words">
+              {{ order.state.order.buyout_at ?? '-' }}
+            </p>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg p-6">
+          <!-- Итого -->
+          <FloatLabel variant="on" class="mt-3">
+            <InputText 
+              id="total_sum"
+              inputId="on_total_sum"
+              class="w-64" 
+              v-model="order.state.order.total_sum"
+            />
+            <label for="on_total_sum">Итого</label>
+          </FloatLabel>
+          <div class="flex flex-col gap-3 mt-3">
+            <h1 class="font-bold text-sm">Уже в заказе:</h1>
+            <div class="flex flex-col gap-3">
+              <div 
+                v-for="item in order.state.order.items" 
+                :key="item.id"
+                class="grid grid-cols-4 gap-3"
+              >
+                <p class="flex items-center justify-center">{{ item.name }}</p>
+                <Input
+                  :id="item.id + 'quantity'"
+                  type="text"
+                  v-model="item.quantity"
+                  @update:modelValue="order.handleUpdateTotal()"
+                  class="border rounded-md px-2 py-1 text-gray-700 text-xs w-full"
+                  placeholder="..."
+                />
+                <Input
+                  :id="item.id + 'price'"
+                  type="text"
+                  v-model="item.price"
+                  @update:modelValue="order.handleUpdateTotal()"
+                  class="border rounded-md px-2 py-1 text-gray-700 text-xs w-full"
+                  placeholder="..."
+                />
+                <div class="flex items-center justify-center">
                   <Icon 
                     icon="fa-solid fa-trash"
                     class="cursor-pointer text-sm text-red-500 hover:opacity-60 transition-all duration-300 ease-in-out"
                     @click="order.handleDeleteProduct(item.id)"
                   />
                 </div>
-                <p>Продукт:</p>
-                <Select
-                  v-model="item.product_id"
-                  :options="order.state.products"
-                  value="id"
-                  label="name"
-                  class="border rounded-md p-2 text-gray-700 w-full"
-                />
-                <p>Кол-во:</p>
-                <Input
-                  :id="item.id + 'quantity'"
-                  type="text"
-                  v-model="item.quantity"
-                  @update:modelValue="order.handleUpdateTotal()"
-                  class="border rounded-md p-2 text-gray-700 w-full"
-                  placeholder="..."
-                />
-                <p>Цена:</p>
-                <Input
-                  :id="item.id + 'price'"
-                  type="text"
-                  v-model="item.price"
-                  @update:modelValue="order.handleUpdateTotal()"
-                  class="border rounded-md p-2 text-gray-700 w-full"
-                  placeholder="..."
-                />
               </div>
             </div>
-            <div 
-              v-if="order.state.order.is_editable"
-              class="cursor-pointer mt-2 flex items-center justify-center p-2 bg-black hover:opacity-60 rounded-lg transition-all duration-300 ease-in-out"
-              @click="order.handleAddProduct()"
+          </div>
+          <div class="flex flex-col gap-3 mt-3">
+            <h1 class="font-bold text-sm">Продукты:</h1>
+            <div
+              v-for="product in order.state.products"
+              :key="product.id"
+              class="flex items-center gap-3"
             >
-              <Icon 
-                icon="fa-solid fa-plus"
-                class="text-lg text-white"
+              <Checkbox 
+                :modelValue="isProductInOrder(product.id)"
+                @update:modelValue="order.handleAddProduct(product)"
               />
+              <p>{{ product.name }}</p>
             </div>
-          </div>
-        </div>
-
-        <!-- Оператор -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Оператор:</h1>
-          <p 
-            class="text-gray-700"
-          >
-            {{ order.state.order.operator ?? '-' }}
-          </p>
-          <Select
-            v-if="order.state.order.is_editable && user.data.abilities.includes(64)"
-            v-model="order.state.order.operator_id"
-            :options="order.state.operators"
-            value="id"
-            label="name"
-            class="border rounded-md p-2 text-gray-700"
-          />
-        </div>
-
-        <!-- Статус -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Статус:</h1>
-          <p v-if="!order.state.order.is_editable" class="text-gray-700">
-            {{ order?.state?.order?.status?.name ?? '-' }}
-          </p>
-          <Select
-            v-else
-            v-model="order.state.order.sub_status_id"
-            :options="order.state.subStatuses"
-            value="id"
-            label="name"
-            class="border rounded-md p-2 text-gray-700"
-          />
-        </div>
-
-        <!-- Город -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Город:</h1>
-          <p v-if="!order.state.order.is_editable" class="text-gray-700">
-            {{ order?.state?.order?.city?.name ?? '-' }}
-          </p>
-          <Select
-            v-else
-            v-model="order.state.order.city_id"
-            :options="order.state.cities"
-            value="id"
-            label="name"
-            class="border rounded-md p-2 text-gray-700"
-          />
-        </div>
-
-        <!-- Пол -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Пол:</h1>
-          <p v-if="!order.state.order.is_editable" class="text-gray-700">
-            {{ order.state.order.gender ?? '-' }}
-          </p>
-          <Select
-            v-else
-            v-model="order.state.order.gender_id"
-            :options="order.state.genders"
-            value="id"
-            label="name"
-            class="border rounded-md p-2 text-gray-700"
-          />
-        </div>
-
-        <!-- Способ оплаты -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Способ оплаты:</h1>
-          <p v-if="!order.state.order.is_editable" class="text-gray-700">
-            {{ order.state.order.payment_method ?? '-' }}
-          </p>
-          <Select
-            v-else
-            v-model="order.state.order.payment_method_id"
-            :options="order.state.paymentMethods"
-            value="id"
-            label="name"
-            class="border rounded-md p-2 text-gray-700"
-          />
-        </div>
-
-        <!-- Способ оплаты -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Способ доставки:</h1>
-          <p v-if="!order.state.order.is_editable" class="text-gray-700">
-            {{ order.state.order.delivery_method ?? '-' }}
-          </p>
-          <Select
-            v-else
-            v-model="order.state.order.delivery_method_id"
-            :options="order.state.deliveryMethods"
-            value="id"
-            label="name"
-            class="border rounded-md p-2 text-gray-700"
-          />
-        </div>
-
-        <!-- Причина отказа -->
-        <div class="flex flex-col gap-2">
-          <h1 class="text-xs font-semibold text-black">Причина отказа:</h1>
-          <p v-if="!order.state.order.is_editable" class="text-gray-700">
-            {{ order.state.order.order_cancel_reason ?? '-' }}
-          </p>
-          <Select
-            v-else
-            v-model="order.state.order.order_cancel_reason_id"
-            :options="order.state.orderCancelReasons"
-            value="id"
-            label="name"
-            class="border rounded-md p-2 text-gray-700"
-          />
-        </div>
-      </div>
-
-      <div class="bg-white rounded-lg shadow-md p-6 space-y-4 min-h-screen">
-        <div class="flex flex-col gap-2">
-          <!-- ФИО -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">ФИО:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.fio ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="fio"
-              type="text"
-              v-model="order.state.order.fio"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Регион -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Регион:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.region ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="region"
-              type="text"
-              v-model="order.state.order.region"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Возвраст -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Возвраст:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.age ?? 0 }}
-            </p>
-            <Input
-              v-else
-              id="age"
-              type="text"
-              v-model="order.state.order.age"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Адресс -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Адрес:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.address ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="address"
-              type="text"
-              v-model="order.state.order.address"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Почта -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Почта:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.postal_code ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="postal_code"
-              type="text"
-              v-model="order.state.order.postal_code"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Сумма -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Сумма:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.total_sum ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="total_sum"
-              type="text"
-              v-model="order.state.order.total_sum"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Коммент -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Коммент:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.comment ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="comment"
-              type="text"
-              v-model="order.state.order.comment"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Домен -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Домен:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.additional1 ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="additional1"
-              type="text"
-              v-model="order.state.order.additional1"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Затраченное время -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Затраченное время:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.additional2 ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="additional2"
-              type="text"
-              v-model="order.state.order.additional2"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Внешний вебмастер -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Внешний вебмастер:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.additional3 ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="additional3"
-              type="text"
-              v-model="order.state.order.additional3"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Трек код -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Трек код:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.additional4 ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="additional4"
-              type="text"
-              v-model="order.state.order.additional4"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Дата возврата -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Дата возврата:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.additional5 ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="additional5"
-              type="text"
-              v-model="order.state.order.additional5"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Pixel -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Pixel:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.additional6 ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="additional6"
-              type="text"
-              v-model="order.state.order.additional6"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Причина возврата -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Причина возврата:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.additional7 ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="additional7"
-              type="text"
-              v-model="order.state.order.additional7"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- Язык -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">Язык:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.additional8 ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="additional8"
-              type="text"
-              v-model="order.state.order.additional8"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- HOLD -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">HOLD:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.additional9 ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="additional9"
-              type="text"
-              v-model="order.state.order.additional9"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
-          </div>
-
-          <!-- ID дизайнера -->
-          <div class="flex flex-col gap-2">
-            <h1 class="text-xs font-semibold text-black">ID дизайнера:</h1>
-            <p v-if="!order.state.order.is_editable" class="text-gray-700">
-              {{ order.state.order.additional10 ?? '-' }}
-            </p>
-            <Input
-              v-else
-              id="additional10"
-              type="text"
-              v-model="order.state.order.additional10"
-              class="border rounded-md p-2 text-gray-700"
-              placeholder="..."
-            />
           </div>
         </div>
       </div>

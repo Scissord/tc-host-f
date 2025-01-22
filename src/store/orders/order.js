@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '@store';
+import { useUserStore, useNotificationStore } from '@store';
 import {
   useOrderApi,
   useOperatorApi,
@@ -20,6 +20,7 @@ const useOrderStore = defineStore('order', () => {
   const router = useRouter();
 
   const user = useUserStore();
+  const notification = useNotificationStore();
 
   const { getOrder, updateOrder } = useOrderApi();
   const { getOperators } = useOperatorApi();
@@ -55,30 +56,32 @@ const useOrderStore = defineStore('order', () => {
     delete state.order.is_editable;
 
     const orderData = {
-      fio: state.order.fio,
-      region: state.order.region,
-      city_id: state.order.city_id,
-      address: state.order.address,
-      postal_code: state.order.postal_code,
-      comment: state.order.comment,
-      age: state.order.age,
-      operator_id: state.order.operator_id,
+      status_id: state.order.status.id,
       sub_status_id: state.order.sub_status_id,
-      gender_id: state.order.gender_id,
-      payment_method_id: state.order.payment_method_id,
-      delivery_method_id: state.order.delivery_method_id,
-      order_cancel_reason_id: state.order.order_cancel_reason_id,
-      total_sum: state.order.total_sum,
-      additional1: state.order.additional1,
-      additional2: state.order.additional2,
-      additional3: state.order.additional3,
+      fio: state.order.fio,
+      age: state.order.age,
+      address: state.order.address,
+      region: state.order.region,
+      postal_code: state.order.postal_code,
       additional4: state.order.additional4,
-      additional5: state.order.additional5,
-      additional6: state.order.additional6,
-      additional7: state.order.additional7,
-      additional8: state.order.additional8,
-      additional9: state.order.additional9,
-      additional10: state.order.additional10,
+      comment: state.order.comment,
+      total_sum: state.order.total_sum,
+    };
+
+    if (state.order.gender?.id) {
+      orderData.gender_id = state.order.gender.id;
+    };
+
+    if (state.order.delivery_method?.id) {
+      orderData.delivery_method_id = state.order.delivery_method.id;
+    };
+
+    if (state.order.city?.id) {
+      orderData.city_id = state.order.city.id;
+    };
+
+    if (state.order.payment_method?.id) {
+      orderData.payment_method_id = state.order.payment_method.id;
     };
 
     if (state.order.delivery_at !== null) {
@@ -95,11 +98,17 @@ const useOrderStore = defineStore('order', () => {
       orderData.phone = state.order.phone;
     };
 
+    if (+user.data.id === 1 || user.data.abilities.includes(64)) {
+      orderData.operator_id = state.order.operator.id;
+    }
+
     await updateOrder(state.order.id, {
       order: orderData,
       items: state.order.items,
     });
     await handleGetOrder(state.order.id)
+
+    notification.show("Заказ успешно обновлён!", 'success');
   };
 
   const handleDeleteProduct = async (order_item_id) => {
@@ -107,14 +116,14 @@ const useOrderStore = defineStore('order', () => {
     state.order.items = state.order.items.filter((oi) => +oi.id !== +order_item_id);
   };
 
-  const handleAddProduct = async () => {
+  const handleAddProduct = (product) => {
     state.order.items.push({
       id: new Date().getTime(),
-      name: "ProStrong",
+      name: product.name,
       order_id: state.order.id,
       price: 1650.00,
-      product_id: "200500",
-      product_name: "ProStrong",
+      product_id: product.id,
+      product_name: product.name,
       quantity: 1
     });
   };
