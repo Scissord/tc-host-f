@@ -56,55 +56,55 @@ const css = {
       <tbody>
         <tr>
           <td :class='css.td'>
-            {{ statistics?.webmaster_name }}
+            {{ statistics?.webmasterName ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.total_count }}
+            {{ statistics?.totalOrders ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ +statistics?.statuses[2]?.count + +statistics?.statuses[3]?.count + +statistics?.statuses[5]?.count ?? '-' }}
+            {{ statistics?.acceptedOrders ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ (((+statistics?.statuses[2]?.count + +statistics?.statuses[3]?.count + +statistics?.statuses[5]?.count) * 100) / +statistics?.total_count).toFixed(2) ?? '-' }}
+            {{ statistics?.approvedPercentage ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ (((+statistics?.statuses[2]?.count + +statistics?.statuses[3]?.count + +statistics?.statuses[5]?.count) * 100) / +statistics?.total_count).toFixed(2) ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.statuses[4]?.count ?? '-' }}
+            {{ statistics?.cancelledOrders ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.statuses[4]?.percent ?? '-' }}
+            {{ statistics?.cancelledPercentage ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.statuses[2]?.count ?? '-' }}
+            {{ statistics?.shippedOrders ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.statuses[2]?.percent ?? '-' }}
+            {{ statistics?.shippedPercentage ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.statuses[3]?.count ?? '-' }}
+            {{ statistics?.buyoutOrders ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.statuses[3]?.percent ?? '-' }}
+            {{ statistics?.buyoutPercentage ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.statuses[5]?.count ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.statuses[5]?.percent ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.statuses[0]?.count ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.statuses[0]?.percent ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.statuses[6]?.count ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.statuses[6]?.percent ?? '-' }}
+          </td>
+          <td :class='css.td'>
+            {{ statistics?.avgTotalSum ?? '-' }}
+          </td>
+          <td :class='css.td'>
+          </td>
+          <td :class='css.td'>
           </td>
         </tr>
       </tbody>

@@ -3,9 +3,9 @@ import { DateFormat } from '@utils';
 
 const props = defineProps({
   statistics: {
-    type: Object,
+    type: Array,
     required: true,
-    default: {}
+    default: [],
   },
 })
 
@@ -52,44 +52,41 @@ const css = {
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr 
+          v-for="statistic in statistics"
+          :key="statistic.date"
+        >
           <td :class='css.td'>
-            {{ statistics?.operatorName ?? '-' }}
+            {{ DateFormat(statistic?.date, 'd.m.Y') ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.totalOrders ?? '-' }}
+            {{ statistic?.totalOrders ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.acceptedOrders ?? '-' }}
+            {{ statistic?.acceptedOrders ?? '-' }}
           </td>
           <td :class='css.td'>
-            {{ statistics?.approvedPercentage ?? '-' }}
-          </td>
-          <td :class='css.td'>
-          </td>
-          <td :class='css.td'>
-            {{ statistics?.cancelledOrders ?? '-' }}
-          </td>
-          <td :class='css.td'>
-            {{ statistics?.cancelledPercentage ?? '-' }}
-          </td>
-          <td :class='css.td'>
-            {{ statistics?.shippedOrders ?? '-' }}
-          </td>
-          <td :class='css.td'>
-            {{ statistics?.shippedPercentage ?? '-' }}
-          </td>
-          <td :class='css.td'>
-            {{ statistics?.buyoutOrders ?? '-' }}
-          </td>
-          <td :class='css.td'>
-            {{ statistics?.buyoutPercentage ?? '-' }}
+            {{ statistic?.approvedPercentage ?? '-' }}
           </td>
           <td :class='css.td'>
           </td>
           <td :class='css.td'>
+            {{ statistic?.cancelledOrders ?? '-' }}
           </td>
           <td :class='css.td'>
+            {{ statistic?.cancelledPercentage ?? '-' }}
+          </td>
+          <td :class='css.td'>
+            {{ statistic?.shippedOrders ?? '-' }}
+          </td>
+          <td :class='css.td'>
+            {{ statistic?.shippedPercentage ?? '-' }}
+          </td>
+          <td :class='css.td'>
+            {{ statistic?.buyoutOrders ?? '-' }}
+          </td>
+          <td :class='css.td'>
+            {{ statistic?.buyoutPercentage ?? '-' }}
           </td>
           <td :class='css.td'>
           </td>
@@ -98,6 +95,13 @@ const css = {
           <td :class='css.td'>
           </td>
           <td :class='css.td'>
+          </td>
+          <td :class='css.td'>
+          </td>
+          <td :class='css.td'>
+          </td>
+          <td :class='css.td'>
+            {{ statistic?.avgTotalSum?.toFixed(2) ?? '-' }}
           </td>
           <td :class='css.td'>
           </td>
@@ -106,8 +110,5 @@ const css = {
         </tr>
       </tbody>
     </table>
-  </div>
-  <div class="flex items-center justify-center" v-if="statistics.length === 0">
-    <p class="font-bold text-2xl">Статистика не найдена</p>
   </div>
 </template>

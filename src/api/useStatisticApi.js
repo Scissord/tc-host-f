@@ -19,10 +19,11 @@ const useStatisticApi = () => {
     return response.data;
   };
 
-  const getWebmasterStatistic = async (start, end, webmaster_id) => {
+  const getWebmasterStatistic = async (start, end, webmaster_id, by_date) => {
     const params = new URLSearchParams({
       start: start.toISOString().slice(0, 10),
       end: end.toISOString().slice(0, 10),
+      by_date,
     });
 
     if (webmaster_id) params.append('webmaster_id', encodeURIComponent(webmaster_id));

@@ -8,6 +8,7 @@ const useWebmasterStatistics = () => {
 
   const state = reactive({
     isDataLoaded: false,
+    by_date: false,
     statistics: [],
     range: [],
     webmaster_id: user.data.webmaster_id,
@@ -15,7 +16,7 @@ const useWebmasterStatistics = () => {
 
   const handleGetData = async () => {
     state.isDataLoaded = false;
-    const data = await getWebmasterStatistic(state.range[0], state.range[1], state.webmaster_id);
+    const data = await getWebmasterStatistic(state.range[0], state.range[1], state.webmaster_id, state.by_date);
     state.statistics = data.result[user.data.webmaster_id];
     state.isDataLoaded = true;
   };
