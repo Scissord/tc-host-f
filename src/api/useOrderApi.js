@@ -129,6 +129,47 @@ const useOrderApi = () => {
     return response.data;
   };
 
+  const unloadingOrders = async (is_filtered = false, subStatus = 1, filters = []) => {
+    let queries = `?is_filtered=${encodeURIComponent(is_filtered)}`;
+
+    const data = {};
+
+    for (const filter of filters) {
+      const value = filter.value;
+      if (
+        value === null ||
+        value === "" ||
+        value === undefined ||
+        (Array.isArray(value) && !value.length) ||
+        (typeof value === 'object' && Object.keys(value).length === 0)
+      ) continue;
+
+      data[filter.name] = value;
+    };
+
+    if (!Object.keys(data).length) {
+      queries += `&sub_status=${subStatus}`
+    };
+
+    const response = await api({
+      method: 'POST',
+      url: `/orders/unloading${queries}`,
+      data,
+      responseType: "blob",
+    });
+
+    const href = URL.createObjectURL(response.data);
+    const link = document.createElement("a");
+    link.href = href;
+    link.setAttribute("download", `orders.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+
+    return response.data;
+  };
+
   return {
     getOrder,
     getUserOrders,
@@ -138,6 +179,7 @@ const useOrderApi = () => {
     updateOrder,
     changeStatus,
     getOrder,
+    unloadingOrders,
   };
 };
 

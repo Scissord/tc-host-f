@@ -2,6 +2,10 @@
 import { ref } from 'vue';
 
 defineProps({
+  excel_loading: {
+    type: Boolean,
+    default: false,
+  },
   subStatus: {
     type: Number,
     required: true,
@@ -49,13 +53,13 @@ defineProps({
     type: Function,
     required: true
   },
+  handleUnloadOrder: {
+    type: Function,
+    required: true
+  },
 });
 
 const isUnloadingModalOpen = ref(false);
-
-const handleExcel = () => {
-  alert('Модуль в разработке!')
-}
 </script>
 
 <template>
@@ -77,8 +81,9 @@ const handleExcel = () => {
         >
           <Button 
             text="EXCEL"
-            @click="handleExcel()"
-            class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded shadow"
+            @click="() => handleUnloadOrder()"
+            :class="`px-4 py-2 rounded shadow 
+              ${excel_loading ? 'bg-gray-400 text-gray-700 cursor-not-allowed' : 'bg-gray-600 hover:bg-gray-700 text-white'}`"
           />
           <Button 
             text="Отпр. заказы в ДВД"
@@ -86,15 +91,9 @@ const handleExcel = () => {
             @click="handleSendKet()"
             class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded shadow"
           />
-          <!-- <Button 
-            text="Отправить заказы в KetKz"
-            v-if="+subStatus === 16"
-            @click="handleSendKet()"
-            class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded shadow"
-          /> -->
         </div>
         <Button 
-          text="Выгрузка"
+          :text="'Выгрузка' + `(${newSubStatusLength})`"
           @click="isUnloadingModalOpen = !isUnloadingModalOpen"
           class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
         />

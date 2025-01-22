@@ -68,6 +68,7 @@ onMounted(async () => {
           :handleHistoryClick="orders.handleHistoryClick"
         />
         <OrdersUnderTable
+          :excel_loading="orders.state.excel_loading"
           :page="orders.state.page"
           :pages="orders.state.pages"
           :lastPage="orders.state.lastPage"
@@ -77,6 +78,7 @@ onMounted(async () => {
           :newSubStatusLength="orders.state.newSubStatusLength"
           :subStatuses="orders.state.subStatuses"
           :handleSendKet="orders.handleSendKet"
+          :handleUnloadOrder="orders.handleUnloadOrder"
           :handleChangeOrdersSubStatus="orders.handleChangeOrdersSubStatus"
         />
       </div>

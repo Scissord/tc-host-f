@@ -19,7 +19,7 @@ import { socket } from "@/plugins/socket";
 const useUserOrdersStore = defineStore('user_order', () => {
   const router = useRouter();
 
-  const { getUserOrders, changeStatus } = useOrderApi();
+  const { getUserOrders, changeStatus, unloadingOrders } = useOrderApi();
   const { getSubStatuses } = useSubStatusApi();
   const { getOrderColumns } = useOrderColumnApi();
   const { getOperators } = useOperatorApi();
@@ -42,6 +42,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
     newSubStatus: 0,
     newSubStatusLength: 0,
     is_filtered: false,
+    excel_loading: false,
     // arrays
     subStatuses: [],
     columns: [],
@@ -299,6 +300,12 @@ const useUserOrdersStore = defineStore('user_order', () => {
     });
   };
 
+  const handleUnloadOrder = async () => {
+    state.excel_loading = true;
+    await unloadingOrders(state.is_filtered, state.subStatus, state.filters);
+    state.excel_loading = false;
+  };
+
   const handleSendKet = async () => {
     const ids = state.orders
       .filter(order => order.is_checked)
@@ -427,6 +434,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
     handleChangePage,
     handleApplyFilters,
     bindEvents,
+    handleUnloadOrder,
     handleSendKet,
     handleHistoryClick,
     handleChangeSelectSort,
