@@ -3,6 +3,7 @@ import { onMounted } from 'vue';
 import { useOperatorStatistics } from '@hooks';
 import { formatRange } from '@utils';
 import OperatorStatisticsTable from './blocks/OperatorStatisticsTable.vue';
+import OperatorStatisticsTableByDate from './blocks/OperatorStatisticsTableByDate.vue';
 
 const { 
   state, 
@@ -31,15 +32,20 @@ onMounted(async () => {
         range
       />
 
-      <!-- <Checkbox
+      <Checkbox
         v-model="state.by_date"
         @update:modelValue="() => handleGetData()"
       />
-      <p>По дате</p> -->
+      <p>По дате</p>
     </div>
 
     <div class="min-h-screen">
       <OperatorStatisticsTable
+        v-if="!state.by_date"
+        :statistics="state.statistics"
+      />
+      <OperatorStatisticsTableByDate
+        v-else
         :statistics="state.statistics"
       />
     </div>
