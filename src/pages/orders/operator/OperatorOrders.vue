@@ -71,13 +71,17 @@ onMounted(async () => {
           :handleMiddleClick="orders.handleMiddleClick"
         />
         <OrdersUnderTable
+          :excel_loading="orders.state.excel_loading"
           :page="orders.state.page"
           :pages="orders.state.pages"
           :lastPage="orders.state.lastPage"
           :handleChangePage="orders.handleChangePage"
+          :subStatus="orders.state.subStatus"
           :newSubStatus="orders.state.newSubStatus"
           :newSubStatusLength="orders.state.newSubStatusLength"
           :subStatuses="orders.state.subStatuses"
+          :handleSendKet="orders.handleSendKet"
+          :handleUnloadOrder="orders.handleUnloadOrder"
           :handleChangeOrdersSubStatus="orders.handleChangeOrdersSubStatus"
         />
       </div>

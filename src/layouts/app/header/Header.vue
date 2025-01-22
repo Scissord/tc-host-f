@@ -49,7 +49,7 @@ const rootUrl = computed(() => {
       <!-- Заказы (все)  -->
       <router-link
         to="/user/orders"
-        v-if="!user.data.operator_id && !user.data.webmaster_id"
+        v-if="!user.data.webmaster_id && !user.data.operator_id"
         :class="[css.link, isSidebarExpanded ? css.openLink : css.closedLink]"
       >
         <Icon :class="css.icon" icon="fa-solid fa-cart-shopping" />

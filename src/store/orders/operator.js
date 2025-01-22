@@ -10,7 +10,8 @@ import {
   useCityApi,
   usePaymentMethodApi,
   useDeliveryMethodApi,
-  useOrderCancelReasonApi
+  useOrderCancelReasonApi,
+  useKetApi,
 } from '@api';
 import { socket } from "@/plugins/socket";
 
@@ -26,6 +27,7 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
   const { getPaymentMethods } = usePaymentMethodApi();
   const { getDeliveryMethods } = useDeliveryMethodApi();
   const { getOrderCancelReasons } = useOrderCancelReasonApi();
+  const { sendKet } = useKetApi();
 
   const state = reactive({
     // primitive
@@ -299,6 +301,30 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     });
   };
 
+  const handleUnloadOrder = async () => {
+    state.excel_loading = true;
+    await unloadingOrders(state.is_filtered, state.subStatus, state.filters);
+    state.excel_loading = false;
+  };
+
+  const handleSendKet = async () => {
+    const ids = state.orders
+      .filter(order => order.is_checked)
+      .map(order => order.id);
+
+    if (!ids.length) {
+      window.alert('Выберите заказы для выгрузки!');
+      return;
+    };
+
+    const confirm = window.confirm(`Вы уверены, что хотите отправить ${ids.length} заказов в ketkz?`);
+    if (!confirm) return;
+
+    await sendKet({
+      order_ids: ids,
+    });
+  };
+
   const handleEntryOrder = (order_id) => {
     router.push(`/orders/${order_id}`)
   };
@@ -403,6 +429,8 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     handleChangePage,
     handleApplyFilters,
     bindEvents,
+    handleUnloadOrder,
+    handleSendKet,
     handleMiddleClick,
     handleChangeSelectSort,
     handleChangeDateSort,
