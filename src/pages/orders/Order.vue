@@ -238,12 +238,12 @@ const isProductInOrder = (productId) => {
             <h1 class="font-bold text-sm">Дубли: {{ order?.state?.order?.doubles.length }} </h1>
             <div class="flex flex-wrap items-center gap-2 mt-2">
               <p 
-                v-for="(double, index) in order?.state?.order?.doubles.length > 8 ? order?.state?.order?.doubles.slice(0, 8) : order?.state?.order?.doubles"
-                :key="index"
+                v-for="double in order?.state?.order?.doubles.length > 8 ? order?.state?.order?.doubles.slice(0, 8) : order?.state?.order?.doubles"
+                :key="double.id"
                 class="bg-blue-300 px-2 py-1 text-xs text-white cursor-pointer rounded-lg"
-                @click.left="() => handleDoublePress(double)"
+                @click.left="() => handleDoublePress(double.id)"
               >
-                {{ double }}
+                {{ double.id + `(${double.status_name})` }}
               </p>
             </div>
           </div>
