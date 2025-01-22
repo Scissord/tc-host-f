@@ -1,18 +1,26 @@
 import { api } from '@api';
 
 const useOrderApi = () => {
-  const getUserOrders = async (limit = 20, page = 1, subStatus = 1, filters = [], sort_by = null, order_by = null, start = null, end = null) => {
-    let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&sub_status=${subStatus}`;
+  const getUserOrders = async (limit = 20, page = 1, subStatus = 1, filters = [], sort_by = null, order_by = null, start = null, end = null, is_filtered = false) => {
+    let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&is_filtered=${encodeURIComponent(is_filtered)}`;
 
-    if (filters.length > 0) {
-      const filteredFilters = filters.filter(filter => filter.value !== null && filter.value !== "" && filter.value !== undefined);
-      const queryParams = filteredFilters
-        .map(item => `${encodeURIComponent(item.name)}=${encodeURIComponent(item.value)}`)
-        .join('&');
+    const data = {};
 
-      if (queryParams !== "") {
-        queries += `&${queryParams}`;
-      }
+    for (const filter of filters) {
+      const value = filter.value;
+      if (
+        value === null ||
+        value === "" ||
+        value === undefined ||
+        (Array.isArray(value) && !value.length) ||
+        (typeof value === 'object' && Object.keys(value).length === 0)
+      ) continue;
+
+      data[filter.name] = value;
+    };
+
+    if (!Object.keys(data).length) {
+      queries += `&sub_status=${subStatus}`
     };
 
     if (sort_by && order_by) {
@@ -24,8 +32,9 @@ const useOrderApi = () => {
     };
 
     const response = await api({
-      method: 'GET',
+      method: 'POST',
       url: `/orders/user${queries}`,
+      data,
     });
 
     return response.data;
@@ -42,8 +51,8 @@ const useOrderApi = () => {
     return response.data;
   };
 
-  const getOperatorOrders = async (limit = 20, page = 1, subStatus = 1, filters = [], sort_by = null, order_by = null, start = null, end = null) => {
-    let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}`;
+  const getOperatorOrders = async (limit = 20, page = 1, subStatus = 1, filters = [], sort_by = null, order_by = null, start = null, end = null, is_filtered = false) => {
+    let queries = `?limit=${encodeURIComponent(limit)}&page=${encodeURIComponent(page)}&is_filtered=${encodeURIComponent(is_filtered)}`;
 
     const data = {};
 
@@ -75,7 +84,7 @@ const useOrderApi = () => {
     const response = await api({
       method: 'POST',
       url: `/orders/operator${queries}`,
-      data: data,
+      data,
     });
 
     return response.data;

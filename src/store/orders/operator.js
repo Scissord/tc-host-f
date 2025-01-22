@@ -37,6 +37,7 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     subStatus: 1,
     newSubStatus: 1,
     newSubStatusLength: 0,
+    is_filtered: false,
     // arrays
     operatorSubStatuses: [],
     subStatuses: [],
@@ -83,14 +84,19 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
   };
 
   const handleChangeOrdersSubStatus = async (val) => {
+    if (state.is_filtered) {
+      alert('Уберите фильтры из расширенного поиска, чтобы переместить заказы!');
+      return;
+    };
+
     const ids = state.orders
       .filter(order => order.is_checked)
       .map(order => order.id);
 
-    const old_status = state.subStatuses.find((ss) => +ss.id === state.subStatus)
-    const new_status = state.subStatuses.find((ss) => +ss.id === +val)
+    const old_status = state.subStatuses.find((ss) => +ss.id === state.subStatus);
+    const new_status = state.subStatuses.find((ss) => +ss.id === +val);
 
-    const message = ids.length === 0
+    const message = !ids.length
       ? `Вы уверены, что хотите перенести все заказы из ${old_status.name} в ${new_status.name}?`
       : `Вы уверены, что хотите перенести ${ids.length} заказов из ${old_status.name} в ${new_status.name}?`;
 
@@ -145,14 +151,30 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
 
   const handleApplyFilters = async () => {
     state.page = 1;
-    await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
+    let isFiltered = false;
+    for (const filter of state.filters) {
+      const value = filter.value;
+      if (
+        value === null ||
+        value === "" ||
+        value === undefined ||
+        (Array.isArray(value) && !value.length) ||
+        (typeof value === 'object' && Object.keys(value).length === 0)
+      ) continue;
+
+      isFiltered = true;
+      break;
+    };
+    state.is_filtered = isFiltered;
+    const data = await handleGetOrders(state.limit, state.page, state.subStatus, state.filters, null, null, null, null, state.is_filtered);
+    state.newSubStatusLength = data.total;
   };
 
   const handleChangeSelectSort = async (field, order_by) => {
     state.range = []
     state.sort_by[0] = field;
     state.sort_by[1] = order_by;
-    await handleGetOrders(state.limit, state.page, state.subStatus, [], field, order_by)
+    await handleGetOrders(state.limit, state.page, state.subStatus, [], field, order_by, null, null)
   };
 
   const handleChangeDateSort = async (range) => {
@@ -331,12 +353,14 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     state.cities = cityData.cities;
   };
 
-  const handleGetOrders = async (limit, page, subStatus, filters, sort_by, order_by, start, end) => {
-    const ordersData = await getOperatorOrders(limit, page, subStatus, filters, sort_by, order_by, start, end);
+  const handleGetOrders = async (limit, page, subStatus, filters, sort_by, order_by, start, end, is_filtered) => {
+    const ordersData = await getOperatorOrders(limit, page, subStatus, filters, sort_by, order_by, start, end, is_filtered);
 
     state.orders = ordersData.orders;
     state.pages.splice(0, state.pages.length, ...ordersData.pages);
     state.lastPage = ordersData.lastPage;
+
+    return ordersData;
   };
 
   const handleGetPaymentMethods = async () => {
@@ -357,15 +381,17 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
   const handleGetData = async () => {
     state.isDataLoaded = false;
 
-    await handleGetSubStatuses();
-    await handleGetOrderColumns();
-    await handleGetOrders(state.limit, state.page, state.subStatus, []);
-    await handleGetOperators();
-    await handleGetProducts();
-    await handleGetCities();
-    await handleGetPaymentMethods();
-    await handleGetDeliveryMethods();
-    await handleGetOrderCancelReasons();
+    await Promise.all([
+      handleGetSubStatuses(),
+      handleGetOrderColumns(),
+      handleGetOrders(state.limit, state.page, state.subStatus, []),
+      handleGetOperators(),
+      handleGetProducts(),
+      handleGetCities(),
+      handleGetPaymentMethods(),
+      handleGetDeliveryMethods(),
+      handleGetOrderCancelReasons(),
+    ]);
 
     state.isDataLoaded = true;
   };

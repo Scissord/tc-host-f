@@ -5,6 +5,13 @@ import {
   useOrderApi,
   useSubStatusApi,
   useOrderColumnApi,
+  useOperatorApi,
+  useWebmasterApi,
+  useProductApi,
+  useCityApi,
+  usePaymentMethodApi,
+  useDeliveryMethodApi,
+  useOrderCancelReasonApi,
   useKetApi,
 } from '@api';
 import { socket } from "@/plugins/socket";
@@ -15,6 +22,13 @@ const useUserOrdersStore = defineStore('user_order', () => {
   const { getUserOrders, changeStatus } = useOrderApi();
   const { getSubStatuses } = useSubStatusApi();
   const { getOrderColumns } = useOrderColumnApi();
+  const { getOperators } = useOperatorApi();
+  const { getWebmasters } = useWebmasterApi();
+  const { getProducts } = useProductApi();
+  const { getCities } = useCityApi();
+  const { getPaymentMethods } = usePaymentMethodApi();
+  const { getDeliveryMethods } = useDeliveryMethodApi();
+  const { getOrderCancelReasons } = useOrderCancelReasonApi();
   const { sendKet } = useKetApi();
 
   const state = reactive({
@@ -27,11 +41,19 @@ const useUserOrdersStore = defineStore('user_order', () => {
     subStatus: 0,
     newSubStatus: 0,
     newSubStatusLength: 0,
+    is_filtered: false,
     // arrays
     subStatuses: [],
     columns: [],
     filters: [],
     orders: [],
+    operators: [],
+    webmasters: [],
+    products: [],
+    cities: [],
+    paymentMethods: [],
+    deliveryMethods: [],
+    orderCancelReasons: [],
     sort_by: [],
     range: [],
   });
@@ -66,6 +88,11 @@ const useUserOrdersStore = defineStore('user_order', () => {
   };
 
   const handleChangeOrdersSubStatus = async (val) => {
+    if (state.is_filtered) {
+      alert('Уберите фильтры из расширенного поиска, чтобы переместить заказы!');
+      return;
+    };
+
     const ids = state.orders
       .filter(order => order.is_checked)
       .map(order => order.id);
@@ -124,7 +151,23 @@ const useUserOrdersStore = defineStore('user_order', () => {
 
   const handleApplyFilters = async () => {
     state.page = 1;
-    await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
+    let isFiltered = false;
+    for (const filter of state.filters) {
+      const value = filter.value;
+      if (
+        value === null ||
+        value === "" ||
+        value === undefined ||
+        (Array.isArray(value) && !value.length) ||
+        (typeof value === 'object' && Object.keys(value).length === 0)
+      ) continue;
+
+      isFiltered = true;
+      break;
+    };
+    state.is_filtered = isFiltered;
+    const data = await handleGetOrders(state.limit, state.page, state.subStatus, state.filters, null, null, null, null, state.is_filtered);
+    state.newSubStatusLength = data.total;
   };
 
   const handleChangeSelectSort = async (field, order_by) => {
@@ -313,12 +356,49 @@ const useUserOrdersStore = defineStore('user_order', () => {
     })));
   };
 
-  const handleGetOrders = async (limit, page, subStatus, filters, sort_by, order_by, start, end) => {
-    const ordersData = await getUserOrders(limit, page, subStatus, filters, sort_by, order_by, start, end);
+  const handleGetOperators = async () => {
+    const data = await getOperators();
+    state.operators = data.operators;
+  };
+
+  const handleGetWebmasters = async () => {
+    const webmasterData = await getWebmasters();
+    state.webmasters = webmasterData.webmasters;
+  };
+
+  const handleGetProducts = async () => {
+    const productData = await getProducts();
+    state.products = productData.products;
+  };
+
+  const handleGetCities = async () => {
+    const cityData = await getCities();
+    state.cities = cityData.cities;
+  };
+
+  const handleGetPaymentMethods = async () => {
+    const paymentData = await getPaymentMethods();
+    state.paymentMethods = paymentData.paymentMethods;
+  };
+
+  const handleGetDeliveryMethods = async () => {
+    const deliveryData = await getDeliveryMethods();
+    state.deliveryMethods = deliveryData.deliveryMethods;
+  };
+
+  const handleGetOrderCancelReasons = async () => {
+    const orderCancelReasonData = await getOrderCancelReasons();
+    state.orderCancelReasons = orderCancelReasonData.orderCancelReasons;
+  };
+
+  const handleGetOrders = async (limit, page, subStatus, filters, sort_by, order_by, start, end, is_filtered) => {
+    const ordersData = await getUserOrders(limit, page, subStatus, filters, sort_by, order_by, start, end, is_filtered);
 
     state.orders = ordersData.orders;
     state.pages.splice(0, state.pages.length, ...ordersData.pages);
     state.lastPage = ordersData.lastPage;
+
+    return ordersData;
   };
 
   const handleGetData = async () => {
@@ -327,7 +407,14 @@ const useUserOrdersStore = defineStore('user_order', () => {
     await Promise.all([
       handleGetSubStatuses(),
       handleGetOrderColumns(),
-      handleGetOrders(state.limit, state.page, state.subStatus, [])
+      handleGetOrders(state.limit, state.page, state.subStatus, []),
+      handleGetOperators(),
+      handleGetWebmasters(),
+      handleGetProducts(),
+      handleGetCities(),
+      handleGetPaymentMethods(),
+      handleGetDeliveryMethods(),
+      handleGetOrderCancelReasons(),
     ]);
 
     state.isDataLoaded = true;

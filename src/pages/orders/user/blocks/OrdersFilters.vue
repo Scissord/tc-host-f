@@ -13,6 +13,41 @@ defineProps({
     required: true,
     default: []
   },
+  operators: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  webmasters: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  products: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  cities: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  paymentMethods: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  deliveryMethods: {
+    type: Array,
+    required: true,
+    default: []
+  },
+  orderCancelReasons: {
+    type: Array,
+    required: true,
+    default: []
+  },
   handleChangeSubStatus: {
     type: Function,
     required: true
@@ -60,6 +95,14 @@ defineProps({
     :lastPage="lastPage"
     :handleChangePage="handleChangePage"
     :filters="filters"
+    :operators="operators"
+    :webmasters="webmasters"
+    :products="products"
+    :cities="cities"
+    :subStatuses="subStatuses"
+    :paymentMethods="paymentMethods"
+    :deliveryMethods="deliveryMethods"
+    :orderCancelReasons="orderCancelReasons"
     :handleApplyFilters="handleApplyFilters"
   />
 </template>
