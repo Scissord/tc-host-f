@@ -89,11 +89,6 @@ const useUserOrdersStore = defineStore('user_order', () => {
   };
 
   const handleChangeOrdersSubStatus = async (val) => {
-    if (state.is_filtered) {
-      alert('Уберите фильтры из расширенного поиска, чтобы переместить заказы!');
-      return;
-    };
-
     const ids = state.orders
       .filter(order => order.is_checked)
       .map(order => order.id);
@@ -101,9 +96,22 @@ const useUserOrdersStore = defineStore('user_order', () => {
     const old_status = state.subStatuses.find((ss) => +ss.id === state.subStatus)
     const new_status = state.subStatuses.find((ss) => +ss.id === +val)
 
-    const message = ids.length === 0
-      ? `Вы уверены, что хотите перенести все заказы из ${old_status.name} в ${new_status.name}?`
-      : `Вы уверены, что хотите перенести ${ids.length} заказов из ${old_status.name} в ${new_status.name}?`;
+    let message = '';
+    if (ids.length && !state.is_filtered) {
+      message = `Вы уверены, что хотите перенести ${ids.length} заказов из ${old_status.name} в ${new_status.name}?`;
+    };
+
+    if (ids.length && state.is_filtered) {
+      message = `Вы уверены, что хотите перенести ${ids.length} заказов из ${old_status.name} в ${new_status.name}?`;
+    };
+
+    if (!ids.length && !state.is_filtered) {
+      message = `Вы уверены, что хотите перенести все заказы из ${old_status.name} в ${new_status.name}?`;
+    };
+
+    if (!ids.length && state.is_filtered) {
+      message = `Вы уверены, что хотите перенести ${state.newSubStatusLength} заказов в ${new_status.name}?`;
+    };
 
     const confirm = window.confirm(message);
 
@@ -112,13 +120,14 @@ const useUserOrdersStore = defineStore('user_order', () => {
     const data = {
       old_sub_status_id: state.subStatus,
       new_sub_status_id: val,
-      ids: ids
+      ids: ids,
+      is_filtered: state.is_filtered,
     };
 
     socket.emit("sendStatus", data);
 
-    await changeStatus(data);
-    await handleGetOrders(state.limit, state.page, state.subStatus);
+    await changeStatus(data, state.filters);
+    await handleGetOrders(state.limit, state.page, state.subStatus, state.filters);
 
     if (state.columns[0].is_checked === true) {
       state.columns[0].is_checked = false;

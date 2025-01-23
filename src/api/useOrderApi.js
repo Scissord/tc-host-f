@@ -119,11 +119,32 @@ const useOrderApi = () => {
     return response.data;
   };
 
-  const changeStatus = async (data) => {
+  const changeStatus = async (data, filters) => {
+    const conditions = {};
+
+    if (data.is_filtered) {
+      for (const filter of filters) {
+        const value = filter.value;
+        if (
+          value === null ||
+          value === "" ||
+          value === undefined ||
+          (Array.isArray(value) && !value.length) ||
+          (typeof value === 'object' && Object.keys(value).length === 0)
+        ) continue;
+
+        conditions[filter.name] = value;
+      };
+
+      console.log(conditions);
+
+      data.filters = conditions;
+    };
+
     const response = await api({
       method: 'PATCH',
       url: '/orders/status/update',
-      data
+      data,
     });
 
     return response.data;
