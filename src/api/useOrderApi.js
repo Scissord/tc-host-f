@@ -129,22 +129,24 @@ const useOrderApi = () => {
     return response.data;
   };
 
-  const unloadingOrders = async (is_filtered = false, subStatus = 1, filters = []) => {
+  const unloadingOrders = async (is_filtered = false, subStatus = 1, filters = [], ids = []) => {
     let queries = `?is_filtered=${encodeURIComponent(is_filtered)}`;
 
     const data = {};
 
-    for (const filter of filters) {
-      const value = filter.value;
-      if (
-        value === null ||
-        value === "" ||
-        value === undefined ||
-        (Array.isArray(value) && !value.length) ||
-        (typeof value === 'object' && Object.keys(value).length === 0)
-      ) continue;
+    if (is_filtered) {
+      for (const filter of filters) {
+        const value = filter.value;
+        if (
+          value === null ||
+          value === "" ||
+          value === undefined ||
+          (Array.isArray(value) && !value.length) ||
+          (typeof value === 'object' && Object.keys(value).length === 0)
+        ) continue;
 
-      data[filter.name] = value;
+        data[filter.name] = value;
+      };
     };
 
     if (!Object.keys(data).length) {
@@ -154,7 +156,10 @@ const useOrderApi = () => {
     const response = await api({
       method: 'POST',
       url: `/orders/unloading${queries}`,
-      data,
+      data: {
+        filters: data,
+        ids: ids,
+      },
       responseType: "blob",
     });
 

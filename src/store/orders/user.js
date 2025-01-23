@@ -302,7 +302,10 @@ const useUserOrdersStore = defineStore('user_order', () => {
 
   const handleUnloadOrder = async () => {
     state.excel_loading = true;
-    await unloadingOrders(state.is_filtered, state.subStatus, state.filters);
+    const ids = state.orders
+      .filter(order => order.is_checked)
+      .map(order => order.id);
+    await unloadingOrders(state.is_filtered, state.subStatus, state.filters, ids);
     state.excel_loading = false;
   };
 

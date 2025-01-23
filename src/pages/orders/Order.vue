@@ -1,12 +1,10 @@
 <script setup>
-import { onMounted, onBeforeUnmount } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { onMounted, onBeforeUnmount, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { useOrderStore, useUserStore } from '@store';
 import { socket } from "@/plugins/socket";
-import { DateFormat } from '@utils';
 import Header from './order/Header.vue';
 
-const router = useRouter();
 const route = useRoute();
 const order_id = route.params.order_id;
 const user = useUserStore();
@@ -52,6 +50,7 @@ const handleDoublePress = (double) => {
   window.open(`/orders/${double}`, '_blank');
 };
 
+const isProductsOpen = ref(false);
 const customPosition = (el) => ({ top: 10, left: 0 });
 
 const isProductInOrder = (productId) => {
@@ -345,8 +344,17 @@ const isProductInOrder = (productId) => {
             </div>
           </div>
           <div class="flex flex-col gap-3 mt-3">
-            <h1 class="font-bold text-sm">Продукты:</h1>
+            <div class="flex items-center gap-3">
+              <h1 class="font-bold text-sm">Продукты:</h1>
+              <Icon
+                class="cursor-pointer hover:opacity-70"
+                icon="fa-solid fa-box-open"
+                @click="isProductsOpen = !isProductsOpen"
+              />
+            </div>
+
             <div
+              v-if="isProductsOpen"
               v-for="product in order.state.products"
               :key="product.id"
               class="flex items-center gap-3"
