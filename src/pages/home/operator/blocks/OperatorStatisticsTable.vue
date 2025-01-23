@@ -91,10 +91,12 @@ const css = {
           <td :class='css.td'>
           </td>
           <td :class='css.td'>
+            {{ statistics?.holdOrders ?? '-'}}
           </td>
           <td :class='css.td'>
           </td>
           <td :class='css.td'>
+            {{ statistics?.spamOrders ?? '-'}}
           </td>
           <td :class='css.td'>
           </td>
