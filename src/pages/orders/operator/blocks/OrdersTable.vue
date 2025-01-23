@@ -1,5 +1,5 @@
 <script setup>
-import { formatRange } from '@utils';
+import { formatRange, DateFormat } from '@utils';
 import { useUserStore } from '@store';
 
 const props = defineProps({
@@ -412,7 +412,7 @@ const user = useUserStore();
           </td>
           <td :class='css.td'>{{ order.additional2 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional4 ?? '-' }}</td>
-          <td :class='css.td'>{{ order.returned_at ?? '-' }}</td>
+          <td :class='css.td'>{{ DateFormat(order?.returned_at, 'd.m.Y H:i') ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional7 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional8 ?? '-' }}</td>
         </tr>

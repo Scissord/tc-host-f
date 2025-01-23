@@ -86,6 +86,7 @@ const css = {
             {{ statistics?.buyoutPercentage ?? '-' }}
           </td>
           <td :class='css.td'>
+            {{ statistics?.refundedOrders ?? '-'}}
           </td>
           <td :class='css.td'>
           </td>

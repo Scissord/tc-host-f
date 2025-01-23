@@ -1,5 +1,5 @@
 <script setup>
-import { formatRange } from '@utils';
+import { formatRange, DateFormat } from '@utils';
 
 const props = defineProps({
   orders: {
@@ -258,7 +258,7 @@ const css = {
           <td :class='css.td'>{{ order.additional2 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional3 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional4 ?? '-' }}</td>
-          <td :class='css.td'>{{ order.returned_at ?? '-' }}</td>
+          <td :class='css.td'>{{ DateFormat(order?.returned_at, 'd.m.Y H:i') ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional6 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional7 ?? '-' }}</td>
           <td :class='css.td'>{{ order.additional8 ?? '-' }}</td>
