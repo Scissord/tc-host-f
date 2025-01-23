@@ -52,15 +52,18 @@ const useUserStatistics = () => {
 
   const handleGetData = async () => {
     state.isDataLoaded = false;
-    // const data = await fetchData(state.tab, state.range, state.group, state.webmaster_id, state.operator_id);
-    // state.statistics = data.statistics;
+    const data = await getOperatorStatistic(state.range[0], state.range[1]);
+    console.log(data);
+    state.statistics = data.result;
     state.isDataLoaded = true;
   };
 
   const css = {
     defaultTab: 'h-8 cursor-pointer select-none p-2 whitespace-nowrap',
     activeTab: 'border-t border-l border-r rounded-t-md',
-    disabledTab: 'border-b'
+    disabledTab: 'border-b',
+    th: 'text-center border border-slate-200 whitespace-nowrap',
+    td: 'border border-slate-200 p-1 whitespace-nowrap',
   };
 
   onMounted(() => {
