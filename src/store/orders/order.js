@@ -56,8 +56,7 @@ const useOrderStore = defineStore('order', () => {
     delete state.order.is_editable;
 
     const orderData = {
-      status_id: state.order.status.id,
-      sub_status_id: state.order.sub_status_id,
+      id: state.order.id,
       fio: state.order.fio,
       age: state.order.age,
       address: state.order.address,
@@ -66,6 +65,10 @@ const useOrderStore = defineStore('order', () => {
       additional4: state.order.additional4,
       comment: state.order.comment,
       total_sum: state.order.total_sum,
+    };
+
+    if (state.order.sub_status?.id !== null) {
+      orderData.sub_status_id = state.order.sub_status.id;
     };
 
     if (state.order.gender?.id) {
@@ -100,13 +103,14 @@ const useOrderStore = defineStore('order', () => {
 
     if (+user.data.id === 1 || user.data.abilities.includes(64)) {
       orderData.operator_id = state.order.operator.id;
-    }
+    };
 
     await updateOrder(state.order.id, {
       order: orderData,
       items: state.order.items,
     });
-    await handleGetOrder(state.order.id)
+
+    // await handleGetOrder(state.order.id)
 
     notification.show("Заказ успешно обновлён!", 'success');
   };

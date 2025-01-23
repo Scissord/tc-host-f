@@ -1,12 +1,11 @@
 <script setup>
 import { ref } from 'vue';
-import { useOrderStore } from '@store';
 
 defineProps({
   order_id: String,
+  order: Object,
 });
 
-const order = useOrderStore();
 const activeSection = ref("Информация");
 </script>
 

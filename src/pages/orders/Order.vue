@@ -67,6 +67,7 @@ const isProductInOrder = (productId) => {
   >
     <Header 
       :order_id="order_id"
+      :order="order"
     />
     
     <div class="flex items center gap-3 mt-3 min-h-screen">
