@@ -69,6 +69,7 @@ onMounted(async () => {
           :handleToggleOrders="orders.handleToggleOrders"
           :handleEntryOrder="orders.handleEntryOrder"
           :handleMiddleClick="orders.handleMiddleClick"
+          :handleHistoryClick="orders.handleHistoryClick"
         />
         <OrdersUnderTable
           :excel_loading="orders.state.excel_loading"

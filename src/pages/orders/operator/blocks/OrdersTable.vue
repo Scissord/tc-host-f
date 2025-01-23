@@ -1,5 +1,6 @@
 <script setup>
 import { formatRange } from '@utils';
+import { useUserStore } from '@store';
 
 const props = defineProps({
   orders: {
@@ -40,6 +41,10 @@ const props = defineProps({
     type: Function,
     required: true,
   },
+  handleHistoryClick: {
+    type: Function,
+    required: true,
+  },
 });
 
 const idOptions = [
@@ -52,6 +57,8 @@ const css = {
   td: 'p-4 whitespace-nowrap',
   first_row: 'p-2'
 };
+
+const user = useUserStore();
 </script>
 
 <template>
@@ -320,6 +327,12 @@ const css = {
               >
                 ({{ order.doubles.length }})
               </p>
+              <Icon 
+                v-if="user?.data?.abilities?.includes(153)"
+                icon="fa-solid fa-clock-rotate-left" 
+                class="cursor-pointer hover:text-gray-600"
+                @click="() => handleHistoryClick(order.id)"
+              />
             </div>
             <div 
               v-if="order.is_doubles_open"

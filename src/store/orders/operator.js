@@ -315,6 +315,10 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     });
   };
 
+  const handleHistoryClick = (order_id) => {
+    router.push(`/logs/order/${order_id}`);
+  };
+
   const handleUnloadOrder = async () => {
     state.excel_loading = true;
     const ids = state.orders
@@ -457,6 +461,7 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
     handleToggleOrders,
     handleChangeOrdersSubStatus,
     handleGetData,
+    handleHistoryClick,
   };
 });
 
