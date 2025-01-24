@@ -86,11 +86,6 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
   };
 
   const handleChangeOrdersSubStatus = async (val) => {
-    if (state.is_filtered) {
-      alert('Уберите фильтры из расширенного поиска, чтобы переместить заказы!');
-      return;
-    };
-
     const ids = state.orders
       .filter(order => order.is_checked)
       .map(order => order.id);

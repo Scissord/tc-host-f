@@ -52,7 +52,7 @@ const useUserStatistics = () => {
 
   const handleGetData = async () => {
     state.isDataLoaded = false;
-    const data = await getOperatorStatistic(state.range[0], state.range[1]);
+    const data = await getOperatorStatistic(state.range[0], state.range[1], null, false);
     console.log(data);
     state.statistics = data.result;
     state.isDataLoaded = true;
