@@ -99,8 +99,32 @@ const css = {
             <td :class='css.td'>{{ log.action ?? '-' }}</td>
             <td :class='css.td'>{{ log.ip ?? '-' }}</td>
             <td :class='css.td'>{{ log.created_at ?? '-' }}</td>
-            <td :class='css.td'>{{ log.old_metadata ?? '-' }}</td>
-            <td :class='css.td'>{{ log.new_metadata ?? '-' }}</td>
+            <td :class='css.td'>
+              <div class="flex flex-col gap-2">
+                <div 
+                  v-if="log.old_metadata"
+                  v-for="[key, value] in Object.entries(log.old_metadata)"
+                  class="flex items-center gap-2"
+                >
+                  <h1>{{ key }}</h1>
+                  <p>-</p>
+                  <p>{{ value ?? '-' }}</p>
+                </div>
+              </div>
+            </td>
+            <td :class='css.td'>
+              <div class="flex flex-col justify-start gap-2">
+                <div 
+                  v-if="log.new_metadata"
+                  v-for="[key, value] in Object.entries(log.new_metadata)"
+                  class="flex items-center gap-2"
+                >
+                  <h1>{{ key }}</h1>
+                  <p>-</p>
+                  <p>{{ value ?? '-' }}</p>
+                </div>
+              </div>
+            </td>
           </tr>
           <div class="flex items-center justify-center" v-if="state.logs.length === 0">
             <p class="font-bold text-2xl">Логи не найдены</p>
