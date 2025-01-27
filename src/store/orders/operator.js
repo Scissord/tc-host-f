@@ -90,7 +90,7 @@ const useOperatorOrdersStore = defineStore('operator_order', () => {
       .filter(order => order.is_checked)
       .map(order => order.id);
 
-    if (state.is_filtered === true) {
+    if (state.is_filtered) {
       alert('Уберите фильтры!');
       return;
     };

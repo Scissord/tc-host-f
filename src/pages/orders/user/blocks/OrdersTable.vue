@@ -2,6 +2,11 @@
 import { formatRange, DateFormat } from '@utils';
 
 const props = defineProps({
+  sort_by: {
+    type: Array,
+    required: true,
+    default: []
+  },
   orders: {
     type: Array,
     required: true,
@@ -46,6 +51,10 @@ const props = defineProps({
   },
 });
 
+const inDevelopment = () => {
+  alert('В разработке!');
+};
+
 const idOptions = [
   { value: 1, label: 'С конца', field: 'id', sort: 'desc' },
   { value: 2, label: 'С начала', field: 'id', sort: 'asc' },
@@ -54,7 +63,8 @@ const idOptions = [
 const css = {
   th: 'text-left p-4 whitespace-nowrap',
   td: 'p-4 whitespace-nowrap',
-  first_row: 'p-2'
+  first_row: 'p-2',
+  p: 'text-[10px]',
 };
 </script>
 
@@ -64,16 +74,246 @@ const css = {
       <thead class="bg-gray-100 text-gray-600 uppercase text-sm font-semibold">
         <tr>
           <th 
-            v-for="column in columns" 
-            :key="column.id" 
-            :class='css.th '
+            :class='css.th'
           >
             <Checkbox 
-              v-if="column.id === 0" 
-              v-model="column.is_checked"
+              v-model="columns[0].is_checked"
               @update:modelValue="handleToggleOrders"
             />          
-            <p v-else class="text-[10px]">{{ column.label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.id', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[1].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.operator_id', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[2].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => inDevelopment()"
+          >
+            <p :class="css.p">{{ columns[3].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.webmaster_id', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[4].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.additional1', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[5].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.created_at', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[6].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.updated_at', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[7].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.approved_at', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[8].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.shipped_at', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[9].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.cancelled_at', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[10].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.buyout_at', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[11].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.delivery_at', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[12].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.comment', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[13].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => inDevelopment()"
+          >
+            <p :class="css.p">{{ columns[14].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.total_sum', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[15].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.logist_recall_at', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[16].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => inDevelopment()"
+          >
+            <p :class="css.p">{{ columns[17].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.fio', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[18].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.phone', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[19].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.region', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[20].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.city_id', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[21].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.address', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[22].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.postal_code', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[23].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.age', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[24].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.utm_term', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[25].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.sub_status_id', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[26].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.gender_id', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[27].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.payment_method_id', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[28].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.delivery_method_id', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[29].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.order_cancel_reason_id', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[30].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.additional2', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[31].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.additional3', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[32].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.additional4', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[33].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.additional5', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[34].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.additional6', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[35].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.additional7', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[36].label }}</p>
+          </th>
+          <th 
+             :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.additional8', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[37].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.additional9', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[38].label }}</p>
+          </th>
+          <th 
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            @click="() => handleChangeSelectSort('o.additional10', sort_by[1] === 'asc' ? 'desc' : 'asc')"
+          >
+            <p :class="css.p">{{ columns[39].label }}</p>
           </th>
         </tr>
       </thead>

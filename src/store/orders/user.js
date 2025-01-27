@@ -93,7 +93,7 @@ const useUserOrdersStore = defineStore('user_order', () => {
       .filter(order => order.is_checked)
       .map(order => order.id);
 
-    if (state.is_filtered === true) {
+    if (state.is_filtered) {
       alert('Уберите фильтры!');
       return;
     };
