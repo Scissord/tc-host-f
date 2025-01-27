@@ -93,6 +93,16 @@ const useUserOrdersStore = defineStore('user_order', () => {
       .filter(order => order.is_checked)
       .map(order => order.id);
 
+    if (state.is_filtered === false) {
+      alert('Уберите фильтры!');
+      return;
+    };
+
+    if (ids.length === 0) {
+      alert('Выберите заказы для обновления!');
+      return;
+    };
+
     const old_status = state.subStatuses.find((ss) => +ss.id === state.subStatus)
     const new_status = state.subStatuses.find((ss) => +ss.id === +val)
 
