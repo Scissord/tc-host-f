@@ -62,6 +62,7 @@ onMounted(async () => {
         <OrdersTable
           :orders="orders.state.orders"
           :columns="orders.state.columns"
+          :sort_by="orders.state.sort_by"
           :handleChangeSelectSort="orders.handleChangeSelectSort"
           :handleChangeDateSort="orders.handleChangeDateSort"
           :handleToggleDoubles="orders.handleToggleDoubles"

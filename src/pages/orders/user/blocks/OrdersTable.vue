@@ -298,7 +298,7 @@ const css = {
             <p :class="css.p">{{ columns[36].label }}</p>
           </th>
           <th 
-             :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
+            :class='[css.th, "cursor-pointer hover:underline hover:text-blue-900"]'
             @click="() => handleChangeSelectSort('o.additional8', sort_by[1] === 'asc' ? 'desc' : 'asc')"
           >
             <p :class="css.p">{{ columns[37].label }}</p>
